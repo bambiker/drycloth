@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <title>מחשבון לחישוב זמן ייבוש הכביסה</title>
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G78VLV9YZF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-G78VLV9YZF');
+</script>    
+    
+  </head>
+  <body dir="rtl">
+      <h1>מחשבון לחישוב זמן ייבוש הכביסה</h1>
+מחשבון זה מחשב תוך כמה זמן הכביסה אמורה להתייבש<br>
+קישור לדף זה
+<a href="https://tinyurl.com/drycloth"> https://tinyurl.com/drycloth </a> <br>
+<br><br>
+    <label>מה הטמפרטורה במעלות צלזיוס:</label><input type="text" id="temp">
+    <br>
+    <label>הלחות היחסית:</label><input type="text" id="humid">
+    <br>
+    <label>מהירות הרוח בקמ"ש, בתוך הבית אפשר להניח שהמהירות היא אפס:</label><input type="text" id="wind" value="0">
+    <br>
+    <label>עובי הבד במ"מ, נא לבחור את הבד הכי עבה:</label><input type="text" id="width" value="2">
+    <br>
+    
+    <br>
+    <button id="btncalc">חשב</button><br><br>
+    
+    <label>מספר השעות לייבוש הכביסה הוא </label>
+    <label id="result" value ="<נא להזין נתונים וללחוץ על כפתור חשב>"></label>   
+    <br>    <br>
+    <br>
+
+    <label></label><br>    
+    <a href='https://forms.gle/FJx3CNFUcExcG9Fn9' target="_blank"> <input type='button' name='button' value='צור קשר'></a>
+ 
+    <label></label><br>    
+    
+
+    <h2>למה המחשבון חשוב</h2>
+    <label>א. לוודא שהכביסה תתייבש לפני שיתחיל לרדת גשם</label><br>
+    <label>ב. אם מייבשים בבית, כדי לדעת אם כדאי להפעיל חימום או מאוורר לזירוז הייבוש</label><br>    
+    <label>ג. אם צריך חולצה לארוע מסוים, אז לדעת אם לכבס עכשיו או שאפשר גם מחר</label><br>
+    <label></label><br>    
+    <h2>כללי אצבע למחשבון</h2>
+    <label>אם תולים כביסה בבית בלי חימום הטמפרטורה תיהיה ממוצע של היום והלילה, וכך גם הלחות</label><br>    
+    <label>אם תולים כביסה בבית עם חימום, הטמפרטורה תיהיה הטמפרטורה המקסימלית, כלומר טמפרטורת הצהריים</label><br>    
+    <label>מגבת, חולצת חורף או ג'ינס עוביים 2 מ"מאוורר</label><br>    
+    <label>חולצות קצרות עוביים 1 מ"מ</label><br>   
+    <label>חולצה מנדפת עובייה האפקטיבי הוא 0.5 מ"מ</label><br>    
+    <label></label><br>    
+    <label></label><br>    
+    <label></label><br>    
+    <h2>טיפים</h2>
+    <label>אם תולים כביסה בבית ולא מפעילים חימום כדאי לפתוח חלון</label><br>    
+    <label>את הכביסה שמתייבשת הכי לאט יש לשים בחבלים החיצוניים</label><br>
+    <label>עדיף לתלות את הכביסה בצורה מרווחת</label><br>
+    <label>אם זה אפשרי, יש לתלות את הכביסה כשחבלי הכביסה מקבילים לכיוון הרוח הממוצעת</label><br>  
+
+
+
+    <iframe src="https://mavir.co.il/israel/jerusalem"></iframe>
+    <script>
+    
+    document.getElementById("btncalc").addEventListener("click",doCalc);
+    
+    function doCalc()
+    {
+         var temp = document.getElementById("temp").value;
+         var humid = document.getElementById("humid").value;
+         var width = document.getElementById("width").value/2.;
+         var wind = document.getElementById("wind").value;
+         document.getElementById('result').innerHTML = "er";
+         google.script.run.withSuccessHandler(goodresults).userCalc(temp,humid,wind,width);
+
+    }
+    
+    function goodresults(res)
+    {
+    document.getElementById('result').innerHTML = res;
+    }
+    </script>
+    
+   <button id = "find-me">Show my location</button><br/>
+    <p id = "status"></p>
+    <a id = "map-link" target="_blank"></a>
+    <script>
+      function geoFindMe() {
+
+        const status = document.querySelector('#status');
+        const mapLink = document.querySelector('#map-link');
+      
+        mapLink.href = '';
+        mapLink.textContent = '';
+      
+        function success(position) {
+          
+          const latitude  = position.coords.latitude;
+          const longitude = position.coords.longitude;
+      
+          //google.script.run.saveCoordinates(latitude,longitude);
+      
+          status.textContent = '';
+          mapLink.href = 'https://www.openstreetmap.org/#map=18/' + `${latitude}\/${longitude}`;
+          mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+        }
+
+        function error() {
+          status.textContent = 'Unable to retrieve your location';
+        }
+
+        if(!navigator.geolocation) {
+          status.textContent = 'Geolocation is not supported by your browser';
+        } else {
+          status.textContent = 'Locating…';
+          navigator.geolocation.getCurrentPosition(success, error);
+        }
+
+      }
+
+      document.querySelector('#find-me').addEventListener('click', geoFindMe);
+    </script>
+    
+    
+  </body>
+</html>
