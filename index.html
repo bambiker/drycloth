@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <base target="_top">
     <title>מחשבון לחישוב זמן ייבוש הכביסה</title>
     
@@ -14,16 +14,17 @@
   gtag('config', 'G-G78VLV9YZF');
 </script>    
     
-  </head>
-  <body dir="rtl">
+</head>
+<body dir="rtl">
+    <script type="text/javascript" src="calc.js"></script>
     <scrit>
       window.alert(window.location.search);
     </scrit>
-      <h1>מחשבון לחישוב זמן ייבוש הכביסה</h1>
-מחשבון זה מחשב תוך כמה זמן הכביסה אמורה להתייבש<br>
-קישור לדף זה
-<a href="https://tinyurl.com/drycloth"> https://tinyurl.com/drycloth </a> <br>
-<br><br>
+    <h1>מחשבון לחישוב זמן ייבוש הכביסה</h1>
+    מחשבון זה מחשב תוך כמה זמן הכביסה אמורה להתייבש<br>
+    קישור לדף זה
+    <a href="https://tinyurl.com/drycloth"> https://tinyurl.com/drycloth </a> <br>
+     <br><br>
     <label>מה הטמפרטורה במעלות צלזיוס:</label><input type="text" id="temp">
     <br>
     <label>הלחות היחסית:</label><input type="text" id="humid">
@@ -81,7 +82,7 @@
          var width = document.getElementById("width").value/2.;
          var wind = document.getElementById("wind").value;
          document.getElementById('result').innerHTML = "er";
-         google.script.run.withSuccessHandler(goodresults).userCalc(temp,humid,wind,width);
+         calc(temp,humid,wind,width);
 
     }
     
