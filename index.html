@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
     <base target="_top">
     <title>מחשבון לחישוב זמן ייבוש הכביסה</title>
-    
+   
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G78VLV9YZF"></script>
 <script>
@@ -13,17 +13,27 @@
 
   gtag('config', 'G-G78VLV9YZF');
 </script>    
-    
+   
 </head>
-<body dir="rtl">
-    ver0
+<body>
+    <script>
+    if (window.location.search=="?he")
+       {document.body.setAttribute('dir', 'rtl')}
+    </script>
     <script type="text/javascript" src="calc.js"></script>
-      window.alert(window.location.search);
-    <h1>מחשבון לחישוב זמן ייבוש הכביסה</h1>
-    מחשבון זה מחשב תוך כמה זמן הכביסה אמורה להתייבש<br>
-    קישור לדף זה
-    <a href="https://tinyurl.com/drycloth"> https://tinyurl.com/drycloth </a> <br>
-     <br><br>
+   
+   
+    <span id="span1"></span>
+    <script>
+if (window.location.search=="?he")    
+{
+  var myString = `
+              <h1>מחשבון לחישוב זמן ייבוש הכביסה</h1>
+    <a href="https://bambiker.github.io/drycloth/"> https://bambiker.github.io/drycloth/ </a> <br>
+   
+<br>
+   <button id = "find-me">טמפרטורה ולחות נוכחיים מהתחזית</button><br/>
+     <br>
     <label>מה הטמפרטורה במעלות צלזיוס:</label><input type="text" id="temp">
     <br>
     <label>הלחות היחסית:</label><input type="text" id="humid">
@@ -32,48 +42,92 @@
     <br>
     <label>עובי הבד במ"מ, נא לבחור את הבד הכי עבה:</label><input type="text" id="width" value="2">
     <br>
-    
+   
     <br>
     <button id="btncalc">חשב</button><br><br>
-    
+   
     <label>מספר השעות לייבוש הכביסה הוא </label>
-    <label id="result" value ="<נא להזין נתונים וללחוץ על כפתור חשב>"></label>   
+    <label id="result" value ="<נא להזין נתונים וללחוץ על כפתור חשב>"></label>  
     <br>    <br>
-    <br>
-
-    <label></label><br>    
+   
     <a href='https://forms.gle/FJx3CNFUcExcG9Fn9' target="_blank"> <input type='button' name='button' value='צור קשר'></a>
- 
-    <label></label><br>    
-    
 
     <h2>למה המחשבון חשוב</h2>
     <label>א. לוודא שהכביסה תתייבש לפני שיתחיל לרדת גשם</label><br>
     <label>ב. אם מייבשים בבית, כדי לדעת אם כדאי להפעיל חימום או מאוורר לזירוז הייבוש</label><br>    
     <label>ג. אם צריך חולצה לארוע מסוים, אז לדעת אם לכבס עכשיו או שאפשר גם מחר</label><br>
-    <label></label><br>    
+
     <h2>כללי אצבע למחשבון</h2>
     <label>אם תולים כביסה בבית בלי חימום הטמפרטורה תיהיה ממוצע של היום והלילה, וכך גם הלחות</label><br>    
     <label>אם תולים כביסה בבית עם חימום, הטמפרטורה תיהיה הטמפרטורה המקסימלית, כלומר טמפרטורת הצהריים</label><br>    
     <label>מגבת, חולצת חורף או ג'ינס עוביים 2 מ"מאוורר</label><br>    
-    <label>חולצות קצרות עוביים 1 מ"מ</label><br>   
+    <label>חולצות קצרות עוביים 1 מ"מ</label><br>  
     <label>חולצה מנדפת עובייה האפקטיבי הוא 0.5 מ"מ</label><br>    
-    <label></label><br>    
-    <label></label><br>    
-    <label></label><br>    
     <h2>טיפים</h2>
     <label>אם תולים כביסה בבית ולא מפעילים חימום כדאי לפתוח חלון</label><br>    
     <label>את הכביסה שמתייבשת הכי לאט יש לשים בחבלים החיצוניים</label><br>
     <label>עדיף לתלות את הכביסה בצורה מרווחת</label><br>
     <label>אם זה אפשרי, יש לתלות את הכביסה כשחבלי הכביסה מקבילים לכיוון הרוח הממוצעת</label><br>  
 
+           `;
+        }
+        else
+        {
+  var myString = `
+    <h1>Calculator for line cloth duration</h1>
+    <a href="https://bambiker.github.io/drycloth/"> https://bambiker.github.io/drycloth/ </a> <br>
+   
+    <br>
+    <button id = "find-me">Take current temperature and humidity from online forecast</button><br/>
+    <br>
+    <label>The temperature is in degrees Celsius: </label><input type="text" id="temp">
+    <br>
+    <label>Relative humidity: </label><input type="text" id="humid">
+    <br>
+    <label>Wind speed (zero for indoor)</label><input type="text" id="wind" value="0">
+    <br>
+    <label>Fabric thickness in mm, please choose the thickest fabric: </label><input type="text" id="width" value="2">
+    <br>
+   
+    <br>
+    <button id="btncalc">calculate</button><br><br>
+  
+    <label>The number of hours for drying is: </label>
+    <label id="result" value ="<Please insert data and press "calculate"></label>  
+    <br><br>
+   
+    <a href='https://forms.gle/FJx3CNFUcExcG9Fn9' target="_blank"> <input type='button' name='button' value='contact us'></a>
+
+    <h2>Why is the calculator important?</h2>
+    <label>A. Make sure the laundry dries before it starts raining.</label><br>
+    <label>B. If you are drying at home, to know if you should turn on heating or a fan to speed up the drying process.</label><br>    
+    <label>C. If you need a shirt for a certain event, then know whether to wash it now or if you can also wash it tomorrow.</label><br>
+
+    <h2>Rules of thumb for the calculator</h2>
+    <label>If you hang laundry at home without heating, the temperature will be the average of the day and night, as well the humidity.</label><br>    
+    <label>If you hang laundry at home with heating, the temperature will be the maximum temperature, i.e. the midday temperature.</label><br>    
+    <label>Towel, winter shirt or jeans are 2 mm thick.</label><br>    
+    <label>Short shirts are 1 mm thick.</label><br>  
+    <label>Evaporator shirt, the effective thickness is 0.5 mm.</label><br>    
+    <h2>Tips</h2>
+    <label>If you hang laundry at home and you do not turn on the heating, you should open a window.</label><br>    
+    <label>The laundry that dries the slowest should be put on the outer ropes.</label><br>
+    <label>It is better to hang the laundry in a spacious way.</label><br>
+    <label>If possible, hang the laundry with the clotheslines parallel to the direction of the average wind.</label><br>  
+                   
+                   
+                   
+           `;
+        }
+document.getElementById('span1').innerHTML=myString;
+</script>
 
 
-    <iframe src="https://mavir.co.il/israel/jerusalem"></iframe>
+
     <script>
-    
+   
     document.getElementById("btncalc").addEventListener("click",doCalc);
-    
+   
     function doCalc()
     {
          var temp = document.getElementById("temp").value;
@@ -81,38 +135,27 @@
          var width = document.getElementById("width").value/2.;
          var wind = document.getElementById("wind").value;
          document.getElementById('result').innerHTML = "er";
-         calc(temp,humid,wind,width);
+         document.getElementById('result').innerHTML = calc(temp,humid,wind,width);
 
     }
-    
-    function goodresults(res)
-    {
-    document.getElementById('result').innerHTML = res;
-    }
+
     </script>
-    
-   <button id = "find-me">Show my location</button><br/>
+   
     <p id = "status"></p>
     <a id = "map-link" target="_blank"></a>
     <script>
       function geoFindMe() {
 
         const status = document.querySelector('#status');
-        const mapLink = document.querySelector('#map-link');
-      
-        mapLink.href = '';
-        mapLink.textContent = '';
-      
+     
         function success(position) {
-          
-          const latitude  = position.coords.latitude;
-          const longitude = position.coords.longitude;
-      
-          //google.script.run.saveCoordinates(latitude,longitude);
-      
+         
+          latitude  = position.coords.latitude;
+          longitude = position.coords.longitude;
+     
+ getweather();
+
           status.textContent = '';
-          mapLink.href = 'https://www.openstreetmap.org/#map=18/' + `${latitude}\/${longitude}`;
-          mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
         }
 
         function error() {
@@ -130,7 +173,7 @@
 
       document.querySelector('#find-me').addEventListener('click', geoFindMe);
     </script>
-    
-    
+   
+   
   </body>
 </html>
