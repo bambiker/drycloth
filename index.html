@@ -20,8 +20,8 @@ p    {color: red;}
  
 .button {
   display: inline-block;
-  padding: 15px 25px;
-  font-size: 24px;
+  padding: 10px 16px;
+  font-size: 16px;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
@@ -29,20 +29,20 @@ p    {color: red;}
   color: #fff;
   background-color: #00006D;
   border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
+  border-radius: 10px;
+  box-shadow: 0 6px #999;
 }
 
 .button:hover {background-color: #3e8e41}
 
 .button:active {
   background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+  box-shadow: 0 3px #666;
+  transform: translateY(3px);
 }
 
  
-</style>   
+</style>  
 </head>
 <body>
     <script>
@@ -58,9 +58,9 @@ if (window.location.search=="?he")
 {
   var myString = `
               <h1>מחשבון לחישוב זמן ייבוש הכביסה</h1>
-   <button id = "find-me"><b>טמפרטורה ולחות נוכחיים מהתחזית</b></button><br/>
+   <button class="button" id = "find-me"><b>טמפרטורה ולחות נוכחיים מהתחזית</b></button><br/>
      <p id = "status"></p>
-  
+ 
     מה הטמפרטורה במעלות צלזיוס:<input type="text" id="temp" size="4">
     <br>
     הלחות היחסית:<input type="text" id="humid"  size="4" >
@@ -71,11 +71,11 @@ if (window.location.search=="?he")
     <br>
    
     <br>
-    <button id="btncalc"><b>חשב</b></button><br><br>
+    <button class="button" id="btncalc"><b>חשב</b></button><br><br>
    
-   מספר השעות לייבוש הכביסה הוא 
+   מספר השעות לייבוש הכביסה הוא
   <b>  <label id="result" value ="<נא להזין נתונים וללחוץ על כפתור חשב>"></label>  </b>
-    <br>   
+    <br>  
     <h2>למה המחשבון חשוב</h2>
     א. לוודא שהכביסה תתייבש לפני שיתחיל לרדת גשם<br>
     ב. אם מייבשים בבית, כדי לדעת אם כדאי להפעיל חימום או מאוורר לזירוז הייבוש<br>    
@@ -86,7 +86,7 @@ if (window.location.search=="?he")
     אם תולים כביסה בבית עם חימום, הטמפרטורה תיהיה הטמפרטורה המקסימלית, כלומר טמפרטורת הצהריים<br>    
     מגבת, חולצת חורף או ג'ינס עוביים 2 מ"מאוורר<br>    
     חולצות קצרות עוביים 1 מ"מ<br>  
-    חולצה מנדפת עובייה האפקטיבי הוא 0.5 מ"מ<br>   
+    חולצה מנדפת עובייה האפקטיבי הוא 0.5 מ"מ<br>  
     המחשבון עובד רק בטמפרטורות גבוהות מאפס מעחות<br>
     <h2>טיפים</h2>
     אם תולים כביסה בבית ולא מפעילים חימום כדאי לפתוח חלון<br>    
@@ -100,8 +100,8 @@ if (window.location.search=="?he")
         {
   var myString = `
     <h1>Calculator for laundry drying duration on a clothesline  </h1>
-  
-    <button id = "find-me"><b>Take current temperature and humidity from online forecast</b></button><br/>
+ 
+    <button class="button" id = "find-me"><b>Take current temperature and humidity from online forecast</b></button><br/>
        <p id = "status"></p>
  
     The temperature is in degrees Celsius: <input type="text" id="temp"  size="4"   >
@@ -114,9 +114,9 @@ if (window.location.search=="?he")
     <br>
    
     <br>
-    <button id="btncalc"><b>calculate</b></button><br><br>
-  
-   The number of hours for drying is: 
+    <button class="button" id="btncalc"><b>calculate</b></button><br><br>
+ 
+   The number of hours for drying is:
  <b>   <label id="result" value ="<Please insert data and press "calculate"></label>  </b>
     <br>
     <h2>Why is the calculator important?</h2>
@@ -143,60 +143,55 @@ document.getElementById('span1').innerHTML=myString;
 </script>
 <br>
 We use open source, join us @ <a href="https://github.com/bambiker/drycloth" target="_blank"> https://github.com/bambiker/drycloth </a> <br>
-Weather forecast is taken from  <a href="https://open-meteo.com/" target="_blank"> https://open-meteo.com/ </a> <br>
+Weather forecast is taken from  <a href="https://open-meteo.com/" target="_blank"> https://open-meteo.com </a> <br>
 
-<a href="https://forms.gle/FJx3CNFUcExcG9Fn9" target="_blank"> <input type="button" name="button" value="Contact us"></a>
-<br> 
+<br>
  <span id="span2"></span>
-
+<div class=\"2a_kit a2a_kit_size_32 a2a_default_style\" data-a2a-url=\"https://bambiker.github.io/drycloth/\">
 <script>
  if (window.location.search=="?he")    
 {
-   var myString = `
-   
-<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://bambiker.github.io/drycloth/">
-<a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-<a class="a2a_button_copy_link"></a>
-<a class="a2a_button_twitter"></a>
-<a class="a2a_button_x"></a>
-<a class="a2a_button_whatsapp"></a>
-<a class="a2a_button_email"></a>
-<a class="a2a_button_telegram"></a>
-<a class="a2a_button_sms"></a>
-<a class="a2a_button_facebook"></a>
-<a class="a2a_button_pinterest"></a>
-<a class="a2a_button_linkedin"></a>
-<a class="a2a_button_reddit"></a>
-<a class="a2a_button_facebook_messenger"></a>
-<a class="a2a_button_google_gmail"></a>
-</div>
- '; 
- alert(myString)
+   var myString = "<a href='https://forms.gle/FJx3CNFUcExcG9Fn9' target='_blank'> <input type='button' name='button' value='צור קשר'></a><br>"+
+"<div class='a2a_kit a2a_kit_size_32 a2a_default_style' data-a2a-url='https://bambiker.github.io/drycloth?he'>"+
+"<a class='a2a_dd' href='https://www.addtoany.com/share'></a>"+
+"<a class=\"a2a_button_copy_link\"></a>"+
+"<a class=\"a2a_button_twitter\"></a>"+
+"<a class=\"a2a_button_x\"></a>"+
+"<a class=\"a2a_button_whatsapp\"></a>"+
+"<a class=\"a2a_button_email\"></a>"+
+"<a class=\"a2a_button_telegram\"></a>"+
+"<a class=\"a2a_button_sms\"></a>"+
+"<a class=\"a2a_button_facebook\"></a>"+
+"<a class=\"a2a_button_pinterest\"></a>"+
+"<a class=\"a2a_button_linkedin\"></a>"+
+"<a class=\"a2a_button_reddit\"></a>"+
+"<a class=\"a2a_button_facebook_messenger\"></a>"+
+"<a class=\"a2a_button_google_gmail\"></a>"+
+"</div>";
+
 }
  else
  {
-   var myString = `
+   var myString = "<a href='https://forms.gle/1oiFPe4BZNYsyZLv7' target='_blank'> <input type='button' name='button' value='Contact us'></a><br><br>"+
+"<div class='a2a_kit a2a_kit_size_32 a2a_default_style' data-a2a-url='https://bambiker.github.io/drycloth'>"+
+"<a class='a2a_dd' href='https://www.addtoany.com/share'></a>"+
+"<a class=\"a2a_button_copy_link\"></a>"+
+"<a class=\"a2a_button_twitter\"></a>"+
+"<a class=\"a2a_button_x\"></a>"+
+"<a class=\"a2a_button_whatsapp\"></a>"+
+"<a class=\"a2a_button_email\"></a>"+
+"<a class=\"a2a_button_telegram\"></a>"+
+"<a class=\"a2a_button_sms\"></a>"+
+"<a class=\"a2a_button_facebook\"></a>"+
+"<a class=\"a2a_button_pinterest\"></a>"+
+"<a class=\"a2a_button_linkedin\"></a>"+
+"<a class=\"a2a_button_reddit\"></a>"+
+"<a class=\"a2a_button_facebook_messenger\"></a>"+
+"<a class=\"a2a_button_google_gmail\"></a>"+
+"</div>";
 
-<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://bambiker.github.io/drycloth?he">
-<a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-<a class="a2a_button_copy_link"></a>
-<a class="a2a_button_twitter"></a>
-<a class="a2a_button_x"></a>
-<a class="a2a_button_whatsapp"></a>
-<a class="a2a_button_email"></a>
-<a class="a2a_button_telegram"></a>
-<a class="a2a_button_sms"></a>
-<a class="a2a_button_facebook"></a>
-<a class="a2a_button_pinterest"></a>
-<a class="a2a_button_linkedin"></a>
-<a class="a2a_button_reddit"></a>
-<a class="a2a_button_facebook_messenger"></a>
-<a class="a2a_button_google_gmail"></a>
-</div>
-';
-alert(myString) 
  }
- window.alert(myString);
+
  document.getElementById('span2').innerHTML=myString;
 </script>
  <script async src="https://static.addtoany.com/menu/page.js"></script>
@@ -218,7 +213,6 @@ alert(myString)
     </script>
    
 
-    <a id = "map-link" target="_blank"></a>
     <script>
       function geoFindMe() {
 
