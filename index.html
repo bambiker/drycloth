@@ -43,6 +43,8 @@ p    {color: red;}
   transform: translateY(3px);
 }
 
+.langhb { float:right }
+.langen { float:left }
  
 </style>  
 </head>
@@ -59,7 +61,7 @@ p    {color: red;}
 if (window.location.search=="?he")    
 {
   var myString = `
-  <span dir="ltr"><a href="index.html">En</a></span>
+  <span class="langen"><a href="index.html">En</a></span>
               <h1>מחשבון לחישוב זמן ייבוש הכביסה</h1>
    <button class="button" id = "find-me"><b>טמפרטורה ולחות נוכחיים מהתחזית</b></button><br/>
      <p id = "status"></p>
@@ -102,7 +104,7 @@ if (window.location.search=="?he")
         else
         {
   var myString = `
-    <span align="right"><a href="index.html?he">עב</a></span>
+    <span  class="langhb"><a href="index.html?he">עב</a></span>
     <h1>Calculator for laundry drying duration on a clothesline  </h1>
  
     <button class="button" id = "find-me"><b>Take current temperature and humidity from online forecast</b></button><br/>
