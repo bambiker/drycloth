@@ -1,7 +1,9 @@
 var latitude, longitude;
+var weekt2;
+var weekrh2;
 
 async function getJSON() {
-   const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude='+latitude +'&longitude='+longitude+ '&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,&forecast_days=1';
+   const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude='+latitude +'&longitude='+longitude+ '&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,&forecast_days=7';
 
     return fetch(apiUrl)
         .then((response)=>response.json())
@@ -20,11 +22,32 @@ async function getweather()
 
     rh2=json.hourly.relative_humidity_2m[hour-1]; //array start at zero
     t2 =json.hourly.temperature_2m[hour-1]; //array start at zero
+    weekrh2=json.hourly.relative_humidity_2m; //array start at zero
+    weekt2 =json.hourly.temperature_2m; //array start at zero
    
-      document.getElementById("temp").value = t2.toFixed(0);
-      document.getElementById("humid").value = rh2.toFixed(0);
+    document.getElementById("temp").value = t2.toFixed(0);
+    document.getElementById("humid").value = rh2.toFixed(0);
+
+    document.querySelector('#useforecast').checked = true    
 
 }    
+   
+function forecastcalc(wind,width){
+//console.log(wind, width);
+const d = new Date();
+let hour = d.getUTCHours();
+totalhours = 0;
+while (width>0)
+{
+hoursasnow = calc(weekt2[hour-1+totalhours],weekrh2[hour-1+totalhours],wind,width);
+width = width - width/hoursasnow;
+totalhours = totalhours + 1;
+//console.log(hoursasnow, width, totalhours);
+
+} // end of while width>0
+
+return totalhours;
+}
    
 function calc(temp,humid,wind,width){
  temp = Number(temp)
@@ -39,7 +62,6 @@ function calc(temp,humid,wind,width){
  groundpressure=101325; //can be improved (we can ask for height)
  area = 1 // m*m
 
-
  pws=(exp**(77.345+0.0057*kelvin-7235.0/kelvin))/(kelvin**8.2); //% sturation pressure
  saturationhumidity = (0.62198*pws) / (groundpressure  - pws) //% humidity ratio in saturated air (kg/kg) (kg H2O in kg Dry Air)
  gs = ( 25 + 19 * wind)* (area) *(saturationhumidity - AH)  //% kg/hour can add / 3600 for kg/s
@@ -52,7 +74,7 @@ function calc(temp,humid,wind,width){
 
  payment = hours;
  
- return payment.toFixed(2); 
+ return Math.ceil(payment); //payment.toFixed(2);
 }
 
 /*
