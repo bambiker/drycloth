@@ -65,6 +65,8 @@ if (window.location.search=="?he")
               <h1>מחשבון לחישוב זמן ייבוש הכביסה</h1>
    <button class="button" id = "find-me"><b>טמפרטורה ולחות נוכחיים מהתחזית</b></button><br/>
      <p id = "status"></p>
+     
+     <input type="checkbox" id="useforecast"> שימוש בתחזית<br>
  
     מה הטמפרטורה במעלות צלזיוס:<input type="text" id="temp" size="4">
     <br>
@@ -110,13 +112,14 @@ if (window.location.search=="?he")
     <button class="button" id = "find-me"><b>Take current temperature and humidity from online forecast</b></button><br/>
        <p id = "status"></p>
  
-    The temperature is in degrees Celsius: <input type="text" id="temp"  size="4"   >
+    <input type="checkbox" id="useforecast"> Using forecast<br>
+    The temperature [degrees Celsius]: <input type="text" id="temp"  size="4"   >
     <br>
-    Relative humidity: <input type="text" id="humid"  size="4"  >
+    Relative humidity [%]: <input type="text" id="humid"  size="4"  >
     <br>
-    Wind speed (zero for indoor)<input type="text" id="wind" value="0" size="4"   >
+    Wind speed (zero for indoor) [km/h]<input type="text" id="wind" value="0" size="4"   >
     <br>
-    Fabric thickness in mm, please choose the thickest fabric: <input type="text" id="width" value="2" size="4"  >
+    Fabric thickness [mm], please choose the thickest fabric: <input type="text" id="width" value="2" size="4"  >
     <br>
    
     <br>
@@ -209,10 +212,17 @@ Weather forecast is taken from  <a href="https://open-meteo.com/" target="_blank
     {
          var temp = document.getElementById("temp").value;
          var humid = document.getElementById("humid").value;
-         var width = document.getElementById("width").value/2.;
+         var width = document.getElementById("width").value/2.;  //it dries from both sides
          var wind = document.getElementById("wind").value;
-         document.getElementById('result').innerHTML = "er";
+const elem = document.querySelector('#useforecast')
+if (elem.checked)
+{
+document.getElementById('result').innerHTML = forecastcalc(wind,width);
+} else
+{
          document.getElementById('result').innerHTML = calc(temp,humid,wind,width);
+  }
+
 
     }
 
@@ -229,7 +239,7 @@ Weather forecast is taken from  <a href="https://open-meteo.com/" target="_blank
           latitude  = position.coords.latitude;
           longitude = position.coords.longitude;
      
- getweather();
+          getweather();
 
           status.textContent = '';
         }
