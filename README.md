@@ -5,3 +5,6 @@ The project is important because it helps to organize time in a better way.
 We would appreciate your help with this project.
 
 https://bambiker.github.io/drycloth/
+
+## מחשבון לחישוב זמן ייבוש הכביסה ##
+https://bambiker.github.io/drycloth/?he
