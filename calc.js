@@ -1,9 +1,10 @@
 var latitude, longitude;
 var weekt2;
 var weekrh2;
+var weekprecipitation;
 
 async function getJSON() {
-   const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude='+latitude +'&longitude='+longitude+ '&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,&forecast_days=7';
+   const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude='+latitude +'&longitude='+longitude+ '&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation,&forecast_days=7';
 
     return fetch(apiUrl)
         .then((response)=>response.json())
@@ -22,8 +23,10 @@ async function getweather()
 
     rh2=json.hourly.relative_humidity_2m[hour-1]; //array start at zero
     t2 =json.hourly.temperature_2m[hour-1]; //array start at zero
+    precipitation =json.hourly.precipitation[hour-1]; //array start at zero
     weekrh2=json.hourly.relative_humidity_2m; //array start at zero
     weekt2 =json.hourly.temperature_2m; //array start at zero
+    weekprecipitation =json.hourly.precipitation; //array start at zero
    
     document.getElementById("temp").value = t2.toFixed(0);
     document.getElementById("humid").value = rh2.toFixed(0);
