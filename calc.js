@@ -49,6 +49,8 @@ totalhours = totalhours + 1;
 
 } // end of while width>0
 
+document.getElementById("statusmsg").value = ".";
+   
 return totalhours;
 }
    
