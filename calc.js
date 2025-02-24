@@ -59,7 +59,7 @@ if (weekwind10[hour-1+totalhours]>maxwind)
 
 if (totalrain>0.1) 
    { document.getElementById("statusmsg").innerHTML = "It looks like it will rain before the laundry has a chance to dry. If you don’t have a roof or cover, it might be a good idea to wait before doing the laundry.";}
-   else if (maxrain>12) 
+   else if (maxwind>12) 
    { document.getElementById("statusmsg").innerHTML = "It looks like it will be windy. Please use extra clothespins (clothes pegs).";}
    
 return totalhours;
