@@ -2,9 +2,10 @@ var latitude, longitude;
 var weekt2;
 var weekrh2;
 var weekprecipitation;
+var weekwind10;
 
 async function getJSON() {
-   const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude='+latitude +'&longitude='+longitude+ '&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation,&forecast_days=7';
+   const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude='+latitude +'&longitude='+longitude+ '&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation,wind_speed_10m,&forecast_days=7';
 
     return fetch(apiUrl)
         .then((response)=>response.json())
@@ -24,12 +25,15 @@ async function getweather()
     rh2=json.hourly.relative_humidity_2m[hour-1]; //array start at zero
     t2 =json.hourly.temperature_2m[hour-1]; //array start at zero
     precipitation =json.hourly.precipitation[hour-1]; //array start at zero
+    wind10=json.hourly.wind_speed_10m[hour-1]; //array start at zero
     weekrh2=json.hourly.relative_humidity_2m; //array start at zero
     weekt2 =json.hourly.temperature_2m; //array start at zero
     weekprecipitation =json.hourly.precipitation; //array start at zero
+    weekwind10=json.hourly.wind_speed_10m; //array start at zero
    
     document.getElementById("temp").value = t2.toFixed(0);
     document.getElementById("humid").value = rh2.toFixed(0);
+    document.getElementById("wind").value = wind10.toFixed(0);  
 
     document.querySelector('#useforecast').checked = true    
 
@@ -40,16 +44,23 @@ function forecastcalc(wind,width){
 const d = new Date();
 let hour = d.getUTCHours();
 totalhours = 0;
+totalrain=0;
+maxwind=0;
 while (width>0)
 {
-hoursasnow = calc(weekt2[hour-1+totalhours],weekrh2[hour-1+totalhours],wind,width);
+hoursasnow = calc(weekt2[hour-1+totalhours],weekrh2[hour-1+totalhours],weekwind10[hour-1+totalhours]/2,width); // I devide the wind by 2, because it's 1.5 meters height and not 10 meters
 width = width - width/hoursasnow;
 totalhours = totalhours + 1;
 //console.log(hoursasnow, width, totalhours);
-
+totalrain = totalrain + weekprecipitation[hour-1+totalhours]
+if (weekwind10[hour-1+totalhours]>maxwind)
+   {maxwind = weekwind10[hour-1+totalhours]}
 } // end of while width>0
 
-document.getElementById("statusmsg").innerHTML = ".";
+if (totalrain>0.1) 
+   { document.getElementById("statusmsg").innerHTML = "It looks like it will rain before the laundry has a chance to dry. If you don’t have a roof or cover, it might be a good idea to wait before doing the laundry.";}
+   else if (maxrain>12) 
+   { document.getElementById("statusmsg").innerHTML = "It looks like it will be windy. Please use extra clothespins (clothes pegs).";}
    
 return totalhours;
 }
