@@ -1,11 +1,12 @@
  <!DOCTYPE html>
 <html>
 <head>
-     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content='Calculate how long it takes for clothes to dry on a clothesline using real-time weather forecasts. Get accurate drying times based on temperature, humidity and wind'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content='Calculate how long it takes for clothes to dry on a clothesline using real-time weather forecasts. Get accurate drying times based on temperature, humidity and wind'>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
 
-    <base target="_top">
-    <title>Clothesline drying time calculator</title>
+  <base target="_top">
+  <title>Clothesline drying time calculator</title>
    
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G78VLV9YZF"></script>
@@ -17,26 +18,74 @@
   gtag('config', 'G-G78VLV9YZF');
 </script>    
 <style>
-body {background-color: powderblue;}
-h1   {color: blue;}
-p    {color: red;}
+    body {
+      font-family: 'Rubik', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 1em;
+      color: #333;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 2em;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
  
-.button {
-  display: inline-block;
-  padding: 10px 16px;
-  font-size: 16px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  color: #fff;
-  background-color: #00006D;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 6px #999;
-}
+    h1 {
+      text-align: center;
+      color: #1a237e;
+    }
+    .language-switch {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1em;
+    }
+ p    {color: red;}
 
-.button:hover {background-color: #3e8e41}
+     label {
+      display: block;
+      margin-top: 1em;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 0.5em;
+      margin-top: 0.3em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    .button {
+      width: 100%;
+      margin-top: 1.5em;
+      background-color: #1a237e;
+      color: white;
+      padding: 0.75em;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #3949ab;
+    }
+    #result {
+      font-size: 20px;
+      color: #1b5e20;
+      margin-top: 1em;
+      font-weight: bold;
+    }
+    details {
+      margin-top: 2em;
+    }
+    summary {
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
 .button:active {
   background-color: #3e8e41;
@@ -56,8 +105,7 @@ p    {color: red;}
        {document.body.setAttribute('dir', 'rtl')}
     </script>
     <script type="text/javascript" src="calc.js"></script>
-   
-   
+    <div class="container"> 
     <span id="span1"></span>
     <script>
 if (window.location.search=="?he")    
@@ -70,13 +118,13 @@ if (window.location.search=="?he")
      
      <input type="checkbox" id="useforecast"> שימוש בתחזית<br>
  
-    הטמפרטורה במעלות צלזיוס:<input type="text" id="temp" size="4">
+    הטמפרטורה במעלות צלזיוס:<input  type="number"  id="temp" size="4">
     <br>
-    הלחות היחסית:<input type="text" id="humid"  size="4" >
+    הלחות היחסית:<input  type="number"  id="humid"  size="4" >
     <br>
-    מהירות הרוח בקמ"ש, בתוך הבית אפשר להניח שהמהירות היא אפס:<input type="text" id="wind" value="0" size="4"  >
+    מהירות הרוח בקמ"ש, בתוך הבית אפשר להניח שהמהירות היא אפס:<input  type="number"  id="wind" value="0" size="4"  >
     <br>
-    עובי הבד במ"מ, נא לבחור את הבד הכי עבה:<input type="text" id="width" value="2"   size="4" >
+    עובי הבד במ"מ, נא לבחור את הבד הכי עבה:<input  type="number"  id="width" value="2"   size="4" >
     <br>
    
     <br>
@@ -126,11 +174,11 @@ if (window.location.search=="?he")
     <input type="checkbox" id="useforecast"> Using forecast<br>
     The temperature [degrees Celsius]: <input type="text" id="temp"  size="4"   >
     <br>
-    Relative humidity [%]: <input type="text" id="humid"  size="4"  >
+    Relative humidity [%]: <input  type="number"  id="humid"  size="4"  >
     <br>
-    Wind speed (zero for indoor) [km/h]<input type="text" id="wind" value="0" size="4"   >
+    Wind speed (zero for indoor) [km/h]<input  type="number"  id="wind" value="0" size="4"   >
     <br>
-    Fabric thickness [mm], please choose the thickest fabric: <input type="text" id="width" value="2" size="4"  >
+    Fabric thickness [mm], please choose the thickest fabric: <input  type="number"  id="width" value="2" size="4"  >
     <br>
    
     <br>
@@ -288,6 +336,6 @@ document.getElementById('result').innerHTML = forecastcalc(wind,width);
  <center>
       <img src="clothlineclock.jpg" width="80%"  alt="Image of clothlines with a clock">
  </center>
-   
+  </div> 
   </body>
 </html>
