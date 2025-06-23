@@ -222,6 +222,8 @@ if (window.location.search=="?he")
            `;
         }
 document.getElementById('span1').innerHTML=myString;
+document.getElementById("btncalc").addEventListener("click",doCalc);
+
 </script>
 <br>
 We use open source, join us @ <a href="https://github.com/bambiker/drycloth" target="_blank"> https://github.com/bambiker/drycloth </a> <br>
@@ -276,27 +278,23 @@ Weather forecast is taken from  <a href="https://open-meteo.com/" target="_blank
 
  document.getElementById('span2').innerHTML=myString;
 </script>
- <script async src="https://static.addtoany.com/menu/page.js"></script>
+    <script async src="https://static.addtoany.com/menu/page.js"></script>
     <script>
-   
-    document.getElementById("btncalc").addEventListener("click",doCalc);
-   
+      
     function doCalc()
     {
          var temp = document.getElementById("temp").value;
          var humid = document.getElementById("humid").value;
          var width = document.getElementById("width").value/2.;  //it dries from both sides
          var wind = document.getElementById("wind").value;
-const elem = document.querySelector('#useforecast')
-if (elem.checked)
-{
-document.getElementById('result').innerHTML = forecastcalc(wind,width);
-} else
-{
-         document.getElementById('result').innerHTML = calc(temp,humid,wind,width);
-  }
-
-
+         const elem = document.querySelector('#useforecast')
+         if (elem.checked)
+            {
+             document.getElementById('result').innerHTML = forecastcalc(wind,width);
+            } else
+            {
+             document.getElementById('result').innerHTML = calc(temp,humid,wind,width);
+            }
     }
 
     </script>
