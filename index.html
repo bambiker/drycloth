@@ -315,7 +315,22 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
           getweather();
 
           status.textContent = '';
-          setTimeout(doCalc, 1000); //waiting for results, Timeout is better and I will do it someday
+          let attempts = 0;
+  
+          function tryCalc() {
+              attempts++;
+              const tempValue = document.getElementById("temp").value;
+  
+              if (tempValue) {
+                  doCalc(); // run only when temperature exists
+              } else if (attempts < 5) {
+                  setTimeout(tryCalc, 1000); // wait 1 sec and try again
+              } else {
+                  status.textContent = 'Weather data not available';
+              }
+          }
+  
+          tryCalc();
         }
 
         function error() {
