@@ -315,8 +315,7 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
           getweather();
 
           status.textContent = '';
-          doCalc();
-
+          setTimeout(doCalc, 1000); //waiting for results, Timeout is better and I will do it someday
         }
 
         function error() {
