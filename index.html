@@ -152,7 +152,7 @@ if (window.location.search=="?he")
     <br>
     הלחות היחסית:<input  type="number"  id="humid"  size="4" >
     <br>
-    מהירות הרוח [<span id="wind-unit">קמ"ש</span>] (assume 0 for indoor):<input  type="number"  id="wind" value="0" size="4"  >
+    מהירות הרוח [<span id="wind-unit">קמ"ש</span>] (אפס בשביל ייבוש בתוך הבית):<input  type="number"  id="wind" value="0" size="4"  >
     <br>
     עובי הבד במ"מ, נא לבחור את הבד הכי עבה:<input  type="number"  id="width" value="2"   size="4" >
     <br>
@@ -209,22 +209,22 @@ if (window.location.search=="?he")
   </label>
 
   <label>
-    <input type="radio" name="units" value="metric" checked disabled>
+    <input type="radio" name="units" value="metric" checked>
     °C, km/h, mm
   </label>
 
   <label>
-    <input type="radio" name="units" value="imperial" disabled>
+    <input type="radio" name="units" value="imperial" >
     °F, mph, mm (fabric)
   </label>
 </div>
 
     <br>
-    Temperature [<span id="temp-unit">°C</span>]: <input type="number" id="temp" size="4"><br>
+    Temperature [<span id="temp-unit-en">°C</span>]: <input type="number" id="temp" size="4"><br>
     <br>
     Relative humidity [%]: <input  type="number"  id="humid"  size="4"  >
     <br>
-    Wind speed [<span id="wind-unit">km/h</span>]: <input type="number" id="wind" value="0" size="4">
+    Wind speed [<span id="wind-unit-en">km/h</span>] (assume 0 for indoor): <input type="number" id="wind" value="0" size="4">
     <br>
     Fabric thickness [mm], please choose the thickest fabric: <input  type="number"  id="width" value="2" size="4"  >
     <br>
