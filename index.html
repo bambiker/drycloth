@@ -192,20 +192,6 @@ if (window.location.search=="?he")
     <li>אם זה אפשרי, יש לתלות את הכביסה כשחבלי הכביסה מקבילים לכיוון הרוח הממוצעת</li>  
     <li>אם הרוח חזקה, כדי להשתמש ביותר אטבי כביסה</li>
     </ul>
-
-    <script>
-document.querySelectorAll('input[name="units"]').forEach(radio => {
-  radio.addEventListener('change', function() {
-    if (this.value === 'metric') {
-      document.getElementById('temp-unit').textContent   = "צלזיוס";
-      document.getElementById('wind-unit').textContent   = "קמ\"ש";
-    } else {
-      document.getElementById('temp-unit').textContent   = "פרנהייט";
-      document.getElementById('wind-unit').textContent   = "MPH";
-    }
-  });
-});
-   <\/script>
            `;
         }
         else
@@ -280,7 +266,28 @@ document.querySelectorAll('input[name="units"]').forEach(radio => {
     <li>If possible, hang the laundry with the clotheslines parallel to the direction of the average wind.</li>  
     <li>If the wind is strong, it is better to use more clothespins (clothes pegs).</li>
     </ul>              
+           `;
+        }
+document.getElementById('span1').innerHTML=myString;
 
+if (window.location.search=="?he")    
+   {
+    <script>
+document.querySelectorAll('input[name="units"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    if (this.value === 'metric') {
+      document.getElementById('temp-unit').textContent   = "צלזיוס";
+      document.getElementById('wind-unit').textContent   = "קמ\"ש";
+    } else {
+      document.getElementById('temp-unit').textContent   = "פרנהייט";
+      document.getElementById('wind-unit').textContent   = "MPH";
+    }
+  });
+});
+   </script>
+    }
+   else
+   {
 <script>
 document.querySelectorAll('input[name="units"]').forEach(radio => {
   radio.addEventListener('change', function() {
@@ -294,10 +301,7 @@ document.querySelectorAll('input[name="units"]').forEach(radio => {
   });
 });
    <\/script>
-           `;
-        }
-document.getElementById('span1').innerHTML=myString;
-
+   }     
 </script>
    
 <div style="text-align: left;">     
