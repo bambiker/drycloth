@@ -117,7 +117,22 @@ if (window.location.search=="?he")
    <button class="button" id = "find-me"><b>לחצו כאן כדי להשתמש טמפרטורה ולחות מהתחזית</b></button><br/>
      <p id = "status"></p>
      
-     <input type="checkbox" id="useforecast"> שימוש בתחזית<br>
+<div class="options">
+  <label>
+    <input type="checkbox" id="useforecast"> שימוש בתחזית
+  </label>
+
+  <label>
+    <input type="radio" name="units" value="metric" checked disabled>
+    צלזיוס, קמ"ש, מ"מ
+  </label>
+
+  <label>
+    <input type="radio" name="units" value="imperial" disabled>
+    פרנהייט, MPH, מ"מ 
+  </label>
+</div>
+
  
     הטמפרטורה במעלות צלזיוס:<input  type="number"  id="temp" size="4">
     <br>
@@ -174,7 +189,25 @@ if (window.location.search=="?he")
     <button class="button" id = "find-me"><b>Press here to take the temperature and humidity from online forecast</b></button><br/>
        <p id = "status"></p>
  
-    <input type="checkbox" id="useforecast"> Using forecast<br>
+<div class="options">
+  <label>
+    <input type="checkbox" id="useforecast"> Using forecast
+  </label>
+
+  <label>
+    <input type="radio" name="units" value="metric" checked disabled>
+    °C, km/h, mm
+  </label>
+
+  <label>
+    <input type="radio" name="units" value="imperial" disabled>
+    °F, mph, mm (fabric)
+  </label>
+</div>
+
+
+    
+    <br>
     The temperature [degrees Celsius]: <input type="text" id="temp"  size="4"   >
     <br>
     Relative humidity [%]: <input  type="number"  id="humid"  size="4"  >
