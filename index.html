@@ -137,22 +137,22 @@ if (window.location.search=="?he")
   </label>
 
   <label>
-    <input type="radio" name="units" value="metric" checked disabled>
+    <input type="radio" name="units" value="metric" checked >
     צלזיוס, קמ"ש, מ"מ
   </label>
 
   <label>
-    <input type="radio" name="units" value="imperial" disabled>
+    <input type="radio" name="units" value="imperial" >
     פרנהייט, MPH, מ"מ 
   </label>
 </div>
 
  
-    הטמפרטורה במעלות צלזיוס:<input  type="number"  id="temp" size="4">
+    הטמפרטורה במעלות <span id="temp-unit">צלזיוס</span>:<input  type="number"  id="temp" size="4">
     <br>
     הלחות היחסית:<input  type="number"  id="humid"  size="4" >
     <br>
-    מהירות הרוח בקמ"ש, בתוך הבית אפשר להניח שהמהירות היא אפס:<input  type="number"  id="wind" value="0" size="4"  >
+    מהירות הרוח [<span id="wind-unit">קמ"ש</span>] (assume 0 for indoor):<input  type="number"  id="wind" value="0" size="4"  >
     <br>
     עובי הבד במ"מ, נא לבחור את הבד הכי עבה:<input  type="number"  id="width" value="2"   size="4" >
     <br>
@@ -219,14 +219,12 @@ if (window.location.search=="?he")
   </label>
 </div>
 
-
-    
     <br>
-    The temperature [degrees Celsius]: <input type="text" id="temp"  size="4"   >
+    Temperature [<span id="temp-unit">°C</span>]: <input type="number" id="temp" size="4"><br>
     <br>
     Relative humidity [%]: <input  type="number"  id="humid"  size="4"  >
     <br>
-    Wind speed (zero for indoor) [km/h]<input  type="number"  id="wind" value="0" size="4"   >
+    Wind speed [<span id="wind-unit">km/h</span>]: <input type="number" id="wind" value="0" size="4">
     <br>
     Fabric thickness [mm], please choose the thickest fabric: <input  type="number"  id="width" value="2" size="4"  >
     <br>
@@ -396,12 +394,34 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
       }
 
       document.querySelector('#find-me').addEventListener('click', geoFindMe);
-    </script>
+    </script> 
  <br>
  <br>
  <center>
       <img src="clothlineclock.jpg" width="80%"  alt="Image of clothlines with a clock">
  </center>
   </div> 
+<script>
+document.querySelectorAll('input[name="units"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    if (this.value === 'metric') {
+      // עברית
+      document.getElementById('temp-unit').textContent   = "צלזיוס";
+      document.getElementById('wind-unit').textContent   = "קמ\"ש";
+      // אנגלית
+      document.getElementById('temp-unit-en').textContent   = "°C";
+      document.getElementById('wind-unit-en').textContent   = "km/h";
+    } else {
+      // עברית
+      document.getElementById('temp-unit').textContent   = "פרנהייט";
+      document.getElementById('wind-unit').textContent   = "MPH";
+      // אנגלית
+      document.getElementById('temp-unit-en').textContent   = "°F";
+      document.getElementById('wind-unit-en').textContent   = "mph";
+    }
+  });
+});
+</script>
+     
   </body>
 </html>
