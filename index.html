@@ -5,7 +5,7 @@
   <meta name="description" content='Calculate how long it takes for clothes to dry on a clothesline using real-time weather forecasts. Get accurate drying times based on temperature, humidity and wind'>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="drycloth.svg">
 
   <base target="_top">
@@ -122,258 +122,331 @@
 </script>    
 <style>
 :root {
-  --bg: #eaf2fb;
-  --bg-top: #cfe3f7;
+  --sky-1: #3d8fd9;
+  --sky-2: #9fd0f5;
+  --page: #f3f6fb;
   --card: #ffffff;
-  --text: #1f2937;
-  --muted: #5b6575;
-  --border: #d6e0ec;
-  --primary: #1a237e;
-  --primary-hover: #283593;
-  --primary-text: #ffffff;
-  --link: #1a237e;
-  --field: #f7f9fc;
-  --result-bg: #e8f5e9;
-  --result-text: #1b5e20;
-  --note-bg: #fff8e1;
-  --note-border: #ffb300;
-  --note-text: #5d4300;
+  --text: #17223b;
+  --muted: #5f6b80;
+  --line: #e3e9f2;
+  --navy: #14205c;
+  --navy-2: #22318a;
+  --sun: #ffc93c;
+  --sun-hover: #ffbb12;
+  --sun-text: #2b2100;
+  --tile: #f6f8fc;
+  --on: #2fbf71;
+  --link: #22318a;
   --error: #c62828;
-  --shadow: 0 6px 24px rgba(26, 35, 126, 0.08);
+  --shadow: 0 18px 40px -18px rgba(20, 32, 92, 0.35);
+  --c-temp: #ff7a59;
+  --c-humid: #3d8fd9;
+  --c-wind: #26b3a6;
+  --c-width: #9a6bff;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f1724;
-    --bg-top: #16233a;
-    --card: #1b2638;
-    --text: #e6eaf0;
-    --muted: #9aa6b8;
-    --border: #2e3b52;
-    --primary: #3d5afe;
-    --primary-hover: #536dfe;
-    --primary-text: #ffffff;
-    --link: #9fb0ff;
-    --field: #141e2e;
-    --result-bg: #143321;
-    --result-text: #a5d6a7;
-    --note-bg: #33290f;
-    --note-border: #ffb300;
-    --note-text: #ffe08a;
+    --sky-1: #0b1a3a;
+    --sky-2: #1d3b70;
+    --page: #0c1424;
+    --card: #162138;
+    --text: #e8edf6;
+    --muted: #9aa7bd;
+    --line: #26344f;
+    --navy: #0a1230;
+    --navy-2: #1a2a66;
+    --tile: #1b2843;
+    --link: #a9b8ff;
     --error: #ff8a80;
-    --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+    --shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
   }
 }
 
 * { box-sizing: border-box; }
-
 body {
   font-family: 'Rubik', system-ui, sans-serif;
-  background: linear-gradient(180deg, var(--bg-top) 0, var(--bg) 320px) no-repeat, var(--bg);
+  background: var(--page);
   margin: 0;
-  padding: 16px;
   color: var(--text);
   line-height: 1.55;
 }
-.container {
-  max-width: 720px;
-  margin: 0 auto;
-}
 a { color: var(--link); }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 
-/* header */
-.top {
+/* sky header with a clothesline */
+.hero {
   position: relative;
+  background: linear-gradient(180deg, var(--sky-1), var(--sky-2));
+  color: #fff;
   text-align: center;
-  padding: 24px 8px 20px;
+  padding: 56px 16px 214px;
+  overflow: hidden;
 }
-.logo { width: 56px; height: 56px; }
-@media (prefers-color-scheme: dark) { .logo { filter: invert(1) hue-rotate(180deg) brightness(1.4); } }
-h1 {
-  color: var(--primary);
-  font-size: clamp(1.5rem, 5vw, 2.1rem);
-  line-height: 1.2;
-  margin: 8px 0 6px;
+.hero h1 {
+  font-size: clamp(1.8rem, 6vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 auto 10px;
+  max-width: 16ch;
+  text-shadow: 0 2px 12px rgba(10, 30, 80, 0.25);
 }
-@media (prefers-color-scheme: dark) { h1 { color: var(--text); } }
-.subtitle { color: var(--muted); margin: 0; }
+.hero .subtitle { margin: 0 auto; max-width: 34ch; font-size: 1.05rem; opacity: 0.95; }
+.hero .scene {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 82px;
+  width: 100%;
+  height: 120px;
+  pointer-events: none;
+}
 .lang {
   position: absolute;
-  top: 0;
-  inset-inline-end: 0;
-  padding: 4px 12px;
-  border: 1px solid var(--border);
+  top: 14px;
+  inset-inline-end: 14px;
+  padding: 5px 14px;
   border-radius: 999px;
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-weight: 500;
   text-decoration: none;
-  font-size: 0.9rem;
+  backdrop-filter: blur(4px);
 }
+.lang:hover { background: rgba(255, 255, 255, 0.35); }
 
-/* cards */
-.card {
+/* the calculator, overlapping the sky */
+.calc {
+  position: relative;
+  margin-top: -64px;
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 24px;
   box-shadow: var(--shadow);
-  padding: 24px;
-  margin-bottom: 16px;
+  padding: 22px;
 }
-@media (max-width: 480px) { .card { padding: 18px; } }
-h2 {
-  font-size: 1.2rem;
-  margin: 0 0 8px;
-}
+@media (max-width: 480px) { .calc { padding: 16px; border-radius: 20px; } }
 
-/* buttons */
 .button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
-  background-color: var(--primary);
-  color: var(--primary-text);
-  padding: 14px 16px;
+  padding: 16px;
   font: inherit;
-  font-size: 1.05rem;
+  font-size: 1.08rem;
   border: none;
-  border-radius: 12px;
+  border-radius: 16px;
   cursor: pointer;
   text-decoration: none;
   transition: background-color 0.15s, transform 0.05s;
 }
-.button:hover { background-color: var(--primary-hover); }
 .button:active { transform: translateY(1px); }
-.button:focus-visible, input:focus-visible, .lang:focus-visible { outline: 3px solid var(--note-border); outline-offset: 2px; }
+.button.sun { background: var(--sun); color: var(--sun-text); box-shadow: 0 6px 0 -2px #e0a800; }
+.button.sun:hover { background: var(--sun-hover); }
+.button.navy { background: var(--navy-2); color: #fff; }
+.button.navy:hover { background: var(--navy); }
 .button svg { flex: none; }
-.button.secondary {
-  background: transparent;
-  color: var(--link);
-  border: 1.5px solid var(--border);
-}
-.button.secondary:hover { background: var(--field); }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
 
-#status { color: var(--error); margin: 8px 0 0; min-height: 0; }
+#status { color: var(--error); margin: 10px 0 0; text-align: center; }
 #status:empty { display: none; }
 
-/* options */
+/* switches and units */
 .options {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 20px;
-  margin: 18px 0 6px;
+  align-items: center;
+  gap: 10px 22px;
+  margin: 20px 2px 6px;
 }
-.options label {
+.switch {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
   cursor: pointer;
-  white-space: nowrap;
+  font-weight: 500;
 }
-input[type="checkbox"], input[type="radio"] { accent-color: var(--primary); width: 18px; height: 18px; margin: 0; }
+.switch input {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  width: 44px;
+  height: 26px;
+  margin: 0;
+  border-radius: 999px;
+  background: var(--line);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex: none;
+}
+.switch input::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: inset-inline-start 0.2s;
+}
+.switch input:checked { background: var(--on); }
+.switch input:checked::after { inset-inline-start: 21px; }
 .segmented {
   display: inline-flex;
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  margin-inline-start: auto;
   padding: 3px;
-  background: var(--field);
-}
-.segmented label {
-  padding: 4px 12px;
   border-radius: 999px;
-  font-size: 0.95rem;
+  background: var(--tile);
+  border: 1px solid var(--line);
 }
-.segmented label:has(input:checked) {
-  background: var(--primary);
-  color: var(--primary-text);
-}
+.segmented label { padding: 5px 12px; border-radius: 999px; font-size: 0.9rem; cursor: pointer; }
+.segmented label:has(input:checked) { background: var(--navy-2); color: #fff; }
 .segmented input { position: absolute; opacity: 0; pointer-events: none; }
-.note { display: block; color: var(--muted); font-size: 0.88rem; }
+@media (max-width: 520px) { .segmented { margin-inline-start: 0; } }
+.note { display: block; color: var(--muted); font-size: 0.85rem; margin: 0 2px; }
 
-/* inputs */
+/* the four inputs, as tiles with an icon */
 .fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px 16px;
-  margin: 20px 0;
+  gap: 12px;
+  margin: 18px 0;
 }
-@media (max-width: 560px) { .fields { grid-template-columns: 1fr; } }
-.field { display: flex; flex-direction: column; justify-content: flex-end; }
-.field label {
-  font-weight: 500;
-  font-size: 0.95rem;
-  margin-bottom: 6px;
+@media (max-width: 560px) { .fields { grid-template-columns: 1fr; gap: 10px; } }
+.field {
+  display: grid;
+  grid-template-columns: 44px 1fr 96px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--tile);
+  border: 1px solid var(--line);
 }
+.field .icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: #fff;
+}
+.field label { font-size: 0.88rem; line-height: 1.3; color: var(--muted); font-weight: 500; }
+.temp .icon { background: var(--c-temp); }
+.humid .icon { background: var(--c-humid); }
+.wind .icon { background: var(--c-wind); }
+.width .icon { background: var(--c-width); }
 input[type="number"] {
   width: 100%;
-  padding: 11px 12px;
+  padding: 10px 8px;
   font: inherit;
-  font-size: 1.05rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-align: center;
   color: var(--text);
-  background: var(--field);
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 12px;
 }
-input[type="number"]:focus { border-color: var(--primary); }
+input[type="number"]:focus { border-color: var(--navy-2); outline: none; }
 
 /* result */
 .result {
-  margin-top: 18px;
-  padding: 18px 20px;
-  border-radius: 14px;
-  background: var(--result-bg);
-  color: var(--result-text);
+  margin-top: 16px;
+  padding: 22px 20px;
+  border-radius: 20px;
+  background: radial-gradient(circle at 85% 0%, #2c47b8 0, var(--navy) 60%);
+  color: #fff;
   text-align: center;
 }
-.result-label { display: block; font-size: 0.95rem; opacity: 0.85; }
+.result-label { display: block; font-size: 0.95rem; opacity: 0.8; letter-spacing: 0.02em; }
 #result {
   display: block;
-  font-size: 1.6rem;
+  margin-top: 4px;
+  font-size: clamp(1.5rem, 6vw, 2.2rem);
   font-weight: 700;
-  line-height: 1.3;
-  margin-top: 2px;
+  line-height: 1.2;
+  color: var(--sun);
 }
 #statusmsg {
-  margin-top: 14px;
+  margin-top: 16px;
   padding: 12px 14px;
-  border-radius: 10px;
-  border-inline-start: 4px solid var(--note-border);
-  background: var(--note-bg);
-  color: var(--note-text);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
   text-align: start;
   font-size: 0.95rem;
+  line-height: 1.6;
 }
 #statusmsg:empty { display: none; }
 
-/* information */
-.info ul { margin: 6px 0 0; padding-inline-start: 22px; }
-.info li { margin: 6px 0; }
-.info li::marker { color: var(--note-border); }
-.info-grid {
+/* information, folded */
+.info { margin: 28px 0; }
+.info details {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.info summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  cursor: pointer;
+  list-style: none;
+}
+.info summary::-webkit-details-marker { display: none; }
+.info summary h2 { font-size: 1.1rem; margin: 0; flex: 1; }
+.info summary .emoji {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--tile);
+  font-size: 1.2rem;
+  flex: none;
 }
-@media (max-width: 640px) { .info-grid { grid-template-columns: 1fr; } }
-.info-grid .card { margin-bottom: 0; }
+.info summary::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg);
+  transition: transform 0.2s;
+  flex: none;
+}
+.info details[open] summary::after { transform: rotate(225deg); }
+.info .body { padding: 0 18px 16px; }
+.info ul { margin: 8px 0 0; padding-inline-start: 22px; }
+.info li { margin: 6px 0; }
+.info li::marker { color: var(--sun-hover); }
 .picture {
-  display: block;
-  width: min(100%, 360px);
+  float: inline-end;
+  width: 140px;
   height: auto;
-  margin: 24px auto;
-  border-radius: 16px;
-  box-shadow: var(--shadow);
+  margin: 4px 0 8px;
+  margin-inline-start: 16px;
+  border-radius: 14px;
 }
+@media (max-width: 480px) { .picture { width: 110px; } }
 
 /* footer */
 footer {
+  background: var(--navy);
+  color: #c9d3ee;
   text-align: center;
-  color: var(--muted);
-  font-size: 0.9rem;
-  padding: 8px 0 24px;
+  padding: 28px 16px 36px;
+  margin-top: 36px;
+  font-size: 0.92rem;
 }
+footer a { color: #fff; }
 footer p { margin: 6px 0; }
-footer .button { display: inline-flex; width: auto; padding: 10px 22px; font-size: 0.95rem; }
-.a2a_kit { display: inline-block; margin: 16px auto 8px; }
+footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-size: 0.95rem; }
+.a2a_kit { display: inline-block; margin: 18px auto 10px; }
 </style>
 </head>
  
@@ -383,25 +456,31 @@ footer .button { display: inline-flex; width: auto; padding: 10px 22px; font-siz
     </script>
     <script type="text/javascript" src="lang.js"></script>
     <script type="text/javascript" src="calc.js"></script>
-    <div class="container">
-    <header class="top">
+    <header class="hero">
       <a id="langswitch" class="lang" href="index.html?he">עב</a>
-      <img class="logo" src="drycloth.svg" width="56" height="56" alt="">
       <h1 data-i18n="heading">Clothesline drying time calculator</h1>
       <p class="subtitle" data-i18n="subtitle">Find out when your laundry will be dry, from the weather forecast for your location.</p>
+      <svg class="scene" viewBox="0 0 800 110" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <path d="M40 18 Q400 118 760 18" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="2.5"/>
+        <g transform="translate(200 35)"><path d="M-30,8 L-18,0 L-8,3 Q0,9 8,3 L18,0 L30,8 L24,20 L18,16 L18,56 L-18,56 L-18,16 L-24,20 Z" fill="#ff7a59"/><rect x="-14" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="9" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(305 42)"><rect x="-22" y="0" width="44" height="62" rx="3" fill="#ffd166"/><rect x="-22" y="44" width="44" height="6" fill="#f4a261"/><rect x="-22" y="53" width="44" height="3" fill="#f4a261"/><rect x="-18" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="13" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(410 44)"><path d="M-20,0 H20 L22,64 H6 L0,22 L-6,64 H-22 Z" fill="#3a5a99"/><rect x="-16" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="11" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(515 41)"><path d="M-30,8 L-18,0 L-8,3 Q0,9 8,3 L18,0 L30,8 L24,20 L18,16 L18,56 L-18,56 L-18,16 L-24,20 Z" fill="#2ec4b6"/><rect x="-14" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="9" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(612 33) scale(0.72)"><path d="M-30,8 L-18,0 L-8,3 Q0,9 8,3 L18,0 L30,8 L24,20 L18,16 L18,56 L-18,56 L-18,16 L-24,20 Z" fill="#ff5d8f"/><rect x="-3" y="-6" width="6" height="12" rx="1" fill="#8d6e63"/></g>
+      </svg>
     </header>
 
-    <main>
-    <section class="card">
-      <button class="button" id="find-me">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+    <main class="wrap">
+    <section class="calc">
+      <button class="button sun" id="find-me">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
         <b data-i18n="findme">Press here to take the temperature and humidity from online forecast</b>
       </button>
       <p id="status"></p>
 
       <div class="options">
-        <label><input type="checkbox" id="useforecast"> <span data-i18n="useforecast">Using forecast</span></label>
-        <label><input type="checkbox" id="sun"> <span data-i18n="sun">Direct sunlight</span></label>
+        <label class="switch"><input type="checkbox" id="useforecast"> <span data-i18n="useforecast">Using forecast</span></label>
+        <label class="switch"><input type="checkbox" id="sun"> <span data-i18n="sun">Direct sunlight</span></label>
         <div class="segmented" role="radiogroup">
           <label><input type="radio" name="units" value="metric" checked><span data-i18n="metric">°C, km/h, mm</span></label>
           <label><input type="radio" name="units" value="imperial"><span data-i18n="imperial">°F, mph, mm (fabric)</span></label>
@@ -410,13 +489,25 @@ footer .button { display: inline-flex; width: auto; padding: 10px 22px; font-siz
       <small class="note" data-i18n="sunnote">Direct sunlight is only taken into account when using the forecast. With several clotheslines, the inner lines are usually shaded by the outer ones, so leave it unchecked for them.</small>
 
       <div class="fields">
-        <div class="field"><label for="temp" data-i18n="temp">Temperature [<span id="temp-unit">°C</span>]:</label><input type="number" id="temp" size="4" inputmode="decimal"></div>
-        <div class="field"><label for="humid" data-i18n="humid">Relative humidity [%]:</label><input type="number" id="humid" size="4" inputmode="decimal"></div>
-        <div class="field"><label for="wind" data-i18n="wind">Wind speed [<span id="wind-unit">km/h</span>] (assume 0 for indoor):</label><input type="number" id="wind" value="0" size="4" inputmode="decimal"></div>
-        <div class="field"><label for="width" data-i18n="width">Fabric thickness [mm], please choose the thickest fabric:</label><input type="number" id="width" value="2" size="4" inputmode="decimal"></div>
+        <div class="field temp">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></span>
+          <label for="temp" data-i18n="temp">Temperature [<span id="temp-unit">°C</span>]:</label><input type="number" id="temp" size="4" inputmode="decimal">
+        </div>
+        <div class="field humid">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
+          <label for="humid" data-i18n="humid">Relative humidity [%]:</label><input type="number" id="humid" size="4" inputmode="decimal">
+        </div>
+        <div class="field wind">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg></span>
+          <label for="wind" data-i18n="wind">Wind speed [<span id="wind-unit">km/h</span>] (assume 0 for indoor):</label><input type="number" id="wind" value="0" size="4" inputmode="decimal">
+        </div>
+        <div class="field width">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+          <label for="width" data-i18n="width">Fabric thickness [mm], please choose the thickest fabric:</label><input type="number" id="width" value="2" size="4" inputmode="decimal">
+        </div>
       </div>
 
-      <button class="button" id="btncalc"><b data-i18n="calculate">calculate</b></button>
+      <button class="button navy" id="btncalc"><b data-i18n="calculate">calculate</b></button>
 
       <div class="result" aria-live="polite">
         <span class="result-label" data-i18n="dryingtime">Drying time:</span>
@@ -425,48 +516,52 @@ footer .button { display: inline-flex; width: auto; padding: 10px 22px; font-siz
       </div>
     </section>
 
-    <section class="card info">
-      <h2 data-i18n="why">Why is the calculator important?</h2>
-      <span data-i18n="whyintro">Hanging laundry on the lines is good for the environment and also saves electricity and money. Use the calculator to:</span>
-      <ul>
-      <li data-i18n="why1">Make sure the laundry dries before it starts raining.</li>
-      <li data-i18n="why2">If you are drying at home, know if you should turn on the heating or a fan to speed up the drying process.</li>
-      <li data-i18n="why3">If you need a shirt for a certain event, then know whether to wash it now or if you can also wash it tomorrow.</li>
-      </ul>
+    <section class="info">
+      <details>
+        <summary><span class="emoji" aria-hidden="true">🌱</span><h2 data-i18n="why">Why is the calculator important?</h2></summary>
+        <div class="body">
+          <img class="picture" src="clothlineclock.jpg" width="512" height="512" loading="lazy" alt="Image of clothlines with a clock" data-i18n-alt="imagealt">
+          <span data-i18n="whyintro">Hanging laundry on the lines is good for the environment and also saves electricity and money. Use the calculator to:</span>
+          <ul>
+          <li data-i18n="why1">Make sure the laundry dries before it starts raining.</li>
+          <li data-i18n="why2">If you are drying at home, know if you should turn on the heating or a fan to speed up the drying process.</li>
+          <li data-i18n="why3">If you need a shirt for a certain event, then know whether to wash it now or if you can also wash it tomorrow.</li>
+          </ul>
+        </div>
+      </details>
+      <details>
+        <summary><span class="emoji" aria-hidden="true">📏</span><h2 data-i18n="rules">Rules of thumb for the calculator</h2></summary>
+        <div class="body">
+          <ul>
+          <li data-i18n="rule1">If you hang laundry at home without heating, the temperature will be the average day and night, as well as the humidity.</li>
+          <li data-i18n="rule2">If you hang laundry at home with heating, the temperature will be the maximum temperature, i.e. the midday temperature.</li>
+          <li data-i18n="rule3">Towels, winter shirts, or jeans are 2 mm thick.</li>
+          <li data-i18n="rule4">T-shirts are 1 mm thick.</li>
+          <li data-i18n="rule5">Moisture-wicking shirts have an effective thickness of 0.5 mm.</li>
+          <li data-i18n="rule6">The calculator works only above zero degrees Celsius.</li>
+          </ul>
+        </div>
+      </details>
+      <details>
+        <summary><span class="emoji" aria-hidden="true">🧺</span><h2 data-i18n="tips">Tips</h2></summary>
+        <div class="body">
+          <ul>
+          <li data-i18n="tip1">If you hang laundry at home and do not turn on the heating, you should open a window (preferably two windows or a window and a door).</li>
+          <li data-i18n="tip2">The laundry that dries the slowest should be put on the outer lines.</li>
+          <li data-i18n="tip3">It is better to hang the laundry in a spacious way.</li>
+          <li data-i18n="tip4">It is a good idea to hang clothes inside out to reduce sun damage to the fabric.</li>
+          <li data-i18n="tip5">If the clothes were slightly folded when hung (for example near the sleeves), their effective thickness is doubled.</li>
+          <li data-i18n="tip6">Shake your clothes before hanging them, this will cause fewer wrinkles and can remove any dirt left on the clothes.</li>
+          <li data-i18n="tip7">If possible, hang the laundry with the clotheslines parallel to the direction of the average wind.</li>
+          <li data-i18n="tip8">If the wind is strong, it is better to use more clothespins (clothes pegs).</li>
+          </ul>
+        </div>
+      </details>
     </section>
-
-    <div class="info-grid">
-    <section class="card info">
-      <h2 data-i18n="rules">Rules of thumb for the calculator</h2>
-      <ul>
-      <li data-i18n="rule1">If you hang laundry at home without heating, the temperature will be the average day and night, as well as the humidity.</li>
-      <li data-i18n="rule2">If you hang laundry at home with heating, the temperature will be the maximum temperature, i.e. the midday temperature.</li>
-      <li data-i18n="rule3">Towels, winter shirts, or jeans are 2 mm thick.</li>
-      <li data-i18n="rule4">T-shirts are 1 mm thick.</li>
-      <li data-i18n="rule5">Moisture-wicking shirts have an effective thickness of 0.5 mm.</li>
-      <li data-i18n="rule6">The calculator works only above zero degrees Celsius.</li>
-      </ul>
-    </section>
-    <section class="card info">
-      <h2 data-i18n="tips">Tips</h2>
-      <ul>
-      <li data-i18n="tip1">If you hang laundry at home and do not turn on the heating, you should open a window (preferably two windows or a window and a door).</li>
-      <li data-i18n="tip2">The laundry that dries the slowest should be put on the outer lines.</li>
-      <li data-i18n="tip3">It is better to hang the laundry in a spacious way.</li>
-      <li data-i18n="tip4">It is a good idea to hang clothes inside out to reduce sun damage to the fabric.</li>
-      <li data-i18n="tip5">If the clothes were slightly folded when hung (for example near the sleeves), their effective thickness is doubled.</li>
-      <li data-i18n="tip6">Shake your clothes before hanging them, this will cause fewer wrinkles and can remove any dirt left on the clothes.</li>
-      <li data-i18n="tip7">If possible, hang the laundry with the clotheslines parallel to the direction of the average wind.</li>
-      <li data-i18n="tip8">If the wind is strong, it is better to use more clothespins (clothes pegs).</li>
-      </ul>
-    </section>
-    </div>
-
-    <img class="picture" src="clothlineclock.jpg" width="512" height="512" loading="lazy" alt="Image of clothlines with a clock" data-i18n-alt="imagealt">
     </main>
 
     <footer>
-      <a class="button secondary" href="https://forms.gle/1oiFPe4BZNYsyZLv7" data-i18n-href="contacturl" target="_blank" data-i18n="contact">Contact us</a>
+      <a class="button sun" href="https://forms.gle/1oiFPe4BZNYsyZLv7" data-i18n-href="contacturl" target="_blank" data-i18n="contact">Contact us</a>
       <br>
       <div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://bambiker.github.io/drycloth" data-i18n-data-a2a-url="shareurl">
       <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
@@ -480,7 +575,6 @@ footer .button { display: inline-flex; width: auto; padding: 10px 22px; font-siz
       <p data-i18n="opensource">Open source, join us on <a href="https://github.com/bambiker/drycloth" target="_blank">GitHub</a></p>
       <p data-i18n="forecastsource">Weather forecast by <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a></p>
     </footer>
-    </div>
 
 <script>
 // the page is written in English, in Hebrew the texts are replaced from lang.js
