@@ -364,3 +364,61 @@ test('choosing an item before typing the weather does not show an error', async 
   assert.deepEqual(errors, []);
   await page.close();
 });
+
+test('drying indoors without the forecast: no wind, and the wind comes back when it is turned off', async () => {
+  const { page, errors } = await open('/');
+  await page.fill('#temp', '25');
+  await page.fill('#humid', '50');
+  await page.fill('#wind', '10');
+  await page.click('label:has(#indoor)');
+  assert.equal(await page.inputValue('#wind'), '0');
+  assert.equal(await page.isDisabled('#sun'), true);
+  assert.equal(await page.textContent('#result'), '6 hours and 55 minutes'); // 25°C, 50%, no wind, towel
+  assert.match(await page.textContent('#statusmsg'), /check heating/);
+  // a fan, calculated right away
+  await page.fill('#wind', '5');
+  assert.equal(await page.evaluate(() => document.getElementById('result').textContent), await page.evaluate(() => formatDuration(calc(25, 50, 5, 2))));
+  await page.click('label:has(#indoor)');
+  assert.equal(await page.inputValue('#wind'), '10');
+  assert.equal(await page.isDisabled('#sun'), false);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
+test('drying indoors takes the 24 hour average from the forecast once, then heating and a fan can be checked', async () => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: 'he-IL',
+    timezoneId: 'Asia/Jerusalem', geolocation: { latitude: 32, longitude: 35 }, permissions: ['geolocation'] });
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.route(url => !url.href.startsWith(base) && !url.href.includes('open-meteo'), route => route.abort());
+  const n = 168;
+  await page.route(/open-meteo/, route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ hourly: {
+    temperature_2m: Array.from({ length: n }, (v, i) => (i % 2 ? 30 : 20)),        // average 25
+    relative_humidity_2m: Array.from({ length: n }, (v, i) => (i % 2 ? 40 : 60)),  // average 50
+    precipitation: Array(n).fill(0), precipitation_probability: Array(n).fill(0),
+    wind_speed_10m: Array(n).fill(30), shortwave_radiation: Array(n).fill(500) } }) }));
+  await page.goto(base + '/he/');
+  // turning it on loads the forecast and fills its average once
+  await page.click('label:has(#indoor)');
+  await page.waitForFunction(() => document.getElementById('result').textContent === '6 שעות ו-55 דקות');
+  assert.equal(await page.inputValue('#temp'), '25');
+  assert.equal(await page.inputValue('#humid'), '50');
+  assert.equal(await page.inputValue('#wind'), '0');
+  assert.equal(await page.isChecked('#useforecast'), false);
+  assert.match(await page.textContent('#statusmsg'), /ממוצע הטמפרטורה והלחות ב-24 השעות/);
+  // heating: warmer, dries faster, right away
+  await page.fill('#temp', '28');
+  const heated = await page.textContent('#result');
+  assert.equal(heated, await page.evaluate(() => formatDuration(calc(28, 50, 0, 2))));
+  // and a fan
+  await page.fill('#wind', '5');
+  assert.equal(await page.textContent('#result'), await page.evaluate(() => formatDuration(calc(28, 50, 5, 2))));
+  assert.equal(await page.inputValue('#temp'), '28'); // the forecast does not change the fields
+  // turned off: back to the forecast, with its wind
+  await page.click('label:has(#indoor)');
+  assert.equal(await page.isChecked('#useforecast'), true);
+  assert.notEqual(await page.inputValue('#wind'), '5');
+  assert.deepEqual(errors, []);
+  await context.close();
+});
