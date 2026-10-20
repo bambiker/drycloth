@@ -4,13 +4,13 @@
   <url>
     <loc>https://bambiker.github.io/drycloth/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://bambiker.github.io/drycloth/"/>
-    <xhtml:link rel="alternate" hreflang="he" href="https://bambiker.github.io/drycloth/?he"/>
+    <xhtml:link rel="alternate" hreflang="he" href="https://bambiker.github.io/drycloth/he/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://bambiker.github.io/drycloth/"/>
   </url>
   <url>
-    <loc>https://bambiker.github.io/drycloth/?he</loc>
+    <loc>https://bambiker.github.io/drycloth/he/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://bambiker.github.io/drycloth/"/>
-    <xhtml:link rel="alternate" hreflang="he" href="https://bambiker.github.io/drycloth/?he"/>
+    <xhtml:link rel="alternate" hreflang="he" href="https://bambiker.github.io/drycloth/he/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://bambiker.github.io/drycloth/"/>
   </url>
 </urlset>

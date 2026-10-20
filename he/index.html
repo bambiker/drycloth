@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<!-- Made from index.html and lang.js by scripts/build-he.js. Do not edit, run: npm run build -->
+<html lang="he" dir="rtl">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="חישוב כמה זמן לוקח לכביסה להתייבש על חבל הכביסה לפי תחזית מזג האוויר: טמפרטורה, לחות ורוח">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../drycloth.svg">
+
+  <base target="_top">
+  <title>כמה זמן לוקח לכביסה להתייבש? מחשבון זמן ייבוש כביסה על חבל</title>
+  <!-- the Hebrew version is he/index.html, made from this page by scripts/build-he.js -->
+  <link rel="canonical" href="https://bambiker.github.io/drycloth/he/">
+  <link rel="alternate" hreflang="en" href="https://bambiker.github.io/drycloth/">
+  <link rel="alternate" hreflang="he" href="https://bambiker.github.io/drycloth/he/">
+  <link rel="alternate" hreflang="x-default" href="https://bambiker.github.io/drycloth/">
+
+  <!-- preview when the link is shared (WhatsApp, Facebook, X...) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="מחשבון לחישוב זמן ייבוש הכביסה">
+  <meta property="og:title" content="כמה זמן לוקח לכביסה להתייבש? מחשבון זמן ייבוש כביסה על חבל">
+  <meta property="og:description" content="חישוב כמה זמן לוקח לכביסה להתייבש על חבל הכביסה לפי תחזית מזג האוויר: טמפרטורה, לחות ורוח">
+  <meta property="og:url" content="https://bambiker.github.io/drycloth/he/">
+  <meta property="og:image" content="https://bambiker.github.io/drycloth/clothlineclock.jpg">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:image:alt" content="תמונה של חבלי כביסה עם שעון">
+  <meta property="og:locale" content="he_IL">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "מחשבון לחישוב זמן ייבוש הכביסה",
+    "alternateName": "Clothesline drying time calculator",
+    "url": "https://bambiker.github.io/drycloth/he/",
+    "description": "חישוב כמה זמן לוקח לכביסה להתייבש על חבל הכביסה לפי תחזית מזג האוויר: טמפרטורה, לחות ורוח",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "inLanguage": [
+      "en",
+      "he"
+    ],
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "image": "https://bambiker.github.io/drycloth/clothlineclock.jpg",
+    "codeRepository": "https://github.com/bambiker/drycloth"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "כמה זמן לוקח לכביסה להתייבש על חבל?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "זה תלוי בטמפרטורה, בלחות היחסית, ברוח ובעובי הבד. לדוגמה, ב-25 מעלות, לחות 50% ובלי רוח, מגבת בעובי 2 מ\"מ מתייבשת בערך ב-3.5 שעות. המחשבון מחשב את זה לפי מזג האוויר שלכם, או שעה אחרי שעה לפי התחזית במקום שלכם."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "מה העובי של הכביסה שלי?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "מגבת, חולצת חורף או ג'ינס עוביים 2 מ\"מ. חולצות קצרות עוביים 1 מ\"מ. לחולצה מנדפת עובי אפקטיבי של 0.5 מ\"מ. אם הבגדים התקפלו מעט כשהם ניתלו (למשל ליד השרוולים), העובי האפקטיבי שלהם מוכפל למעשה."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "איזו טמפרטורה ולחות להזין כשמייבשים בבית?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "אם תולים כביסה בבית בלי חימום, הטמפרטורה תהיה ממוצע של היום והלילה, וכך גם הלחות. אם תולים כביסה בבית עם חימום, הטמפרטורה תהיה הטמפרטורה המקסימלית, כלומר טמפרטורת הצהריים. בייבוש בתוך הבית מזינים מהירות רוח 0."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "איך לגרום לכביסה להתייבש מהר יותר על החבל?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "עדיף לתלות את הכביסה בצורה מרווחת, לשים את הכביסה שמתייבשת הכי לאט בחבלים החיצוניים, ואם אפשר לתלות אותה כשחבלי הכביסה מקבילים לכיוון הרוח הממוצעת. אם מייבשים בבית בלי חימום, כדאי לפתוח חלון (ועדיף שני חלונות או חלון ודלת)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "האם ירד גשם לפני שהכביסה תתייבש?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "בשימוש בתחזית, המחשבון מתריע אם צפוי גשם לפני שהכביסה תתייבש, מראה מתי הגשם צפוי להתחיל ואת הסיכוי הגבוה ביותר לגשם בזמן הייבוש."
+        }
+      }
+    ]
+  }
+  </script>
+   
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G78VLV9YZF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-G78VLV9YZF');
+</script>    
+<style>
+:root {
+  --sky-1: #3d8fd9;
+  --sky-2: #9fd0f5;
+  --page: #f3f6fb;
+  --card: #ffffff;
+  --text: #17223b;
+  --muted: #5f6b80;
+  --line: #e3e9f2;
+  --navy: #14205c;
+  --navy-2: #22318a;
+  --sun: #ffc93c;
+  --sun-hover: #ffbb12;
+  --sun-text: #2b2100;
+  --tile: #f6f8fc;
+  --on: #2fbf71;
+  --link: #22318a;
+  --error: #c62828;
+  --shadow: 0 18px 40px -18px rgba(20, 32, 92, 0.35);
+  --c-temp: #ff7a59;
+  --c-humid: #3d8fd9;
+  --c-wind: #26b3a6;
+  --c-width: #9a6bff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sky-1: #0b1a3a;
+    --sky-2: #1d3b70;
+    --page: #0c1424;
+    --card: #162138;
+    --text: #e8edf6;
+    --muted: #9aa7bd;
+    --line: #26344f;
+    --navy: #0a1230;
+    --navy-2: #1a2a66;
+    --tile: #1b2843;
+    --link: #a9b8ff;
+    --error: #ff8a80;
+    --shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  font-family: 'Rubik', system-ui, sans-serif;
+  background: var(--page);
+  margin: 0;
+  color: var(--text);
+  line-height: 1.55;
+}
+a { color: var(--link); }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+/* sky header with a clothesline */
+.hero {
+  position: relative;
+  background: linear-gradient(180deg, var(--sky-1), var(--sky-2));
+  color: #fff;
+  text-align: center;
+  padding: 56px 16px 214px;
+  overflow: hidden;
+}
+.hero h1 {
+  font-size: clamp(1.8rem, 6vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 auto 10px;
+  max-width: 16ch;
+  text-shadow: 0 2px 12px rgba(10, 30, 80, 0.25);
+}
+.hero .subtitle { margin: 0 auto; max-width: 34ch; font-size: 1.05rem; opacity: 0.95; }
+.hero .scene {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 82px;
+  width: 100%;
+  height: 120px;
+  pointer-events: none;
+}
+.lang {
+  position: absolute;
+  top: 14px;
+  inset-inline-end: 14px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+  backdrop-filter: blur(4px);
+}
+.lang:hover { background: rgba(255, 255, 255, 0.35); }
+
+/* the calculator, overlapping the sky */
+.calc {
+  position: relative;
+  margin-top: -64px;
+  background: var(--card);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+@media (max-width: 480px) { .calc { padding: 16px; border-radius: 20px; } }
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px;
+  font: inherit;
+  font-size: 1.08rem;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s, transform 0.05s;
+}
+.button:active { transform: translateY(1px); }
+.button.sun { background: var(--sun); color: var(--sun-text); box-shadow: 0 6px 0 -2px #e0a800; }
+.button.sun:hover { background: var(--sun-hover); }
+.button.navy { background: var(--navy-2); color: #fff; }
+.button.navy:hover { background: var(--navy); }
+.button svg { flex: none; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+
+#status { color: var(--error); margin: 10px 0 0; text-align: center; }
+#status:empty { display: none; }
+
+/* switches and units */
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+  margin: 20px 2px 6px;
+}
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.switch input {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  width: 44px;
+  height: 26px;
+  margin: 0;
+  border-radius: 999px;
+  background: var(--line);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex: none;
+}
+.switch input::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: inset-inline-start 0.2s;
+}
+.switch input:checked { background: var(--on); }
+.switch input:checked::after { inset-inline-start: 21px; }
+.segmented {
+  display: inline-flex;
+  margin-inline-start: auto;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--tile);
+  border: 1px solid var(--line);
+}
+.segmented label { padding: 5px 12px; border-radius: 999px; font-size: 0.9rem; cursor: pointer; }
+.segmented label:has(input:checked) { background: var(--navy-2); color: #fff; }
+.segmented input { position: absolute; opacity: 0; pointer-events: none; }
+@media (max-width: 520px) { .segmented { margin-inline-start: 0; } }
+.note { display: block; color: var(--muted); font-size: 0.85rem; margin: 0 2px; }
+
+/* the four inputs, as tiles with an icon */
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0;
+}
+@media (max-width: 560px) { .fields { grid-template-columns: 1fr; gap: 10px; } }
+.field {
+  display: grid;
+  grid-template-columns: 44px 1fr 96px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--tile);
+  border: 1px solid var(--line);
+}
+.field .icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: #fff;
+}
+.field label { font-size: 0.88rem; line-height: 1.3; color: var(--muted); font-weight: 500; }
+.temp .icon { background: var(--c-temp); }
+.humid .icon { background: var(--c-humid); }
+.wind .icon { background: var(--c-wind); }
+.width .icon { background: var(--c-width); }
+input[type="number"] {
+  width: 100%;
+  padding: 10px 8px;
+  font: inherit;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text);
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+}
+input[type="number"]:focus { border-color: var(--navy-2); outline: none; }
+
+/* result */
+.result {
+  margin-top: 16px;
+  padding: 22px 20px;
+  border-radius: 20px;
+  background: radial-gradient(circle at 85% 0%, #2c47b8 0, var(--navy) 60%);
+  color: #fff;
+  text-align: center;
+}
+.result-label { display: block; font-size: 0.95rem; opacity: 0.8; letter-spacing: 0.02em; }
+#result {
+  display: block;
+  margin-top: 4px;
+  font-size: clamp(1.5rem, 6vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--sun);
+}
+#statusmsg {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  text-align: start;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+#statusmsg:empty { display: none; }
+
+/* information, folded */
+.info { margin: 28px 0; }
+.info details {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.info summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  cursor: pointer;
+  list-style: none;
+}
+.info summary::-webkit-details-marker { display: none; }
+.info summary h2 { font-size: 1.1rem; margin: 0; flex: 1; }
+.info summary .emoji {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--tile);
+  font-size: 1.2rem;
+  flex: none;
+}
+.info summary::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg);
+  transition: transform 0.2s;
+  flex: none;
+}
+.info details[open] summary::after { transform: rotate(225deg); }
+.info .body { padding: 0 18px 16px; }
+.info ul { margin: 8px 0 0; padding-inline-start: 22px; }
+.info li { margin: 6px 0; }
+.info li::marker { color: var(--sun-hover); }
+.picture {
+  float: inline-end;
+  width: 140px;
+  height: auto;
+  margin: 4px 0 8px;
+  margin-inline-start: 16px;
+  border-radius: 14px;
+}
+@media (max-width: 480px) { .picture { width: 110px; } }
+
+/* footer */
+footer {
+  background: var(--navy);
+  color: #c9d3ee;
+  text-align: center;
+  padding: 28px 16px 36px;
+  margin-top: 36px;
+  font-size: 0.92rem;
+}
+footer a { color: #fff; }
+footer p { margin: 6px 0; }
+footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-size: 0.95rem; }
+.a2a_kit { display: inline-block; margin: 18px auto 10px; }
+</style>
+</head>
+ 
+<body>
+    <script>
+    var isHe = true;  // the Hebrew page (he/index.html) is made from this page by scripts/build-he.js
+    </script>
+    <script type="text/javascript" src="../calc.js"></script>
+    <header class="hero">
+      <a id="langswitch" class="lang" href="../">En</a>
+      <h1 data-i18n="heading">מחשבון לחישוב זמן ייבוש הכביסה</h1>
+      <p class="subtitle" data-i18n="subtitle">גלו מתי הכביסה תתייבש, לפי תחזית מזג האוויר במקום שלכם.</p>
+      <svg class="scene" viewBox="0 0 800 110" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <path d="M40 18 Q400 118 760 18" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="2.5"/>
+        <g transform="translate(200 35)"><path d="M-30,8 L-18,0 L-8,3 Q0,9 8,3 L18,0 L30,8 L24,20 L18,16 L18,56 L-18,56 L-18,16 L-24,20 Z" fill="#ff7a59"/><rect x="-14" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="9" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(305 42)"><rect x="-22" y="0" width="44" height="62" rx="3" fill="#ffd166"/><rect x="-22" y="44" width="44" height="6" fill="#f4a261"/><rect x="-22" y="53" width="44" height="3" fill="#f4a261"/><rect x="-18" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="13" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(410 44)"><path d="M-20,0 H20 L22,64 H6 L0,22 L-6,64 H-22 Z" fill="#3a5a99"/><rect x="-16" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="11" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(515 41)"><path d="M-30,8 L-18,0 L-8,3 Q0,9 8,3 L18,0 L30,8 L24,20 L18,16 L18,56 L-18,56 L-18,16 L-24,20 Z" fill="#2ec4b6"/><rect x="-14" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="9" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(612 33) scale(0.72)"><path d="M-30,8 L-18,0 L-8,3 Q0,9 8,3 L18,0 L30,8 L24,20 L18,16 L18,56 L-18,56 L-18,16 L-24,20 Z" fill="#ff5d8f"/><rect x="-3" y="-6" width="6" height="12" rx="1" fill="#8d6e63"/></g>
+      </svg>
+    </header>
+
+    <main class="wrap">
+    <section class="calc">
+      <button class="button sun" id="find-me">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <b data-i18n="findme">לחצו כאן כדי להשתמש בטמפרטורה ובלחות מהתחזית</b>
+      </button>
+      <p id="status"></p>
+
+      <div class="options">
+        <label class="switch"><input type="checkbox" id="useforecast"> <span data-i18n="useforecast">שימוש בתחזית</span></label>
+        <label class="switch"><input type="checkbox" id="sun"> <span data-i18n="sun">שמש ישירה</span></label>
+        <div class="segmented" role="radiogroup">
+          <label><input type="radio" name="units" value="metric" checked><span data-i18n="metric">צלזיוס, קמ"ש, מ"מ</span></label>
+          <label><input type="radio" name="units" value="imperial"><span data-i18n="imperial">פרנהייט, MPH, מ"מ</span></label>
+        </div>
+      </div>
+      <small class="note" data-i18n="sunnote">שמש ישירה נלקחת בחשבון רק בשימוש בתחזית. אם יש כמה חבלים, החבלים הפנימיים בדרך כלל מוצלים על ידי החיצוניים, ולכן עבורם עדיף לא לסמן.</small>
+
+      <div class="fields">
+        <div class="field temp">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></span>
+          <label for="temp" data-i18n="temp">הטמפרטורה במעלות <span id="temp-unit">צלזיוס</span>:</label><input type="number" id="temp" size="4" inputmode="decimal">
+        </div>
+        <div class="field humid">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
+          <label for="humid" data-i18n="humid">הלחות היחסית [%]:</label><input type="number" id="humid" size="4" inputmode="decimal">
+        </div>
+        <div class="field wind">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg></span>
+          <label for="wind" data-i18n="wind">מהירות הרוח [<span id="wind-unit">קמ"ש</span>] (אפס בשביל ייבוש בתוך הבית):</label><input type="number" id="wind" value="0" size="4" inputmode="decimal">
+        </div>
+        <div class="field width">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+          <label for="width" data-i18n="width">עובי הבד במ"מ, נא לבחור את הבד הכי עבה:</label><input type="number" id="width" value="2" size="4" inputmode="decimal">
+        </div>
+      </div>
+
+      <button class="button navy" id="btncalc"><b data-i18n="calculate">חשב</b></button>
+
+      <div class="result" aria-live="polite">
+        <span class="result-label" data-i18n="dryingtime">זמן הייבוש:</span>
+        <span id="result" data-i18n="placeholder">נא להזין נתונים וללחוץ על חשב</span>
+        <div id="statusmsg"></div>
+      </div>
+    </section>
+
+    <section class="info">
+      <details>
+        <summary><span class="emoji" aria-hidden="true">🌱</span><h2 data-i18n="why">למה המחשבון חשוב</h2></summary>
+        <div class="body">
+          <img class="picture" src="../clothlineclock.jpg" width="512" height="512" loading="lazy" alt="תמונה של חבלי כביסה עם שעון" data-i18n-alt="imagealt">
+          <span data-i18n="whyintro">לתלות כביסה על החבלים חשוב לאיכות הסביבה וגם חוסך חשמל וכסף. השתמשו במחשבון על מנת:</span>
+          <ul>
+          <li data-i18n="why1">לוודא שהכביסה תתייבש לפני שיתחיל לרדת גשם</li>
+          <li data-i18n="why2">אם מייבשים בבית, כדי לדעת אם כדאי להפעיל חימום או מאוורר לזירוז הייבוש</li>
+          <li data-i18n="why3">אם צריך חולצה לארוע מסוים, אז לדעת אם לכבס עכשיו או שאפשר גם מחר</li>
+          </ul>
+        </div>
+      </details>
+      <details>
+        <summary><span class="emoji" aria-hidden="true">📏</span><h2 data-i18n="rules">כללי אצבע למחשבון</h2></summary>
+        <div class="body">
+          <ul>
+          <li data-i18n="rule1">אם תולים כביסה בבית בלי חימום הטמפרטורה תהיה ממוצע של היום והלילה, וכך גם הלחות</li>
+          <li data-i18n="rule2">אם תולים כביסה בבית עם חימום, הטמפרטורה תהיה הטמפרטורה המקסימלית, כלומר טמפרטורת הצהריים</li>
+          <li data-i18n="rule3">מגבת, חולצת חורף או ג'ינס עוביים 2 מ"מ</li>
+          <li data-i18n="rule4">חולצות קצרות עוביים 1 מ"מ</li>
+          <li data-i18n="rule5">חולצה מנדפת עובייה האפקטיבי הוא 0.5 מ"מ</li>
+          <li data-i18n="rule6">המחשבון עובד רק בטמפרטורות גבוהות מאפס מעלות</li>
+          </ul>
+        </div>
+      </details>
+      <details>
+        <summary><span class="emoji" aria-hidden="true">🧺</span><h2 data-i18n="tips">טיפים</h2></summary>
+        <div class="body">
+          <ul>
+          <li data-i18n="tip1">אם תולים כביסה בבית ולא מפעילים חימום כדאי לפתוח חלון (ועדיף שני חלונות או חלון ודלת).</li>
+          <li data-i18n="tip2">את הכביסה שמתייבשת הכי לאט יש לשים בחבלים החיצוניים</li>
+          <li data-i18n="tip3">עדיף לתלות את הכביסה בצורה מרווחת</li>
+          <li data-i18n="tip4">מומלץ לתלות בגדים הפוך (שהצד הפנימי של הבגד יהיה בחוץ) כדי להפחית נזקי השמש לבד.</li>
+          <li data-i18n="tip5">אם הבגדים התקפלו מעט כשהם ניתלו (למשל ליד השרוולים), העובי האפקטיבי שלהם מוכפל למעשה.</li>
+          <li data-i18n="tip6">נער את הבגדים לפני תלייתם, זה יגרום לפחות קמטים ויכול להסיר לכלוך שנותר על הבגדים.</li>
+          <li data-i18n="tip7">אם זה אפשרי, יש לתלות את הכביסה כשחבלי הכביסה מקבילים לכיוון הרוח הממוצעת</li>
+          <li data-i18n="tip8">אם הרוח חזקה, כדאי להשתמש ביותר אטבי כביסה</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+    </main>
+
+    <footer>
+      <a class="button sun" href="https://forms.gle/FJx3CNFUcExcG9Fn9" data-i18n-href="contacturl" target="_blank" data-i18n="contact">צור קשר</a>
+      <br>
+      <div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://bambiker.github.io/drycloth/he/" data-i18n-data-a2a-url="shareurl">
+      <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+      <a class="a2a_button_copy_link"></a>
+      <a class="a2a_button_whatsapp"></a>
+      <a class="a2a_button_facebook"></a>
+      <a class="a2a_button_x"></a>
+      <a class="a2a_button_telegram"></a>
+      <a class="a2a_button_email"></a>
+      </div>
+      <p data-i18n="opensource">קוד פתוח, הצטרפו אלינו ב-<a href="https://github.com/bambiker/drycloth" target="_blank">GitHub</a></p>
+      <p data-i18n="forecastsource">תחזית מזג האוויר מ-<a href="https://open-meteo.com/" target="_blank">Open-Meteo</a></p>
+    </footer>
+
+<script>
+document.querySelectorAll('input[name="units"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    setUnits(this.value, true);
+  });
+});
+
+// Fahrenheit and mph by default only in the countries that use them
+document.querySelector('input[name="units"][value="' + units + '"]').checked = true;
+setUnits(units, false);
+</script>
+    <script async src="https://static.addtoany.com/menu/page.js"></script>
+    <script>
+document.getElementById("btncalc").addEventListener("click",doCalc);
+
+// editing the values by hand means the user doesn't want the forecast anymore
+["temp", "humid", "wind"].forEach(function(id) {
+  document.getElementById(id).addEventListener("input", function() {
+    document.querySelector('#useforecast').checked = false;
+  });
+});
+
+    function doCalc()
+    {
+         var temp = document.getElementById("temp").value;
+         var humid = document.getElementById("humid").value;
+         var width = document.getElementById("width").value/2.;  //it dries from both sides
+         var wind = document.getElementById("wind").value;
+         const elem = document.querySelector('#useforecast')
+         const sun = document.querySelector('#sun').checked;
+         const result = document.getElementById('result');
+         const statusmsg = document.getElementById('statusmsg');
+         var notes = [];
+         var hours;
+
+         result.innerHTML = '';
+         statusmsg.innerHTML = '';
+
+         if (elem.checked && weekt2)
+            {
+             const forecast = forecastcalc(width, sun);
+             hours = forecast.hours;
+             if (hours === Infinity) {notes.push(msg("nodryforecast"));}
+             else {notes.push(msg("dryby", formatTime(new Date(Date.now() + hours*3600*1000))));}
+             if (forecast.rain) {notes.push(msg("rain") + " " + msg("rainstart", formatTime(forecast.rainStart)));}
+             notes.push(msg("rainprob", forecast.maxProb));
+             if (forecast.windy) {notes.push(msg("windy"));}
+            } else
+            {
+             if (temp === "" || humid === "" || wind === "" || !(width > 0) || humid < 0 || humid > 100)
+                {
+                 statusmsg.innerHTML = msg("badinput");
+                 return;
+                }
+             if (elem.checked) {notes.push(msg("noforecast"));}
+             if (sun) {notes.push(msg("sunmanual"));}
+             hours = calc(toCelsius(temp),humid,toKmh(wind),width);
+             if (hours === Infinity) {notes.push(msg("nodry"));}
+            }
+
+         result.innerHTML = (hours === Infinity) ? '-' : formatDuration(hours);
+         statusmsg.innerHTML = notes.join('<br>');
+    }
+
+    </script>
+
+
+    <script>
+      function geoFindMe() {
+
+        const status = document.querySelector('#status');
+
+        async function success(position) {
+
+          latitude  = position.coords.latitude;
+          longitude = position.coords.longitude;
+
+          try {
+              await getweather(); // wait for the forecast, so we don't calculate with old values
+          } catch (e) {
+              status.textContent = msg("noweather");
+              return;
+          }
+
+          status.textContent = '';
+          doCalc();
+        }
+
+        function error() {
+          status.textContent = msg("nolocation");
+        }
+
+        if(!navigator.geolocation) {
+          status.textContent = msg("nogeo");
+        } else {
+          status.textContent = msg("locating");
+          navigator.geolocation.getCurrentPosition(success, error);
+        }
+
+      }
+
+      document.querySelector('#find-me').addEventListener('click', geoFindMe);
+    </script>
+
+  </body>
+</html>

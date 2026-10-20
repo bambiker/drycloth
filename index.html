@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- redirect-to-hebrew -->
+  <script>
+  // old links to the Hebrew version (?he, also with more parameters) go to he/
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.has('he')) {
+      params.delete('he');
+      var rest = params.toString();
+      window.location.replace('he/' + (rest ? '?' + rest : '') + window.location.hash);
+    }
+  })();
+  </script>
+  <!-- /redirect-to-hebrew -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content='Calculate how long it takes for clothes to dry on a clothesline using real-time weather forecasts. Get accurate drying times based on temperature, humidity and wind'>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,19 +23,11 @@
 
   <base target="_top">
   <title>How long does laundry take to dry? Clothesline drying time calculator</title>
-  <!-- the Hebrew version is the same page with ?he -->
+  <!-- the Hebrew version is he/index.html, made from this page by scripts/build-he.js -->
+  <link rel="canonical" href="https://bambiker.github.io/drycloth/">
   <link rel="alternate" hreflang="en" href="https://bambiker.github.io/drycloth/">
-  <link rel="alternate" hreflang="he" href="https://bambiker.github.io/drycloth/?he">
+  <link rel="alternate" hreflang="he" href="https://bambiker.github.io/drycloth/he/">
   <link rel="alternate" hreflang="x-default" href="https://bambiker.github.io/drycloth/">
-  <script>
-  // canonical by language (not in the HTML, so the Hebrew page is not marked as a copy of the English one)
-  (function() {
-    var link = document.createElement('link');
-    link.rel = 'canonical';
-    link.href = 'https://bambiker.github.io/drycloth/' + (new URLSearchParams(window.location.search).has('he') ? '?he' : '');
-    document.head.appendChild(link);
-  })();
-  </script>
 
   <!-- preview when the link is shared (WhatsApp, Facebook, X...) -->
   <meta property="og:type" content="website">
@@ -452,12 +457,11 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
  
 <body>
     <script>
-    var isHe = new URLSearchParams(window.location.search).has('he'); // also works with extra parameters, e.g. ?he&fbclid=...
+    var isHe = false; // the Hebrew page (he/index.html) is made from this page by scripts/build-he.js
     </script>
-    <script type="text/javascript" src="lang.js"></script>
     <script type="text/javascript" src="calc.js"></script>
     <header class="hero">
-      <a id="langswitch" class="lang" href="index.html?he">עב</a>
+      <a id="langswitch" class="lang" href="he/">עב</a>
       <h1 data-i18n="heading">Clothesline drying time calculator</h1>
       <p class="subtitle" data-i18n="subtitle">Find out when your laundry will be dry, from the weather forecast for your location.</p>
       <svg class="scene" viewBox="0 0 800 110" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -577,9 +581,6 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
     </footer>
 
 <script>
-// the page is written in English, in Hebrew the texts are replaced from lang.js
-if (isHe) {translatePage();}
-
 document.querySelectorAll('input[name="units"]').forEach(radio => {
   radio.addEventListener('change', function() {
     setUnits(this.value, true);
@@ -590,7 +591,6 @@ document.querySelectorAll('input[name="units"]').forEach(radio => {
 document.querySelector('input[name="units"][value="' + units + '"]').checked = true;
 setUnits(units, false);
 </script>
-    <!-- after translatePage, so AddToAny shares the url of the right language -->
     <script async src="https://static.addtoany.com/menu/page.js"></script>
     <script>
 document.getElementById("btncalc").addEventListener("click",doCalc);
