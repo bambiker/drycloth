@@ -1,0 +1,8 @@
+{
+  "name": "drycloth",
+  "private": true,
+  "description": "Calculator for laundry drying duration on a clothesline",
+  "scripts": {
+    "test": "node --test test/calc.test.js"
+  }
+}
