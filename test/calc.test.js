@@ -119,6 +119,41 @@ test('forecastcalc warns about wind above 12 km/h', () => {
   assert.equal(c.forecastcalc(1, false).windy, true);
 });
 
+test('forecastcalc starts when the laundry is hung', () => {
+  const c = load();
+  forecast(c, { humid: 100 });
+  c.weekrh2.fill(50, 5); // drying weather only from hour 5
+  close(c.forecastcalc(1, false, c.forecastTime(5)).hours, c.calc(25, 50, 0, 1), 1e-9);
+  // hung at 2:30, nothing dries until 5:00
+  close(c.forecastcalc(1, false, c.forecastTime(2.5)).hours, 2.5 + c.calc(25, 50, 0, 1), 1e-9);
+});
+
+test('forecastcalc counts only the part of the first hour after hanging', () => {
+  const c = load();
+  forecast(c);
+  close(c.forecastcalc(1, false, c.forecastTime(3.25)).hours, c.calc(25, 50, 0, 1), 1e-9);
+  // a thin item that dries in less than the rest of the first hour
+  close(c.forecastcalc(0.05, false, c.forecastTime(3.5)).hours, c.calc(25, 50, 0, 0.05), 1e-9);
+});
+
+test('forecastcalc says when the hanging time is after the forecast', () => {
+  const c = load();
+  forecast(c);
+  const result = c.forecastcalc(1, false, c.forecastTime(200));
+  assert.equal(result.outOfRange, true);
+  assert.equal(result.hours, Infinity);
+});
+
+test('rain that started before hanging is reported from the hanging time', () => {
+  const c = load();
+  forecast(c);
+  c.weekprecipitation.fill(1, 9, 13);
+  const start = c.forecastTime(10);
+  const result = c.forecastcalc(1, false, start);
+  assert.equal(result.rain, true);
+  assert.equal(result.rainStart.getTime(), start.getTime());
+});
+
 test('direct sunlight is optional and shortens drying', () => {
   const c = load();
   forecast(c, { radiation: 600 });

@@ -9,7 +9,8 @@ const path = require('node:path');
 const { chromium } = require('playwright');
 
 const root = path.join(__dirname, '..');
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8' };
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8',
+                '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
 let server, base, browser;
 
 before(async () => {
@@ -207,5 +208,121 @@ test('the units the user chose are remembered on the next visit', async () => {
   await page.reload();
   assert.equal(await page.isChecked('input[value=imperial]'), true);
   assert.equal(await page.textContent('#temp-unit'), '°F');
+  await context.close();
+});
+
+test('choosing what is hung instead of the thickness', async () => {
+  const { page, errors } = await open('/');
+  await page.fill('#temp', '25');
+  await page.fill('#humid', '50');
+  await page.click('#btncalc');
+  assert.equal(await page.textContent('#result'), '3 hours and 25 minutes'); // towel, the default
+  await page.click('label:has(input[name=fabric][value="1"])');
+  await page.click('#btncalc');
+  assert.equal(await page.textContent('#result'), '1 hour and 45 minutes'); // T-shirt
+  assert.equal(await page.isVisible('#width'), false);
+  await page.click('label:has(input[name=fabric][value=other])');
+  assert.equal(await page.isVisible('#width'), true);
+  await page.fill('#width', '1');
+  await page.click('#btncalc');
+  assert.equal(await page.textContent('#result'), '1 hour and 45 minutes');
+  assert.deepEqual(errors, []);
+  await page.close();
+
+  const he = await open('/he/');
+  assert.equal(await he.page.textContent('[data-i18n="fabric1"]'), 'חולצה קצרה');
+  assert.equal(await he.page.textContent('[data-i18n="mm2"]'), '2 מ"מ');
+  await he.page.close();
+});
+
+test('the hanging time is now by default and can be changed', async () => {
+  const { page, errors } = await open('/');
+  const now = await page.evaluate(() => [hangInput.value, localInputValue(new Date())]);
+  assert.equal(now[0], now[1]);
+  // hang tomorrow at 08:00: a towel at 25°C and 50% takes about 3.5 hours, dry around 11:27
+  const tomorrow = await page.evaluate(() => {
+    const d = new Date(Date.now() + 24 * 3600 * 1000);
+    return localInputValue(d).slice(0, 10) + 'T08:00';
+  });
+  await page.fill('#hangtime', tomorrow);
+  await page.fill('#temp', '25');
+  await page.fill('#humid', '50');
+  await page.click('#btncalc');
+  assert.match(await page.textContent('#statusmsg'), /11:27/);
+  // back to now
+  await page.click('#hangnow');
+  assert.equal(await page.evaluate(() => hangInput.dataset.chosen), '');
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
+// the width and height written in a PNG file
+function pngSize(file) {
+  const data = fs.readFileSync(file);
+  return `${data.readUInt32BE(16)}x${data.readUInt32BE(20)}`;
+}
+
+test('each page has an app manifest with icons of the right size', async () => {
+  for (const [url, manifestFile, lang] of [['/', 'manifest.webmanifest', 'en'], ['/he/', 'he/manifest.webmanifest', 'he']]) {
+    const { page, missing } = await open(url);
+    const href = await page.evaluate(() => document.querySelector('link[rel=manifest]').href);
+    assert.equal(href, base + '/' + manifestFile);
+    const manifest = JSON.parse(fs.readFileSync(path.join(root, manifestFile), 'utf8'));
+    assert.equal(manifest.lang, lang);
+    assert.equal(manifest.display, 'standalone');
+    assert.ok(manifest.icons.some(icon => icon.sizes === '512x512' && icon.purpose === 'maskable'));
+    for (const icon of manifest.icons) {
+      const file = path.join(root, path.dirname(manifestFile), icon.src);
+      assert.equal(pngSize(file), icon.sizes, icon.src);
+    }
+    // the iPhone icon
+    const appleIcon = await page.evaluate(() => document.querySelector('link[rel=apple-touch-icon]').href);
+    assert.equal((await page.request.get(appleIcon)).status(), 200);
+    assert.equal(await page.getAttribute('meta[name=theme-color]', 'content'), '#3d8fd9');
+    assert.deepEqual(missing, []);
+    await page.close();
+  }
+});
+
+test('the service worker covers both pages', async () => {
+  for (const url of ['/', '/he/']) {
+    const { page } = await open(url);
+    const scope = await page.evaluate(() => navigator.serviceWorker.ready.then(registration => registration.scope));
+    assert.equal(scope, base + '/');
+    await page.close();
+  }
+});
+
+test('the install button appears when the browser can install the site', async () => {
+  const { page, errors } = await open('/');
+  assert.equal(await page.isVisible('#install'), false);
+  // what Chrome and Edge send when the site can be installed
+  await page.evaluate(() => {
+    const event = new Event('beforeinstallprompt');
+    event.prompt = () => { window.prompted = true; };
+    event.userChoice = Promise.resolve({ outcome: 'accepted' });
+    window.dispatchEvent(event);
+  });
+  assert.equal(await page.isVisible('#install'), true);
+  await page.click('#install');
+  assert.equal(await page.evaluate(() => window.prompted), true);
+  assert.equal(await page.isVisible('#install'), false);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
+test('on iPhone the install button shows how to add the site from Safari', async () => {
+  const context = await browser.newContext({
+    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1',
+    viewport: { width: 390, height: 844 },
+  });
+  const page = await context.newPage();
+  await page.route(url => !url.href.startsWith(base), route => route.abort());
+  await page.goto(base + '/he/');
+  assert.equal((await page.textContent('#install')).trim(), 'הוספה למסך הבית');
+  assert.equal(await page.isVisible('#installhint'), false);
+  await page.click('#install');
+  assert.equal(await page.isVisible('#installhint'), true);
+  assert.match(await page.textContent('#installhint'), /הוסף למסך הבית/);
   await context.close();
 });

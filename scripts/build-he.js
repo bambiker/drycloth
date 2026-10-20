@@ -72,10 +72,13 @@ function buildHebrewPage() {
     return open + '  ' + JSON.stringify(data, null, 2).replace(/\n/g, '\n  ') + close;
   });
 
-  // files are one folder up
+  // files are one folder up (he/ has its own manifest.webmanifest)
   for (const file of ['drycloth.svg', 'calc.js', 'clothlineclock.jpg']) {
     html = html.replace(new RegExp(`(src|href)="${file.replace('.', '\\.')}"`, 'g'), `$1="../${file}"`);
   }
+  html = html.replace(/href="icons\//g, 'href="../icons/');
+  html = replaceOnce(html, 'navigator.serviceWorker.register("sw.js")', 'navigator.serviceWorker.register("../sw.js")');
+  html = replaceOnce(html, '<meta name="apple-mobile-web-app-title" content="Drying time">', '<meta name="apple-mobile-web-app-title" content="ייבוש כביסה">');
 
   // the link to the English page
   html = replaceOnce(html, '<a id="langswitch" class="lang" href="he/">עב</a>', '<a id="langswitch" class="lang" href="../">En</a>');
