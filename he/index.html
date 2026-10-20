@@ -70,7 +70,7 @@
         "name": "כמה זמן לוקח לכביסה להתייבש על חבל?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "זה תלוי בטמפרטורה, בלחות היחסית, ברוח ובעובי הבד. לדוגמה, ב-25 מעלות, לחות 50% ובלי רוח, מגבת בעובי 2 מ\"מ מתייבשת בערך ב-3.5 שעות. המחשבון מחשב את זה לפי מזג האוויר שלכם, או שעה אחרי שעה לפי התחזית במקום שלכם."
+          "text": "זה תלוי בטמפרטורה, בלחות היחסית, ברוח ובעובי הבד. לדוגמה, ב-25 מעלות, לחות 50% ובלי רוח, מגבת בעובי 2 מ\"מ מתייבשת בערך ב-7 שעות. המחשבון מחשב את זה לפי מזג האוויר שלכם, או שעה אחרי שעה לפי התחזית במקום שלכם."
         }
       },
       {
@@ -110,7 +110,7 @@
         "name": "איך בודקים שהכביסה יבשה?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "בודקים קודם את הבגד שמתייבש הכי לאט, בדרך כלל הבגד הכי עבה: נוגעים באמצע שלו ובודקים שהוא מרגיש יבש. אם כן, בודקים גם את המקומות העבים בבגד, למשל חגורה מובנית אם יש, ואזורים כמו החיבור של השרוול לחולצה, שם יכולים להיווצר כפלים כשתולים את הכביסה, והם מתייבשים הכי לאט."
+          "text": "בודקים קודם את הבגד שמתייבש הכי לאט, בדרך כלל הבגד הכי עבה: נוגעים באמצע שלו ובודקים שהוא מרגיש יבש. אם כן, בודקים גם את המקומות העבים בבגד, למשל חגורה מובנית אם יש, ואזורים כמו החיבור של השרוול לחולצה, שם יכולים להיווצר כפלים כשתולים את הכביסה, והם מתייבשים הכי לאט, ואת המקום של אטבי הכביסה."
         }
       }
     ]
@@ -647,6 +647,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <li data-i18n="check2">נוגעים באמצע הבגד ובודקים שהוא מרגיש יבש.</li>
           <li data-i18n="check3">אם כן, בודקים גם את המקומות העבים בבגד, למשל חגורה מובנית אם יש.</li>
           <li data-i18n="check4">בודקים אזורים כמו החיבור של השרוול לחולצה: שם יכולים להיווצר כפלים כשתולים את הכביסה, והם מתייבשים הכי לאט.</li>
+          <li data-i18n="check5">בודקים גם במקום של אטבי הכביסה: שם הבד לחוץ ומתייבש לאט.</li>
           </ul>
         </div>
       </details>
@@ -804,7 +805,8 @@ function showHangingTime() {
          var temp = document.getElementById("temp").value;
          var humid = document.getElementById("humid").value;
          var fabric = document.querySelector('input[name="fabric"]:checked').value;
-         var width = (fabric === "other" ? document.getElementById("width").value : fabric) / 2.;  //it dries from both sides
+         // the whole thickness: most clothes have a front and a back, so each side of the item dries its own layer
+         var width = Number(fabric === "other" ? document.getElementById("width").value : fabric);
          var hang = hangTime();
          var wind = document.getElementById("wind").value;
          const elem = document.querySelector('#useforecast')
