@@ -9,7 +9,8 @@ const path = require('node:path');
 const { chromium } = require('playwright');
 
 const root = path.join(__dirname, '..');
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8' };
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8',
+                '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
 let server, base, browser;
 
 before(async () => {
@@ -253,4 +254,75 @@ test('the hanging time is now by default and can be changed', async () => {
   assert.equal(await page.evaluate(() => hangInput.dataset.chosen), '');
   assert.deepEqual(errors, []);
   await page.close();
+});
+
+// the width and height written in a PNG file
+function pngSize(file) {
+  const data = fs.readFileSync(file);
+  return `${data.readUInt32BE(16)}x${data.readUInt32BE(20)}`;
+}
+
+test('each page has an app manifest with icons of the right size', async () => {
+  for (const [url, manifestFile, lang] of [['/', 'manifest.webmanifest', 'en'], ['/he/', 'he/manifest.webmanifest', 'he']]) {
+    const { page, missing } = await open(url);
+    const href = await page.evaluate(() => document.querySelector('link[rel=manifest]').href);
+    assert.equal(href, base + '/' + manifestFile);
+    const manifest = JSON.parse(fs.readFileSync(path.join(root, manifestFile), 'utf8'));
+    assert.equal(manifest.lang, lang);
+    assert.equal(manifest.display, 'standalone');
+    assert.ok(manifest.icons.some(icon => icon.sizes === '512x512' && icon.purpose === 'maskable'));
+    for (const icon of manifest.icons) {
+      const file = path.join(root, path.dirname(manifestFile), icon.src);
+      assert.equal(pngSize(file), icon.sizes, icon.src);
+    }
+    // the iPhone icon
+    const appleIcon = await page.evaluate(() => document.querySelector('link[rel=apple-touch-icon]').href);
+    assert.equal((await page.request.get(appleIcon)).status(), 200);
+    assert.equal(await page.getAttribute('meta[name=theme-color]', 'content'), '#3d8fd9');
+    assert.deepEqual(missing, []);
+    await page.close();
+  }
+});
+
+test('the service worker covers both pages', async () => {
+  for (const url of ['/', '/he/']) {
+    const { page } = await open(url);
+    const scope = await page.evaluate(() => navigator.serviceWorker.ready.then(registration => registration.scope));
+    assert.equal(scope, base + '/');
+    await page.close();
+  }
+});
+
+test('the install button appears when the browser can install the site', async () => {
+  const { page, errors } = await open('/');
+  assert.equal(await page.isVisible('#install'), false);
+  // what Chrome and Edge send when the site can be installed
+  await page.evaluate(() => {
+    const event = new Event('beforeinstallprompt');
+    event.prompt = () => { window.prompted = true; };
+    event.userChoice = Promise.resolve({ outcome: 'accepted' });
+    window.dispatchEvent(event);
+  });
+  assert.equal(await page.isVisible('#install'), true);
+  await page.click('#install');
+  assert.equal(await page.evaluate(() => window.prompted), true);
+  assert.equal(await page.isVisible('#install'), false);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
+test('on iPhone the install button shows how to add the site from Safari', async () => {
+  const context = await browser.newContext({
+    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1',
+    viewport: { width: 390, height: 844 },
+  });
+  const page = await context.newPage();
+  await page.route(url => !url.href.startsWith(base), route => route.abort());
+  await page.goto(base + '/he/');
+  assert.equal((await page.textContent('#install')).trim(), 'הוספה למסך הבית');
+  assert.equal(await page.isVisible('#installhint'), false);
+  await page.click('#install');
+  assert.equal(await page.isVisible('#installhint'), true);
+  assert.match(await page.textContent('#installhint'), /הוסף למסך הבית/);
+  await context.close();
 });
