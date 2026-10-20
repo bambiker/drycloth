@@ -326,3 +326,40 @@ test('on iPhone the install button shows how to add the site from Safari', async
   assert.match(await page.textContent('#installhint'), /הוסף למסך הבית/);
   await context.close();
 });
+
+test('after the forecast the page goes to the item choice, and a different item is calculated right away', async () => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: 'he-IL',
+    timezoneId: 'Asia/Jerusalem', geolocation: { latitude: 32, longitude: 35 }, permissions: ['geolocation'] });
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.route(url => !url.href.startsWith(base) && !url.href.includes('open-meteo'), route => route.abort());
+  const n = 168;
+  await page.route(/open-meteo/, route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ hourly: {
+    temperature_2m: Array(n).fill(25), relative_humidity_2m: Array(n).fill(50), precipitation: Array(n).fill(0),
+    precipitation_probability: Array(n).fill(0), wind_speed_10m: Array(n).fill(0), shortwave_radiation: Array(n).fill(0) } }) }));
+  await page.goto(base + '/he/');
+  await page.click('#find-me');
+  await page.waitForFunction(() => document.getElementById('result').textContent === '3 שעות ו-25 דקות');
+  // the item choice is at the top of the screen and the result is on the screen too
+  await page.waitForFunction(() => Math.abs(document.querySelector('.fabric').getBoundingClientRect().top) < 20);
+  assert.equal(await page.evaluate(() => document.activeElement.name), 'fabric');
+  assert.ok(await page.evaluate(() => document.querySelector('.result').getBoundingClientRect().bottom <= window.innerHeight));
+  // a T-shirt, without pressing "calculate"
+  await page.click('label:has(input[name=fabric][value="1"])');
+  assert.equal(await page.textContent('#result'), 'שעה ו-45 דקות');
+  assert.deepEqual(errors, []);
+  await context.close();
+});
+
+test('choosing an item before typing the weather does not show an error', async () => {
+  const { page, errors } = await open('/');
+  await page.click('label:has(input[name=fabric][value="1"])');
+  assert.equal(await page.textContent('#statusmsg'), '');
+  await page.fill('#temp', '25');
+  await page.fill('#humid', '50');
+  await page.click('label:has(input[name=fabric][value="0.5"])');
+  assert.notEqual(await page.textContent('#result'), 'Please enter the data and press "calculate"');
+  assert.deepEqual(errors, []);
+  await page.close();
+});
