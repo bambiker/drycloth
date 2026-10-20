@@ -350,6 +350,7 @@ a { color: var(--link); }
 .humid .icon { background: var(--c-humid); }
 .wind .icon { background: var(--c-wind); }
 .width .icon { background: var(--c-width); }
+.hang .icon { background: #f4a261; }
 input[type="number"] {
   width: 100%;
   padding: 10px 8px;
@@ -363,6 +364,67 @@ input[type="number"] {
   border-radius: 12px;
 }
 input[type="number"]:focus { border-color: var(--navy-2); outline: none; }
+
+/* hanging time */
+.field.hang { grid-template-columns: 44px 1fr; }
+.hang-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.hang-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+input[type="datetime-local"] {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 10px;
+  font: inherit;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+}
+input[type="datetime-local"]:focus { border-color: var(--navy-2); outline: none; }
+.now {
+  flex: none;
+  padding: 2px 10px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--link);
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+/* fabric */
+.fabric { border: none; margin: 0 0 18px; padding: 0; }
+.fabric legend { font-weight: 500; margin-bottom: 10px; padding: 0; }
+.fabric-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+@media (max-width: 640px) { .fabric-options { grid-template-columns: 1fr 1fr; } }
+.fabric-options label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 64px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 2px solid var(--line);
+  background: var(--tile);
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.25;
+  cursor: pointer;
+}
+.fabric-options label small { color: var(--muted); font-weight: 400; }
+.fabric-options label:has(input:checked) { border-color: var(--c-width); background: var(--card); box-shadow: 0 0 0 3px rgba(154, 107, 255, 0.18); }
+.fabric-options label:has(input:focus-visible) { outline: 3px solid var(--sun); outline-offset: 2px; }
+.fabric-options input { position: absolute; opacity: 0; pointer-events: none; }
+.fabric .field { margin-top: 10px; }
+.fabric .field[hidden] { display: none; }
+.fabric .field.width { grid-template-columns: 44px 1fr 96px; }
 
 /* result */
 .result {
@@ -513,11 +575,28 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg></span>
           <label for="wind" data-i18n="wind">Wind speed [<span id="wind-unit">km/h</span>] (assume 0 for indoor):</label><input type="number" id="wind" value="0" size="4" inputmode="decimal">
         </div>
-        <div class="field width">
-          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
-          <label for="width" data-i18n="width">Fabric thickness [mm], please choose the thickest fabric:</label><input type="number" id="width" value="2" size="4" inputmode="decimal">
+        <div class="field hang">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <div class="hang-body">
+            <div class="hang-top"><label for="hangtime" data-i18n="hangtime">When do you hang the laundry?</label><button type="button" class="now" id="hangnow" data-i18n="now">Now</button></div>
+            <input type="datetime-local" id="hangtime">
+          </div>
         </div>
       </div>
+
+      <fieldset class="fabric">
+        <legend data-i18n="fabric">What are you hanging? Choose the thickest item:</legend>
+        <div class="fabric-options">
+          <label><input type="radio" name="fabric" value="2" checked><span data-i18n="fabric2">Towel, jeans or winter shirt</span><small data-i18n="mm2">2 mm</small></label>
+          <label><input type="radio" name="fabric" value="1"><span data-i18n="fabric1">T-shirt</span><small data-i18n="mm1">1 mm</small></label>
+          <label><input type="radio" name="fabric" value="0.5"><span data-i18n="fabric05">Moisture-wicking shirt</span><small data-i18n="mm05">0.5 mm</small></label>
+          <label><input type="radio" name="fabric" value="other"><span data-i18n="fabricother">Other thickness</span><small data-i18n="mmother">mm</small></label>
+        </div>
+        <div class="field width" id="widthfield" hidden>
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+          <label for="width" data-i18n="width">Fabric thickness [mm]:</label><input type="number" id="width" value="2" size="4" inputmode="decimal">
+        </div>
+      </fieldset>
 
       <button class="button navy" id="btncalc"><b data-i18n="calculate">calculate</b></button>
 
@@ -621,11 +700,46 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
   });
 });
 
+// when the laundry is hung: now, unless the user chose a time
+var hangInput = document.getElementById("hangtime");
+function localInputValue(date) {
+  var d = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return d.toISOString().slice(0, 16);
+}
+function resetHangTime() {
+  var now = new Date();
+  hangInput.value = localInputValue(now);
+  hangInput.max = localInputValue(new Date(now.getTime() + 7 * 24 * 3600 * 1000));
+  hangInput.dataset.chosen = "";
+}
+function hangTime() {
+  if (!hangInput.dataset.chosen || !hangInput.value) {return new Date();}
+  return new Date(hangInput.value);
+}
+resetHangTime();
+hangInput.addEventListener("input", function() {
+  hangInput.dataset.chosen = hangInput.value ? "1" : "";
+  if (weekt2 && document.querySelector('#useforecast').checked) {doCalc();}
+});
+document.getElementById("hangnow").addEventListener("click", function() {
+  resetHangTime();
+  if (weekt2 && document.querySelector('#useforecast').checked) {doCalc();}
+});
+
+// the thickness field only for "other"
+document.querySelectorAll('input[name="fabric"]').forEach(function(radio) {
+  radio.addEventListener("change", function() {
+    document.getElementById("widthfield").hidden = this.value !== "other";
+  });
+});
+
     function doCalc()
     {
          var temp = document.getElementById("temp").value;
          var humid = document.getElementById("humid").value;
-         var width = document.getElementById("width").value/2.;  //it dries from both sides
+         var fabric = document.querySelector('input[name="fabric"]:checked').value;
+         var width = (fabric === "other" ? document.getElementById("width").value : fabric) / 2.;  //it dries from both sides
+         var hang = hangTime();
          var wind = document.getElementById("wind").value;
          const elem = document.querySelector('#useforecast')
          const sun = document.querySelector('#sun').checked;
@@ -639,10 +753,11 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
 
          if (elem.checked && weekt2)
             {
-             const forecast = forecastcalc(width, sun);
+             const forecast = forecastcalc(width, sun, hang);
              hours = forecast.hours;
-             if (hours === Infinity) {notes.push(msg("nodryforecast"));}
-             else {notes.push(msg("dryby", formatTime(new Date(Date.now() + hours*3600*1000))));}
+             if (forecast.outOfRange) {notes.push(msg("outofrange"));}
+             else if (hours === Infinity) {notes.push(msg("nodryforecast"));}
+             else {notes.push(msg("dryby", formatTime(new Date(hang.getTime() + hours*3600*1000))));}
              if (forecast.rain) {notes.push(msg("rain") + " " + msg("rainstart", formatTime(forecast.rainStart)));}
              notes.push(msg("rainprob", forecast.maxProb));
              if (forecast.windy) {notes.push(msg("windy"));}
@@ -657,6 +772,7 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
              if (sun) {notes.push(msg("sunmanual"));}
              hours = calc(toCelsius(temp),humid,toKmh(wind),width);
              if (hours === Infinity) {notes.push(msg("nodry"));}
+             else {notes.push(msg("dryby", formatTime(new Date(hang.getTime() + hours*3600*1000))));}
             }
 
          result.innerHTML = (hours === Infinity) ? '-' : formatDuration(hours);

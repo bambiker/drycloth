@@ -6,6 +6,7 @@ var weekprob;
 var weekwind10;
 var weekradiation;
 var forecastStartHour; // index of the current hour in the forecast arrays
+var forecastBase; // the time of index 0 in the forecast arrays (ms)
 var units = defaultUnits(); // "metric" (°C, km/h) or "imperial" (°F, mph), what the user sees in the inputs
 
 var SUN_FACTOR = 0.25; // part of the sun radiation that is used for evaporation (clothes hang vertically and reflect part of it)
@@ -24,6 +25,8 @@ var messages = {
             he: "נראה שיהיה סוער. כדאי להשתמש ביותר אטבי כביסה."},
    nodry:  {en: "With these conditions the laundry will not dry (humidity too high).",
             he: "בתנאים האלה הכביסה לא תתייבש (הלחות גבוהה מדי)."},
+   outofrange: {en: "The forecast covers only the next 7 days, please choose an earlier hanging time.",
+            he: "התחזית מכסה רק את 7 הימים הקרובים, נא לבחור זמן תלייה מוקדם יותר."},
    nodryforecast: {en: "The laundry will not dry within the 7 day forecast.",
             he: "הכביסה לא תתייבש במהלך 7 ימי התחזית."},
    noforecast: {en: "Forecast data is not loaded yet, please press the forecast button first. Calculated with the values above.",
@@ -135,10 +138,11 @@ function formatTime(date) {
    return date.toLocaleString(isHe ? "he-IL" : [], options);
 }
 
-// the time of index i in the forecast arrays (open-meteo starts at 00:00 GMT of today)
+// the time of index i in the forecast arrays (open-meteo starts at 00:00 GMT of the day it was asked)
 function forecastTime(i) {
    var d = new Date();
-   return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) + i * 3600 * 1000);
+   var base = forecastBase || Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+   return new Date(base + i * 3600 * 1000);
 }
 
 async function getJSON() {
@@ -156,8 +160,9 @@ async function getweather()
 {
     const json = await getJSON();
 
-    // open-meteo returns hourly data starting at 00:00 GMT of today, so the current hour is at index getUTCHours()
-    const hour = new Date().getUTCHours();
+    // open-meteo returns hourly data starting at 00:00 GMT of today
+    forecastBase = json.hourly.time ? Date.parse(json.hourly.time[0] + "Z") : null;
+    const hour = Math.max(0, Math.floor((Date.now() - forecastTime(0).getTime()) / 3600000));
 
     weekrh2 = json.hourly.relative_humidity_2m;
     weekt2 = json.hourly.temperature_2m;
@@ -174,14 +179,24 @@ async function getweather()
     document.querySelector('#useforecast').checked = true;
 }
 
-// width is the remaining water in mm, every hour the drying rate (mm/hour) of that hour is removed
-function forecastcalc(width, sun){
+// width is the remaining water in mm, every hour the drying rate (mm/hour) of that hour is removed.
+// start is when the laundry is hung (a Date), without it: from the current hour
+function forecastcalc(width, sun, start){
 var totalhours = 0;
 var totalrain = 0;
 var rainStart = null;
 var maxProb = 0;
 var maxwind = 0;
 var i = forecastStartHour;
+var hourPart = 1; // the part of the first hour that is left after hanging
+if (start)
+{
+   var fromBase = (start.getTime() - forecastTime(0).getTime()) / 3600000;
+   i = Math.max(0, Math.floor(fromBase));
+   hourPart = fromBase > 0 ? 1 - (fromBase - i) : 1;
+   if (i >= weekt2.length || weekt2[i] == null)
+      {return {hours: Infinity, outOfRange: true, rain: false, rainStart: null, maxProb: 0, windy: false};}
+}
 while (width > 0)
 {
    if (i >= weekt2.length || weekt2[i] == null)
@@ -196,20 +211,22 @@ while (width > 0)
       {maxProb = weekprob[i];}
    if (weekwind10[i] > maxwind)
       {maxwind = weekwind10[i];}
-   if (rate >= width)
+   if (rate * hourPart >= width)
    {
       totalhours = totalhours + width/rate;
       width = 0;
    } else
    {
-      totalhours = totalhours + 1;
-      width = width - Math.max(rate, 0);
+      totalhours = totalhours + hourPart;
+      width = width - Math.max(rate, 0) * hourPart;
    }
+   hourPart = 1;
    i = i + 1;
 } // end of while width>0
 
-if (rainStart !== null && rainStart < new Date())
-   {rainStart = new Date();}
+var from = start || new Date();
+if (rainStart !== null && rainStart < from)
+   {rainStart = from;}
 return {hours: totalhours, rain: totalrain > 0.1, rainStart: rainStart, maxProb: maxProb, windy: maxwind > 12};
 }
 

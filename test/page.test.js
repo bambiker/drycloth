@@ -209,3 +209,48 @@ test('the units the user chose are remembered on the next visit', async () => {
   assert.equal(await page.textContent('#temp-unit'), '°F');
   await context.close();
 });
+
+test('choosing what is hung instead of the thickness', async () => {
+  const { page, errors } = await open('/');
+  await page.fill('#temp', '25');
+  await page.fill('#humid', '50');
+  await page.click('#btncalc');
+  assert.equal(await page.textContent('#result'), '3 hours and 25 minutes'); // towel, the default
+  await page.click('label:has(input[name=fabric][value="1"])');
+  await page.click('#btncalc');
+  assert.equal(await page.textContent('#result'), '1 hour and 45 minutes'); // T-shirt
+  assert.equal(await page.isVisible('#width'), false);
+  await page.click('label:has(input[name=fabric][value=other])');
+  assert.equal(await page.isVisible('#width'), true);
+  await page.fill('#width', '1');
+  await page.click('#btncalc');
+  assert.equal(await page.textContent('#result'), '1 hour and 45 minutes');
+  assert.deepEqual(errors, []);
+  await page.close();
+
+  const he = await open('/he/');
+  assert.equal(await he.page.textContent('[data-i18n="fabric1"]'), 'חולצה קצרה');
+  assert.equal(await he.page.textContent('[data-i18n="mm2"]'), '2 מ"מ');
+  await he.page.close();
+});
+
+test('the hanging time is now by default and can be changed', async () => {
+  const { page, errors } = await open('/');
+  const now = await page.evaluate(() => [hangInput.value, localInputValue(new Date())]);
+  assert.equal(now[0], now[1]);
+  // hang tomorrow at 08:00: a towel at 25°C and 50% takes about 3.5 hours, dry around 11:27
+  const tomorrow = await page.evaluate(() => {
+    const d = new Date(Date.now() + 24 * 3600 * 1000);
+    return localInputValue(d).slice(0, 10) + 'T08:00';
+  });
+  await page.fill('#hangtime', tomorrow);
+  await page.fill('#temp', '25');
+  await page.fill('#humid', '50');
+  await page.click('#btncalc');
+  assert.match(await page.textContent('#statusmsg'), /11:27/);
+  // back to now
+  await page.click('#hangnow');
+  assert.equal(await page.evaluate(() => hangInput.dataset.chosen), '');
+  assert.deepEqual(errors, []);
+  await page.close();
+});
