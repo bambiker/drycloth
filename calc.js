@@ -50,6 +50,27 @@ function msg(key) {
 // Fahrenheit is used in the USA and a few other countries, the rest of the world uses Celsius
 function defaultUnits() {
    var fahrenheitCountries = ["US", "PR", "GU", "VI", "AS", "MP", "UM", "BS", "BZ", "KY", "PW", "FM", "MH", "LR"];
+   var fahrenheitTimeZones = ["America/New_York", "America/Chicago", "America/Denver", "America/Los_Angeles", "America/Phoenix",
+                              "America/Anchorage", "America/Boise", "America/Detroit", "America/Juneau", "America/Sitka",
+                              "America/Nome", "America/Adak", "America/Yakutat", "America/Metlakatla", "America/Menominee",
+                              "America/Puerto_Rico", "America/St_Thomas", "Pacific/Honolulu", "Pacific/Guam", "Pacific/Saipan",
+                              "Pacific/Pago_Pago", "America/Nassau", "America/Belize", "America/Cayman", "Pacific/Palau",
+                              "Pacific/Majuro", "Pacific/Kwajalein", "Pacific/Chuuk", "Pacific/Pohnpei", "Pacific/Kosrae",
+                              "Africa/Monrovia"];
+   // the user's own choice from a previous visit
+   try {
+      var saved = localStorage.getItem("units");
+      if (saved === "metric" || saved === "imperial") {return saved;}
+   } catch (e) {}
+   // the time zone says where the user is; the browser language doesn't
+   // (many browsers in Israel, for example, are in English (US))
+   try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      if (tz && !/^(UTC|GMT|Etc\/)/.test(tz)) {
+         return (fahrenheitTimeZones.indexOf(tz) >= 0 || /^America\/(Indiana|Kentucky|North_Dakota)\//.test(tz)) ? "imperial" : "metric";
+      }
+   } catch (e) {}
+   // no time zone: by the country in the browser language
    var languages = navigator.languages || [navigator.language];
    for (var i = 0; i < languages.length; i++) {
       var parts = (languages[i] || "").split("-");
@@ -58,17 +79,6 @@ function defaultUnits() {
          return fahrenheitCountries.indexOf(region.toUpperCase()) >= 0 ? "imperial" : "metric";
       }
    }
-   // no country in the browser language (e.g. "en"), guess by the time zone
-   try {
-      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
-      var usZones = ["America/New_York", "America/Chicago", "America/Denver", "America/Los_Angeles", "America/Phoenix",
-                     "America/Anchorage", "America/Boise", "America/Detroit", "America/Juneau", "America/Sitka",
-                     "America/Nome", "America/Adak", "America/Yakutat", "America/Metlakatla", "America/Menominee",
-                     "America/Puerto_Rico", "Pacific/Honolulu", "Pacific/Guam"];
-      if (usZones.indexOf(tz) >= 0 || /^America\/(Indiana|Kentucky|North_Dakota)\//.test(tz)) {
-         return "imperial";
-      }
-   } catch (e) {}
    return "metric";
 }
 
@@ -81,6 +91,10 @@ function fromKmh(value)     { return units === "imperial" ? Number(value) / 1.60
 function setUnits(newUnits, convert) {
    var temp = document.getElementById("temp");
    var wind = document.getElementById("wind");
+   if (convert) {
+      // the user chose, remember it for the next visit
+      try {localStorage.setItem("units", newUnits);} catch (e) {}
+   }
    if (convert && newUnits !== units) {
       var tempC = temp.value === "" ? "" : toCelsius(temp.value);
       var windKmh = wind.value === "" ? "" : toKmh(wind.value);

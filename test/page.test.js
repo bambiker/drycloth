@@ -159,7 +159,7 @@ test('the Hebrew page has its own Hebrew structured data and share preview', asy
     [...document.querySelectorAll('script[type="application/ld+json"]')].map(s => JSON.parse(s.textContent)));
   assert.deepEqual(data.map(d => d['@type']), ['WebApplication', 'FAQPage']);
   assert.equal(data[0].url, 'https://bambiker.github.io/drycloth/he/');
-  assert.equal(data[1].mainEntity.length, 5);
+  assert.equal(data[1].mainEntity.length, 6);
   assert.match(data[1].mainEntity[0].acceptedAnswer.text, /בערך ב-3\.5 שעות/);
   assert.equal(await page.getAttribute('meta[property="og:url"]', 'content'), 'https://bambiker.github.io/drycloth/he/');
   assert.equal(await page.getAttribute('meta[property="og:locale"]', 'content'), 'he_IL');
@@ -185,4 +185,27 @@ test('sitemap.xml is valid and lists both languages', async () => {
   });
   assert.deepEqual(urls, ['https://bambiker.github.io/drycloth/', 'https://bambiker.github.io/drycloth/he/']);
   await page.close();
+});
+
+test('in Israel the default is Celsius, also when the browser is in English (US)', async () => {
+  const page = await browser.newPage({ locale: 'en-US', timezoneId: 'Asia/Jerusalem' });
+  await page.route(url => !url.href.startsWith(base), route => route.abort());
+  for (const url of ['/', '/he/']) {
+    await page.goto(base + url);
+    assert.equal(await page.isChecked('input[value=metric]'), true);
+    assert.equal(await page.textContent('#wind-unit'), url === '/' ? 'km/h' : 'קמ"ש');
+  }
+  await page.close();
+});
+
+test('the units the user chose are remembered on the next visit', async () => {
+  const context = await browser.newContext({ locale: 'en-US', timezoneId: 'Asia/Jerusalem' });
+  const page = await context.newPage();
+  await page.route(url => !url.href.startsWith(base), route => route.abort());
+  await page.goto(base + '/');
+  await page.click('label:has(input[value=imperial])');
+  await page.reload();
+  assert.equal(await page.isChecked('input[value=imperial]'), true);
+  assert.equal(await page.textContent('#temp-unit'), '°F');
+  await context.close();
 });
