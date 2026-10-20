@@ -1,0 +1,25 @@
+# Clothesline drying time calculator
+
+> A free web calculator that estimates how long laundry takes to dry on a clothesline, from the temperature, relative humidity, wind speed and fabric thickness, or hour by hour from the weather forecast for the user's location (open-meteo.com). Available in English and Hebrew. Open source.
+
+- English: https://bambiker.github.io/drycloth/
+- Hebrew (עברית): https://bambiker.github.io/drycloth/?he
+- Source code: https://github.com/bambiker/drycloth
+
+## How it works
+
+- Evaporation rate (kg per m² per hour, which is also mm of water per hour): (25 + 19 × wind in m/s) × saturation humidity × (1 − relative humidity), the standard formula for evaporation from a water surface.
+- The fabric dries from both sides, so half of its thickness is used.
+- With the forecast, the rate of every hour is subtracted until the laundry is dry; the wind is taken at 1.5 m (half of the 10 m forecast wind).
+- Optional direct sunlight adds evaporation from the solar radiation (only with the forecast; inner clotheslines are usually shaded).
+- It warns about rain before the laundry dries, the chance of rain, and strong wind (above 12 km/h at 10 m).
+
+## Example
+
+At 25°C (77°F), 50% relative humidity and no wind, a towel (2 mm) dries in about 3.5 hours.
+
+## Rules of thumb
+
+- Towels, winter shirts and jeans: 2 mm. T-shirts: 1 mm. Moisture-wicking shirts: 0.5 mm effective thickness.
+- Indoors without heating: use the average temperature and humidity of day and night, and wind 0.
+- Indoors with heating: use the maximum (midday) temperature.
