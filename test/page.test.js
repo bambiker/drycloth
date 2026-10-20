@@ -327,7 +327,7 @@ test('on iPhone the install button shows how to add the site from Safari', async
   await context.close();
 });
 
-test('after the forecast the page goes to the item choice, and a different item is calculated right away', async () => {
+test('after the forecast the page goes to the hanging time, and a different item is calculated right away', async () => {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: 'he-IL',
     timezoneId: 'Asia/Jerusalem', geolocation: { latitude: 32, longitude: 35 }, permissions: ['geolocation'] });
   const page = await context.newPage();
@@ -341,10 +341,11 @@ test('after the forecast the page goes to the item choice, and a different item 
   await page.goto(base + '/he/');
   await page.click('#find-me');
   await page.waitForFunction(() => document.getElementById('result').textContent === '3 שעות ו-25 דקות');
-  // the item choice is at the top of the screen and the result is on the screen too
-  await page.waitForFunction(() => Math.abs(document.querySelector('.fabric').getBoundingClientRect().top) < 20);
-  assert.equal(await page.evaluate(() => document.activeElement.name), 'fabric');
+  // the hanging time is at the top of the screen, and the item choice and the whole result are on the screen too
+  await page.waitForFunction(() => Math.abs(document.querySelector('.field.hang').getBoundingClientRect().top - 12) < 20);
+  assert.ok(await page.evaluate(() => document.querySelector('.fabric').getBoundingClientRect().bottom <= window.innerHeight));
   assert.ok(await page.evaluate(() => document.querySelector('.result').getBoundingClientRect().bottom <= window.innerHeight));
+  assert.notEqual(await page.evaluate(() => document.activeElement.id), 'hangtime');
   // a T-shirt, without pressing "calculate"
   await page.click('label:has(input[name=fabric][value="1"])');
   assert.equal(await page.textContent('#result'), 'שעה ו-45 דקות');
