@@ -9,7 +9,7 @@ const path = require('node:path');
 const { chromium } = require('playwright');
 
 const root = path.join(__dirname, '..');
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml' };
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8' };
 let server, base, browser;
 
 before(async () => {
@@ -56,7 +56,7 @@ for (const url of ['/', '/index.html']) {
     const l = await language(page);
     assert.equal(l.lang, 'en');
     assert.equal(l.dir, '');
-    assert.equal(l.title, 'Clothesline drying time calculator');
+    assert.equal(l.title, 'How long does laundry take to dry? Clothesline drying time calculator');
     assert.equal(l.heading, 'Clothesline drying time calculator');
     assert.equal(await page.textContent('#langswitch'), 'עב');
     assert.deepEqual(errors, []);
@@ -70,7 +70,7 @@ for (const url of ['/?he', '/index.html?he', '/?he&fbclid=abc', '/index.html?utm
     const l = await language(page);
     assert.equal(l.lang, 'he');
     assert.equal(l.dir, 'rtl');
-    assert.equal(l.title, 'מחשבון זמן ייבוש כביסה על חבל');
+    assert.equal(l.title, 'כמה זמן לוקח לכביסה להתייבש? מחשבון זמן ייבוש כביסה על חבל');
     assert.equal(l.heading, 'מחשבון לחישוב זמן ייבוש הכביסה');
     assert.equal(await page.textContent('#langswitch'), 'En');
     assert.equal(await page.textContent('#temp-unit'), 'צלזיוס');
@@ -118,5 +118,54 @@ test('every Hebrew text has a place in the page and every place has a Hebrew tex
   const head = ['title', 'description']; // used by translatePage itself
   assert.deepEqual(keys.used.filter(k => !keys.he.includes(k)), [], 'keys in the page without Hebrew text');
   assert.deepEqual(keys.he.filter(k => !keys.used.includes(k) && !head.includes(k)), [], 'Hebrew texts not used in the page');
+  await page.close();
+});
+
+test('canonical address by language', async () => {
+  for (const [url, canonical] of [['/', 'https://bambiker.github.io/drycloth/'], ['/index.html', 'https://bambiker.github.io/drycloth/'],
+                                   ['/?he&fbclid=abc', 'https://bambiker.github.io/drycloth/?he']]) {
+    const { page } = await open(url);
+    assert.equal(await page.getAttribute('link[rel=canonical]', 'href'), canonical);
+    assert.equal(await page.locator('link[rel=canonical]').count(), 1);
+    await page.close();
+  }
+});
+
+test('structured data (JSON-LD) is valid and its example matches the calculator', async () => {
+  const { page } = await open('/');
+  const data = await page.evaluate(() =>
+    [...document.querySelectorAll('script[type="application/ld+json"]')].map(s => JSON.parse(s.textContent)));
+  assert.deepEqual(data.map(d => d['@type']), ['WebApplication', 'FAQPage']);
+  assert.ok(data[1].mainEntity.length > 0);
+  for (const q of data[1].mainEntity) {
+    assert.equal(q['@type'], 'Question');
+    assert.ok(q.name && q.acceptedAnswer.text);
+  }
+  // "at 25°C, 50% humidity and no wind, a 2 mm towel dries in about 3.5 hours" (also in llms.txt)
+  assert.match(data[1].mainEntity[0].acceptedAnswer.text, /about 3\.5 hours/);
+  const hours = await page.evaluate(() => calc(25, 50, 0, 2 / 2));
+  assert.equal(Math.round(hours * 2) / 2, 3.5);
+  assert.match(fs.readFileSync(path.join(root, 'llms.txt'), 'utf8'), /about 3\.5 hours/);
+  await page.close();
+});
+
+test('share preview (Open Graph) points to files that exist', async () => {
+  const { page } = await open('/');
+  const image = await page.getAttribute('meta[property="og:image"]', 'content');
+  const local = image.replace('https://bambiker.github.io/drycloth/', '/');
+  assert.equal((await page.request.get(base + local)).status(), 200);
+  assert.ok(await page.getAttribute('meta[property="og:title"]', 'content'));
+  assert.ok(await page.getAttribute('meta[property="og:description"]', 'content'));
+  await page.close();
+});
+
+test('sitemap.xml is valid and lists both languages', async () => {
+  const { page } = await open('/');
+  const urls = await page.evaluate(async () => {
+    const xml = new DOMParser().parseFromString(await (await fetch('sitemap.xml')).text(), 'application/xml');
+    if (xml.querySelector('parsererror')) {return null;}
+    return [...xml.getElementsByTagName('loc')].map(l => l.textContent);
+  });
+  assert.deepEqual(urls, ['https://bambiker.github.io/drycloth/', 'https://bambiker.github.io/drycloth/?he']);
   await page.close();
 });
