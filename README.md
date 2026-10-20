@@ -10,8 +10,15 @@ https://bambiker.github.io/drycloth/
 https://bambiker.github.io/drycloth/?he
 
 ## Tests ##
-The calculation in `calc.js` has automated tests (no dependencies, needs Node.js 20 or newer):
+There are automated tests (needs Node.js 20 or newer): `test/calc.test.js` for the calculation in `calc.js`,
+and `test/page.test.js` that opens the page in a browser, in English and in Hebrew (`?he`):
 
+    npm install
+    npx playwright install chromium
     npm test
+
+## Translations ##
+`index.html` is written in English. The Hebrew texts are in `lang.js`: every element with `data-i18n="key"`
+gets the Hebrew text of that key when the address has `?he`. The calculation messages are in `calc.js`.
 
 The tests also run on GitHub for every pull request.

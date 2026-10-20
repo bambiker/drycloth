@@ -8,6 +8,10 @@
 
   <base target="_top">
   <title>Clothesline drying time calculator</title>
+  <!-- the Hebrew version is the same page with ?he -->
+  <link rel="alternate" hreflang="en" href="https://bambiker.github.io/drycloth/">
+  <link rel="alternate" hreflang="he" href="https://bambiker.github.io/drycloth/?he">
+  <link rel="alternate" hreflang="x-default" href="https://bambiker.github.io/drycloth/">
    
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G78VLV9YZF"></script>
@@ -117,167 +121,113 @@
 <body>
     <script>
     var isHe = new URLSearchParams(window.location.search).has('he'); // also works with extra parameters, e.g. ?he&fbclid=...
-    if (isHe)
-       {
-        document.documentElement.setAttribute('lang', 'he');
-        document.documentElement.setAttribute('dir', 'rtl');
-        document.title = 'מחשבון זמן ייבוש כביסה על חבל';
-        document.querySelector('meta[name="description"]').setAttribute('content', 'חישוב כמה זמן לוקח לכביסה להתייבש על חבל הכביסה לפי תחזית מזג האוויר: טמפרטורה, לחות ורוח');
-       }
     </script>
+    <script type="text/javascript" src="lang.js"></script>
     <script type="text/javascript" src="calc.js"></script>
-    <div class="container"> 
-    <span id="span1"></span>
-    <script>
-if (isHe)    
-{
-  var myString = `
-  <span class="langen"><a href="index.html">En</a></span>
-              <h1>מחשבון לחישוב זמן ייבוש הכביסה</h1>
-   <button class="button" id = "find-me"><b>לחצו כאן כדי להשתמש בטמפרטורה ובלחות מהתחזית</b></button><br/>
-     <p id = "status"></p>
-     
+    <div class="container">
+    <a id="langswitch" class="langhb" href="index.html?he">עב</a>
+    <h1 data-i18n="heading">Clothesline drying time calculator</h1>
+
+    <button class="button" id="find-me"><b data-i18n="findme">Press here to take the temperature and humidity from online forecast</b></button><br/>
+    <p id="status"></p>
+
 <div class="options">
   <label>
-    <input type="checkbox" id="useforecast"> שימוש בתחזית
+    <input type="checkbox" id="useforecast"> <span data-i18n="useforecast">Using forecast</span>
   </label>
 
   <label>
-    <input type="checkbox" id="sun"> שמש ישירה
+    <input type="checkbox" id="sun"> <span data-i18n="sun">Direct sunlight</span>
   </label>
 
   <label>
     <input type="radio" name="units" value="metric" checked>
-    צלזיוס, קמ"ש, מ"מ
+    <span data-i18n="metric">°C, km/h, mm</span>
   </label>
 
   <label>
     <input type="radio" name="units" value="imperial">
-    פרנהייט, MPH, מ"מ
+    <span data-i18n="imperial">°F, mph, mm (fabric)</span>
   </label>
 </div>
-    <small>שמש ישירה נלקחת בחשבון רק בשימוש בתחזית. אם יש כמה חבלים, החבלים הפנימיים בדרך כלל מוצלים על ידי החיצוניים, ולכן עבורם עדיף לא לסמן.</small>
+    <small data-i18n="sunnote">Direct sunlight is only taken into account when using the forecast. With several clotheslines, the inner lines are usually shaded by the outer ones, so leave it unchecked for them.</small>
     <br>
 
-    <label for="temp">הטמפרטורה במעלות <span id="temp-unit">צלזיוס</span>:</label><input  type="number"  id="temp" size="4">
-    <label for="humid">הלחות היחסית [%]:</label><input  type="number"  id="humid"  size="4" >
-    <label for="wind">מהירות הרוח [<span id="wind-unit">קמ"ש</span>] (אפס בשביל ייבוש בתוך הבית):</label><input  type="number"  id="wind" value="0" size="4"  >
-    <label for="width">עובי הבד במ"מ, נא לבחור את הבד הכי עבה:</label><input  type="number"  id="width" value="2"   size="4" >
-   
+    <label for="temp" data-i18n="temp">Temperature [<span id="temp-unit">°C</span>]:</label><input type="number" id="temp" size="4">
+    <label for="humid" data-i18n="humid">Relative humidity [%]:</label><input type="number" id="humid" size="4">
+    <label for="wind" data-i18n="wind">Wind speed [<span id="wind-unit">km/h</span>] (assume 0 for indoor):</label><input type="number" id="wind" value="0" size="4">
+    <label for="width" data-i18n="width">Fabric thickness [mm], please choose the thickest fabric:</label><input type="number" id="width" value="2" size="4">
+
     <br>
-    <button class="button" id="btncalc"><b>חשב</b></button><br><br>
-   
-   זמן הייבוש:
-  <b>  <span id="result">נא להזין נתונים וללחוץ על חשב</span>  </b>
+    <button class="button" id="btncalc"><b data-i18n="calculate">calculate</b></button><br><br>
+
+    <span data-i18n="dryingtime">Drying time:</span>
+    <b><span id="result" data-i18n="placeholder">Please enter the data and press "calculate"</span></b>
     <br>
- <b>   <span id="statusmsg"></span>  </b>
+    <b><span id="statusmsg"></span></b>
     <br>
-    <h2>למה המחשבון חשוב</h2>
-    לתלות כביסה על החבלים חשוב לאיכות הסביבה וגם חוסך חשמל וכסף. השתמשו במחשבון על מנת:<br>
+
+    <h2 data-i18n="why">Why is the calculator important?</h2>
+    <span data-i18n="whyintro">Hanging laundry on the lines is good for the environment and also saves electricity and money. Use the calculator to:</span><br>
     <ul>
-    <li>לוודא שהכביסה תתייבש לפני שיתחיל לרדת גשם</li>
-    <li>אם מייבשים בבית, כדי לדעת אם כדאי להפעיל חימום או מאוורר לזירוז הייבוש</li>    
-    <li>אם צריך חולצה לארוע מסוים, אז לדעת אם לכבס עכשיו או שאפשר גם מחר</li>
+    <li data-i18n="why1">Make sure the laundry dries before it starts raining.</li>
+    <li data-i18n="why2">If you are drying at home, know if you should turn on the heating or a fan to speed up the drying process.</li>
+    <li data-i18n="why3">If you need a shirt for a certain event, then know whether to wash it now or if you can also wash it tomorrow.</li>
     </ul>
-    <h2>כללי אצבע למחשבון</h2>
+    <h2 data-i18n="rules">Rules of thumb for the calculator</h2>
     <ul>
-    <li>אם תולים כביסה בבית בלי חימום הטמפרטורה תהיה ממוצע של היום והלילה, וכך גם הלחות</li>    
-    <li>אם תולים כביסה בבית עם חימום, הטמפרטורה תהיה הטמפרטורה המקסימלית, כלומר טמפרטורת הצהריים</li>    
-    <li>מגבת, חולצת חורף או ג'ינס עוביים 2 מ"מ </li>    
-    <li>חולצות קצרות עוביים 1 מ"מ</li>  
-    <li>חולצה מנדפת עובייה האפקטיבי הוא 0.5 מ"מ</li>  
-    <li>המחשבון עובד רק בטמפרטורות גבוהות מאפס מעלות</li>
+    <li data-i18n="rule1">If you hang laundry at home without heating, the temperature will be the average day and night, as well as the humidity.</li>
+    <li data-i18n="rule2">If you hang laundry at home with heating, the temperature will be the maximum temperature, i.e. the midday temperature.</li>
+    <li data-i18n="rule3">Towels, winter shirts, or jeans are 2 mm thick.</li>
+    <li data-i18n="rule4">T-shirts are 1 mm thick.</li>
+    <li data-i18n="rule5">Moisture-wicking shirts have an effective thickness of 0.5 mm.</li>
+    <li data-i18n="rule6">The calculator works only above zero degrees Celsius.</li>
     </ul>
-    <h2>טיפים</h2>
+    <h2 data-i18n="tips">Tips</h2>
     <ul>
-    <li>אם תולים כביסה בבית ולא מפעילים חימום כדאי לפתוח חלון (ועדיף שני חלונות או חלון ודלת).</li>    
-    <li>את הכביסה שמתייבשת הכי לאט יש לשים בחבלים החיצוניים</li>
-    <li>עדיף לתלות את הכביסה בצורה מרווחת</li>
-    <li>מומלץ לתלות בגדים הפוך (שהצד הפנימי של הבגד יהיה בחוץ) כדי להפחית נזקי השמש לבד.</li>
-    <li>נער את הבגדים לפני תלייתם, זה יגרום לפחות קמטים ויכול להסיר לכלוך שנותר על הבגדים.</li>
-    <li>אם הבגדים התקפלו מעט כשהם ניתלו (למשל ליד השרוולים), העובי האפקטיבי שלהם מוכפל למעשה.</li>
-    <li>אם זה אפשרי, יש לתלות את הכביסה כשחבלי הכביסה מקבילים לכיוון הרוח הממוצעת</li>  
-    <li>אם הרוח חזקה, כדאי להשתמש ביותר אטבי כביסה</li>
+    <li data-i18n="tip1">If you hang laundry at home and do not turn on the heating, you should open a window (preferably two windows or a window and a door).</li>
+    <li data-i18n="tip2">The laundry that dries the slowest should be put on the outer lines.</li>
+    <li data-i18n="tip3">It is better to hang the laundry in a spacious way.</li>
+    <li data-i18n="tip4">It is a good idea to hang clothes inside out to reduce sun damage to the fabric.</li>
+    <li data-i18n="tip5">If the clothes were slightly folded when hung (for example near the sleeves), their effective thickness is doubled.</li>
+    <li data-i18n="tip6">Shake your clothes before hanging them, this will cause fewer wrinkles and can remove any dirt left on the clothes.</li>
+    <li data-i18n="tip7">If possible, hang the laundry with the clotheslines parallel to the direction of the average wind.</li>
+    <li data-i18n="tip8">If the wind is strong, it is better to use more clothespins (clothes pegs).</li>
     </ul>
-           `;
-        }
-        else
-        {
-  var myString = `
-    <div class="langhb"><a href="index.html?he">עב</a></div>
-    <h1>Clothesline drying time calculator</h1>
- 
-    <button class="button" id = "find-me"><b>Press here to take the temperature and humidity from online forecast</b></button><br/>
-       <p id = "status"></p>
- 
-<div class="options">
-  <label>
-    <input type="checkbox" id="useforecast"> Using forecast
-  </label>
 
-  <label>
-    <input type="checkbox" id="sun"> Direct sunlight
-  </label>
-
-  <label>
-    <input type="radio" name="units" value="metric" checked>
-    °C, km/h, mm
-  </label>
-
-  <label>
-    <input type="radio" name="units" value="imperial">
-    °F, mph, mm (fabric)
-  </label>
+<div style="text-align: left;">
+We use open source, join us @ <a href="https://github.com/bambiker/drycloth" target="_blank"> https://github.com/bambiker/drycloth </a> <br>
+Weather forecast is taken from  <a href="https://open-meteo.com/" target="_blank"> https://open-meteo.com </a>
 </div>
-    <small>Direct sunlight is only taken into account when using the forecast. With several clotheslines, the inner lines are usually shaded by the outer ones, so leave it unchecked for them.</small>
-    <br>
+<br>
 
-    <br>
-    <label for="temp">Temperature [<span id="temp-unit">°C</span>]:</label><input type="number" id="temp" size="4">
-    <label for="humid">Relative humidity [%]:</label><input  type="number"  id="humid"  size="4"  >
-    <label for="wind">Wind speed [<span id="wind-unit">km/h</span>] (assume 0 for indoor):</label><input type="number" id="wind" value="0" size="4">
-    <label for="width">Fabric thickness [mm], please choose the thickest fabric:</label><input  type="number"  id="width" value="2" size="4"  >
-   
-    <br>
-    <button class="button" id="btncalc"><b>calculate</b></button><br><br>
- 
-   Drying time:
- <b>   <span id="result">Please enter the data and press "calculate"</span>  </b>
-    <br>
- <b>   <span id="statusmsg"></span>  </b>
-    <br>
+<a href="https://forms.gle/1oiFPe4BZNYsyZLv7" data-i18n-href="contacturl" target="_blank"><input type="button" name="button" value="Contact us" data-i18n-value="contact"></a><br><br>
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://bambiker.github.io/drycloth" data-i18n-data-a2a-url="shareurl">
+<a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+<a class="a2a_button_copy_link"></a>
+<a class="a2a_button_twitter"></a>
+<a class="a2a_button_x"></a>
+<a class="a2a_button_whatsapp"></a>
+<a class="a2a_button_email"></a>
+<a class="a2a_button_telegram"></a>
+<a class="a2a_button_sms"></a>
+<a class="a2a_button_facebook"></a>
+<a class="a2a_button_pinterest"></a>
+<a class="a2a_button_linkedin"></a>
+<a class="a2a_button_reddit"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<a class="a2a_button_google_gmail"></a>
+</div>
+ <br>
+ <br>
+ <div style="text-align: center;">
+      <img src="clothlineclock.jpg" width="80%" loading="lazy" alt="Image of clothlines with a clock" data-i18n-alt="imagealt">
+ </div>
+  </div>
 
-    
-    <h2>Why is the calculator important?</h2>
-    Hanging laundry on the lines is good for the environment and also saves electricity and money. Use the calculator to:<br>
-    <ul>
-    <li>Make sure the laundry dries before it starts raining.</li>
-    <li>If you are drying at home, know if you should turn on the heating or a fan to speed up the drying process.</li>
-    <li>If you need a shirt for a certain event, then know whether to wash it now or if you can also wash it tomorrow.</li>
-    </ul>
-    <h2>Rules of thumb for the calculator</h2>
-    <ul>
-    <li>If you hang laundry at home without heating, the temperature will be the average day and night, as well as the humidity.</li> 
-    <li>If you hang laundry at home with heating, the temperature will be the maximum temperature, i.e. the midday temperature.</li>  
-    <li>Towels, winter shirts, or jeans are 2 mm thick.</li>
-    <li>T-shirts are 1 mm thick.</li>
-    <li>Moisture-wicking shirts have an effective thickness of 0.5 mm.</li>
-    <li>The calculator works only above zero degrees Celsius.</li>
-    </ul>
-    <h2>Tips</h2>
-    <ul>
-    <li>If you hang laundry at home and do not turn on the heating, you should open a window (preferably two windows or a window and a door).</li>
-    <li>The laundry that dries the slowest should be put on the outer lines.</li>
-    <li>It is better to hang the laundry in a spacious way.</li>
-    <li>It is a good idea to hang clothes inside out to reduce sun damage to the fabric.</li>
-    <li>If the clothes were slightly folded when hung (for example near the sleeves), their effective thickness is doubled.</li>
-    <li>Shake your clothes before hanging them, this will cause fewer wrinkles and can remove any dirt left on the clothes.</li>
-    <li>If possible, hang the laundry with the clotheslines parallel to the direction of the average wind.</li>  
-    <li>If the wind is strong, it is better to use more clothespins (clothes pegs).</li>
-    </ul>              
-           `;
-        }
-document.getElementById('span1').innerHTML=myString;
+<script>
+// the page is written in English, in Hebrew the texts are replaced from lang.js
+if (isHe) {translatePage();}
 
 document.querySelectorAll('input[name="units"]').forEach(radio => {
   radio.addEventListener('change', function() {
@@ -289,64 +239,11 @@ document.querySelectorAll('input[name="units"]').forEach(radio => {
 document.querySelector('input[name="units"][value="' + units + '"]').checked = true;
 setUnits(units, false);
 </script>
-   
-<div style="text-align: left;">     
-We use open source, join us @ <a href="https://github.com/bambiker/drycloth" target="_blank"> https://github.com/bambiker/drycloth </a> <br>
-Weather forecast is taken from  <a href="https://open-meteo.com/" target="_blank"> https://open-meteo.com </a> 
-</div>
-<br>
-
-<span id="span2"></span>
-<script>
- if (isHe)    
-{
-   var myString = "<a href='https://forms.gle/FJx3CNFUcExcG9Fn9' target='_blank'> <input type='button' name='button' value='צור קשר'></a><br>"+
-"<div class='a2a_kit a2a_kit_size_32 a2a_default_style' data-a2a-url='https://bambiker.github.io/drycloth?he'>"+
-"<a class='a2a_dd' href='https://www.addtoany.com/share'></a>"+
-"<a class=\"a2a_button_copy_link\"></a>"+
-"<a class=\"a2a_button_twitter\"></a>"+
-"<a class=\"a2a_button_x\"></a>"+
-"<a class=\"a2a_button_whatsapp\"></a>"+
-"<a class=\"a2a_button_email\"></a>"+
-"<a class=\"a2a_button_telegram\"></a>"+
-"<a class=\"a2a_button_sms\"></a>"+
-"<a class=\"a2a_button_facebook\"></a>"+
-"<a class=\"a2a_button_pinterest\"></a>"+
-"<a class=\"a2a_button_linkedin\"></a>"+
-"<a class=\"a2a_button_reddit\"></a>"+
-"<a class=\"a2a_button_facebook_messenger\"></a>"+
-"<a class=\"a2a_button_google_gmail\"></a>"+
-"</div>";
-
-}
- else
- {
-   var myString = "<a href='https://forms.gle/1oiFPe4BZNYsyZLv7' target='_blank'> <input type='button' name='button' value='Contact us'></a><br><br>"+
-"<div class='a2a_kit a2a_kit_size_32 a2a_default_style' data-a2a-url='https://bambiker.github.io/drycloth'>"+
-"<a class='a2a_dd' href='https://www.addtoany.com/share'></a>"+
-"<a class=\"a2a_button_copy_link\"></a>"+
-"<a class=\"a2a_button_twitter\"></a>"+
-"<a class=\"a2a_button_x\"></a>"+
-"<a class=\"a2a_button_whatsapp\"></a>"+
-"<a class=\"a2a_button_email\"></a>"+
-"<a class=\"a2a_button_telegram\"></a>"+
-"<a class=\"a2a_button_sms\"></a>"+
-"<a class=\"a2a_button_facebook\"></a>"+
-"<a class=\"a2a_button_pinterest\"></a>"+
-"<a class=\"a2a_button_linkedin\"></a>"+
-"<a class=\"a2a_button_reddit\"></a>"+
-"<a class=\"a2a_button_facebook_messenger\"></a>"+
-"<a class=\"a2a_button_google_gmail\"></a>"+
-"</div>";
-
- }
-
- document.getElementById('span2').innerHTML=myString;
-</script>
+    <!-- after translatePage, so AddToAny shares the url of the right language -->
     <script async src="https://static.addtoany.com/menu/page.js"></script>
     <script>
 document.getElementById("btncalc").addEventListener("click",doCalc);
-      
+
 // editing the values by hand means the user doesn't want the forecast anymore
 ["temp", "humid", "wind"].forEach(function(id) {
   document.getElementById(id).addEventListener("input", function() {
@@ -397,13 +294,13 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
     }
 
     </script>
-   
+
 
     <script>
       function geoFindMe() {
 
         const status = document.querySelector('#status');
-     
+
         async function success(position) {
 
           latitude  = position.coords.latitude;
@@ -434,13 +331,7 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
       }
 
       document.querySelector('#find-me').addEventListener('click', geoFindMe);
-    </script> 
- <br>
- <br>
- <div style="text-align: center;">
-      <img src="clothlineclock.jpg" width="80%" loading="lazy" alt="Image of clothlines with a clock">
- </div>
-  </div> 
-     
+    </script>
+
   </body>
 </html>
