@@ -9,6 +9,7 @@ var translations = {
       description: 'חישוב כמה זמן לוקח לכביסה להתייבש על חבל הכביסה לפי תחזית מזג האוויר: טמפרטורה, לחות ורוח',
 
       heading: 'מחשבון לחישוב זמן ייבוש הכביסה',
+      subtitle: 'גלו מתי הכביסה תתייבש, לפי תחזית מזג האוויר במקום שלכם.',
       findme: 'לחצו כאן כדי להשתמש בטמפרטורה ובלחות מהתחזית',
       useforecast: 'שימוש בתחזית',
       sun: 'שמש ישירה',
@@ -49,6 +50,8 @@ var translations = {
       tip8: 'אם הרוח חזקה, כדאי להשתמש ביותר אטבי כביסה',
 
       contact: 'צור קשר',
+      opensource: 'קוד פתוח, הצטרפו אלינו ב-<a href="https://github.com/bambiker/drycloth" target="_blank">GitHub</a>',
+      forecastsource: 'תחזית מזג האוויר מ-<a href="https://open-meteo.com/" target="_blank">Open-Meteo</a>',
       contacturl: 'https://forms.gle/FJx3CNFUcExcG9Fn9',
       shareurl: 'https://bambiker.github.io/drycloth?he',
       imagealt: 'תמונה של חבלי כביסה עם שעון'
@@ -77,5 +80,4 @@ function translatePage() {
    var langswitch = document.getElementById('langswitch');
    langswitch.href = 'index.html';
    langswitch.textContent = 'En';
-   langswitch.className = 'langen';
 }

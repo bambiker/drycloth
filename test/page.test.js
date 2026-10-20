@@ -74,7 +74,8 @@ for (const url of ['/?he', '/index.html?he', '/?he&fbclid=abc', '/index.html?utm
     assert.equal(l.heading, 'מחשבון לחישוב זמן ייבוש הכביסה');
     assert.equal(await page.textContent('#langswitch'), 'En');
     assert.equal(await page.textContent('#temp-unit'), 'צלזיוס');
-    assert.equal(await page.getAttribute('input[data-i18n-value]', 'value'), 'צור קשר');
+    assert.equal(await page.textContent('[data-i18n="contact"]'), 'צור קשר');
+    assert.equal(await page.getAttribute('[data-i18n="contact"]', 'href'), 'https://forms.gle/FJx3CNFUcExcG9Fn9');
     assert.equal(await page.getAttribute('.a2a_kit', 'data-a2a-url'), 'https://bambiker.github.io/drycloth?he');
     assert.deepEqual(errors, []);
     await page.close();
