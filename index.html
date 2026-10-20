@@ -138,17 +138,22 @@ if (isHe)
   </label>
 
   <label>
-    <input type="radio" name="units" value="metric" checked disabled>
+    <input type="checkbox" id="sun"> שמש ישירה
+  </label>
+
+  <label>
+    <input type="radio" name="units" value="metric" checked>
     צלזיוס, קמ"ש, מ"מ
   </label>
 
   <label>
-    <input type="radio" name="units" value="imperial"  disabled>
-    פרנהייט, MPH, מ"מ 
+    <input type="radio" name="units" value="imperial">
+    פרנהייט, MPH, מ"מ
   </label>
 </div>
+    <small>שמש ישירה נלקחת בחשבון רק בשימוש בתחזית. אם יש כמה חבלים, החבלים הפנימיים בדרך כלל מוצלים על ידי החיצוניים, ולכן עבורם עדיף לא לסמן.</small>
+    <br>
 
- 
     הטמפרטורה במעלות <span id="temp-unit">צלזיוס</span>:<input  type="number"  id="temp" size="4">
     <br>
     הלחות היחסית:<input  type="number"  id="humid"  size="4" >
@@ -161,7 +166,7 @@ if (isHe)
     <br>
     <button class="button" id="btncalc"><b>חשב</b></button><br><br>
    
-   מספר השעות לייבוש הכביסה הוא
+   זמן הייבוש:
   <b>  <label id="result" value ="<נא להזין נתונים וללחוץ על כפתור חשב>"></label>  </b>
     <br>
  <b>   <label id="statusmsg" value ="status massages will be here"></label>  </b>
@@ -210,22 +215,28 @@ if (isHe)
   </label>
 
   <label>
-    <input type="radio" name="units" value="metric" checked disabled>
+    <input type="checkbox" id="sun"> Direct sunlight
+  </label>
+
+  <label>
+    <input type="radio" name="units" value="metric" checked>
     °C, km/h, mm
   </label>
 
   <label>
-    <input type="radio" name="units" value="imperial"  disabled>
+    <input type="radio" name="units" value="imperial">
     °F, mph, mm (fabric)
   </label>
 </div>
+    <small>Direct sunlight is only taken into account when using the forecast. With several clotheslines, the inner lines are usually shaded by the outer ones, so leave it unchecked for them.</small>
+    <br>
 
     <br>
-    Temperature [<span id="temp-unit-en">°C</span>]: <input type="number" id="temp" size="4"><br>
+    Temperature [<span id="temp-unit">°C</span>]: <input type="number" id="temp" size="4"><br>
     <br>
     Relative humidity [%]: <input  type="number"  id="humid"  size="4"  >
     <br>
-    Wind speed [<span id="wind-unit-en">km/h</span>] (assume 0 for indoor): <input type="number" id="wind" value="0" size="4">
+    Wind speed [<span id="wind-unit">km/h</span>] (assume 0 for indoor): <input type="number" id="wind" value="0" size="4">
     <br>
     Fabric thickness [mm], please choose the thickest fabric: <input  type="number"  id="width" value="2" size="4"  >
     <br>
@@ -233,7 +244,7 @@ if (isHe)
     <br>
     <button class="button" id="btncalc"><b>calculate</b></button><br><br>
  
-   The number of hours for drying is:
+   Drying time:
  <b>   <label id="result" value ="<Please insert data and press "calculate"></label>  </b>
     <br>
  <b>   <label id="statusmsg" value ="status massages will be here"></label>  </b>
@@ -271,34 +282,15 @@ if (isHe)
         }
 document.getElementById('span1').innerHTML=myString;
 
-if (isHe)    
-   {
 document.querySelectorAll('input[name="units"]').forEach(radio => {
   radio.addEventListener('change', function() {
-    if (this.value === 'metric') {
-      document.getElementById('temp-unit').textContent   = "צלזיוס";
-      document.getElementById('wind-unit').textContent   = "קמ\"ש";
-    } else {
-      document.getElementById('temp-unit').textContent   = "פרנהייט";
-      document.getElementById('wind-unit').textContent   = "MPH";
-    }
+    setUnits(this.value, true);
   });
 });
-    }
-   else
-   {
-document.querySelectorAll('input[name="units"]').forEach(radio => {
-  radio.addEventListener('change', function() {
-    if (this.value === 'metric') {
-      document.getElementById('temp-unit-en').textContent   = "°C";
-      document.getElementById('wind-unit-en').textContent   = "km/h";
-    } else {
-      document.getElementById('temp-unit-en').textContent   = "°F";
-      document.getElementById('wind-unit-en').textContent   = "mph";
-    }
-  });
-});
-   }     
+
+// Fahrenheit and mph by default only in the countries that use them
+document.querySelector('input[name="units"][value="' + units + '"]').checked = true;
+setUnits(units, false);
 </script>
    
 <div style="text-align: left;">     
@@ -373,6 +365,7 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
          var width = document.getElementById("width").value/2.;  //it dries from both sides
          var wind = document.getElementById("wind").value;
          const elem = document.querySelector('#useforecast')
+         const sun = document.querySelector('#sun').checked;
          const result = document.getElementById('result');
          const statusmsg = document.getElementById('statusmsg');
          var notes = [];
@@ -383,11 +376,13 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
 
          if (elem.checked && weekt2)
             {
-             const forecast = forecastcalc(width);
+             const forecast = forecastcalc(width, sun);
              hours = forecast.hours;
-             if (forecast.rain) {notes.push(msg("rain"));}
-             if (forecast.windy) {notes.push(msg("windy"));}
              if (hours === Infinity) {notes.push(msg("nodryforecast"));}
+             else {notes.push(msg("dryby", formatTime(new Date(Date.now() + hours*3600*1000))));}
+             if (forecast.rain) {notes.push(msg("rain") + " " + msg("rainstart", formatTime(forecast.rainStart)));}
+             notes.push(msg("rainprob", forecast.maxProb));
+             if (forecast.windy) {notes.push(msg("windy"));}
             } else
             {
              if (temp === "" || humid === "" || wind === "" || !(width > 0) || humid < 0 || humid > 100)
@@ -396,11 +391,12 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
                  return;
                 }
              if (elem.checked) {notes.push(msg("noforecast"));}
-             hours = calc(temp,humid,wind,width);
+             if (sun) {notes.push(msg("sunmanual"));}
+             hours = calc(toCelsius(temp),humid,toKmh(wind),width);
              if (hours === Infinity) {notes.push(msg("nodry"));}
             }
 
-         result.innerHTML = (hours === Infinity) ? '-' : hours;
+         result.innerHTML = (hours === Infinity) ? '-' : formatDuration(hours);
          statusmsg.innerHTML = notes.join('<br>');
     }
 
