@@ -8,9 +8,10 @@ const vm = require('node:vm');
 
 const source = fs.readFileSync(path.join(__dirname, '..', 'calc.js'), 'utf8');
 
-function load({ languages = ['en-GB'], timeZone = 'Europe/London', he = false } = {}) {
+function load({ languages = ['en-GB'], timeZone = 'Europe/London', he = false, saved = null } = {}) {
   const sandbox = {
     isHe: he,
+    localStorage: { getItem: () => saved, setItem: () => {} },
     navigator: { languages, language: languages[0] },
     Intl: { DateTimeFormat: () => ({ resolvedOptions: () => ({ timeZone }) }) },
     Date,
@@ -152,27 +153,37 @@ test('msg replaces the parameters in the right language', () => {
   assert.equal(load({ he: true }).msg('rainprob', 40), 'הסיכוי הגבוה ביותר לגשם בזמן הייבוש: 40%.');
 });
 
-test('default units by country', () => {
-  assert.equal(load({ languages: ['en-US'] }).units, 'imperial');
-  assert.equal(load({ languages: ['he-IL'] }).units, 'metric');
-  assert.equal(load({ languages: ['en-GB'] }).units, 'metric');
-  assert.equal(load({ languages: ['es-PR'] }).units, 'imperial');
-  // the first language with a country decides
-  assert.equal(load({ languages: ['en', 'en-US'], timeZone: 'Europe/Paris' }).units, 'imperial');
-  // no country in the language: by time zone
+test('default units by where the user is', () => {
+  // the time zone decides, not the browser language (many browsers in Israel are in English (US))
+  assert.equal(load({ languages: ['en-US'], timeZone: 'Asia/Jerusalem' }).units, 'metric');
+  assert.equal(load({ languages: ['he-IL'], timeZone: 'Asia/Jerusalem' }).units, 'metric');
+  assert.equal(load({ languages: ['en-US'], timeZone: 'America/New_York' }).units, 'imperial');
+  assert.equal(load({ languages: ['he-IL'], timeZone: 'America/Los_Angeles' }).units, 'imperial');
   assert.equal(load({ languages: ['en'], timeZone: 'America/Chicago' }).units, 'imperial');
   assert.equal(load({ languages: ['en'], timeZone: 'America/Indiana/Indianapolis' }).units, 'imperial');
-  assert.equal(load({ languages: ['en'], timeZone: 'America/Toronto' }).units, 'metric');
-  assert.equal(load({ languages: ['en'], timeZone: 'Asia/Jerusalem' }).units, 'metric');
+  assert.equal(load({ languages: ['es'], timeZone: 'America/Puerto_Rico' }).units, 'imperial');
+  assert.equal(load({ languages: ['en-US'], timeZone: 'America/Toronto' }).units, 'metric');
+  assert.equal(load({ languages: ['en-US'], timeZone: 'Europe/London' }).units, 'metric');
+  // no real time zone: by the country in the browser language
+  assert.equal(load({ languages: ['en-US'], timeZone: 'UTC' }).units, 'imperial');
+  assert.equal(load({ languages: ['en', 'en-US'], timeZone: 'Etc/UTC' }).units, 'imperial');
+  assert.equal(load({ languages: ['he-IL'], timeZone: 'UTC' }).units, 'metric');
+  assert.equal(load({ languages: ['en'], timeZone: '' }).units, 'metric');
+});
+
+test('the units the user chose are remembered', () => {
+  assert.equal(load({ languages: ['en-US'], timeZone: 'America/New_York', saved: 'metric' }).units, 'metric');
+  assert.equal(load({ languages: ['he-IL'], timeZone: 'Asia/Jerusalem', saved: 'imperial' }).units, 'imperial');
+  assert.equal(load({ languages: ['he-IL'], timeZone: 'Asia/Jerusalem', saved: 'nonsense' }).units, 'metric');
 });
 
 test('unit conversions', () => {
-  const c = load({ languages: ['en-US'] });
+  const c = load({ languages: ['en-US'], timeZone: 'America/New_York' });
   close(c.toCelsius(212), 100, 1e-9);
   close(c.fromCelsius(-40), -40, 1e-9);
   close(c.toKmh(10), 16.09344, 1e-9);
   close(c.fromKmh(c.toKmh(7)), 7, 1e-9);
-  const m = load({ languages: ['he-IL'] });
+  const m = load({ languages: ['he-IL'], timeZone: 'Asia/Jerusalem' });
   assert.equal(m.toCelsius('25'), 25);
   assert.equal(m.toKmh('10'), 10);
 });
