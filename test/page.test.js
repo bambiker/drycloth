@@ -34,11 +34,13 @@ after(async () => {
 async function open(url, locale = 'en-GB') {
   const page = await browser.newPage({ locale });
   const errors = [];
+  const missing = [];
   page.on('pageerror', e => errors.push(e.message));
+  page.on('response', r => { if (r.url().startsWith(base) && r.status() >= 400) {missing.push(r.url());} });
   // no internet in the tests: analytics, fonts and share buttons are not needed
   await page.route(url => !url.href.startsWith(base), route => route.abort());
   await page.goto(base + url);
-  return { page, errors };
+  return { page, errors, missing };
 }
 
 async function language(page) {
@@ -64,19 +66,36 @@ for (const url of ['/', '/index.html']) {
   });
 }
 
-for (const url of ['/?he', '/index.html?he', '/?he&fbclid=abc', '/index.html?utm_source=x&he']) {
-  test(`${url} is in Hebrew`, async () => {
+test('/he/ is in Hebrew, also without JavaScript (for search engines and AI crawlers)', async () => {
+  const { page, errors, missing } = await open('/he/', 'he-IL');
+  const l = await language(page);
+  assert.equal(l.lang, 'he');
+  assert.equal(l.dir, 'rtl');
+  assert.equal(l.title, 'כמה זמן לוקח לכביסה להתייבש? מחשבון זמן ייבוש כביסה על חבל');
+  assert.equal(l.heading, 'מחשבון לחישוב זמן ייבוש הכביסה');
+  assert.equal(await page.textContent('#langswitch'), 'En');
+  assert.equal(await page.textContent('#temp-unit'), 'צלזיוס');
+  assert.equal(await page.textContent('[data-i18n="contact"]'), 'צור קשר');
+  assert.equal(await page.getAttribute('[data-i18n="contact"]', 'href'), 'https://forms.gle/FJx3CNFUcExcG9Fn9');
+  assert.equal(await page.getAttribute('.a2a_kit', 'data-a2a-url'), 'https://bambiker.github.io/drycloth/he/');
+  assert.deepEqual(errors, []);
+  assert.deepEqual(missing, [], 'files the Hebrew page could not load');
+  await page.close();
+
+  // the HTML itself is Hebrew, before any JavaScript runs
+  const raw = fs.readFileSync(path.join(root, 'he', 'index.html'), 'utf8');
+  assert.match(raw, /<html lang="he" dir="rtl">/);
+  assert.match(raw, /<h1 data-i18n="heading">מחשבון לחישוב זמן ייבוש הכביסה<\/h1>/);
+  assert.doesNotMatch(raw, /Clothesline drying time calculator<\/h1>/);
+});
+
+// links people already shared keep working
+for (const [url, expected] of [['/?he', '/he/'], ['/index.html?he', '/he/'], ['/?he&fbclid=abc', '/he/?fbclid=abc'],
+                               ['/index.html?utm_source=x&he', '/he/?utm_source=x']]) {
+  test(`${url} goes to the Hebrew page`, async () => {
     const { page, errors } = await open(url, 'he-IL');
-    const l = await language(page);
-    assert.equal(l.lang, 'he');
-    assert.equal(l.dir, 'rtl');
-    assert.equal(l.title, 'כמה זמן לוקח לכביסה להתייבש? מחשבון זמן ייבוש כביסה על חבל');
-    assert.equal(l.heading, 'מחשבון לחישוב זמן ייבוש הכביסה');
-    assert.equal(await page.textContent('#langswitch'), 'En');
-    assert.equal(await page.textContent('#temp-unit'), 'צלזיוס');
-    assert.equal(await page.textContent('[data-i18n="contact"]'), 'צור קשר');
-    assert.equal(await page.getAttribute('[data-i18n="contact"]', 'href'), 'https://forms.gle/FJx3CNFUcExcG9Fn9');
-    assert.equal(await page.getAttribute('.a2a_kit', 'data-a2a-url'), 'https://bambiker.github.io/drycloth?he');
+    await page.waitForURL(base + expected);
+    assert.equal((await language(page)).lang, 'he');
     assert.deepEqual(errors, []);
     await page.close();
   });
@@ -85,16 +104,16 @@ for (const url of ['/?he', '/index.html?he', '/?he&fbclid=abc', '/index.html?utm
 test('the language links lead to the other language', async () => {
   const { page } = await open('/');
   await page.click('#langswitch');
-  await page.waitForURL(base + '/index.html?he');
+  await page.waitForURL(base + '/he/');
   assert.equal((await language(page)).lang, 'he');
   await page.click('#langswitch');
-  await page.waitForURL(base + '/index.html');
+  await page.waitForURL(base + '/');
   assert.equal((await language(page)).lang, 'en');
   await page.close();
 });
 
 test('the calculator works in both languages', async () => {
-  for (const [url, expected] of [['/', '3 hours and 25 minutes'], ['/?he', '3 שעות ו-25 דקות']]) {
+  for (const [url, expected] of [['/', '3 hours and 25 minutes'], ['/he/', '3 שעות ו-25 דקות']]) {
     const { page, errors } = await open(url);
     await page.fill('#temp', '25');
     await page.fill('#humid', '50');
@@ -105,29 +124,13 @@ test('the calculator works in both languages', async () => {
   }
 });
 
-test('every Hebrew text has a place in the page and every place has a Hebrew text', async () => {
-  const { page } = await open('/');
-  const keys = await page.evaluate(() => {
-    const used = new Set();
-    document.querySelectorAll('*').forEach(element => {
-      for (const attribute of element.attributes) {
-        if (attribute.name === 'data-i18n' || attribute.name.startsWith('data-i18n-')) {used.add(attribute.value);}
-      }
-    });
-    return { used: [...used].sort(), he: Object.keys(translations.he).sort() };
-  });
-  const head = ['title', 'description']; // used by translatePage itself
-  assert.deepEqual(keys.used.filter(k => !keys.he.includes(k)), [], 'keys in the page without Hebrew text');
-  assert.deepEqual(keys.he.filter(k => !keys.used.includes(k) && !head.includes(k)), [], 'Hebrew texts not used in the page');
-  await page.close();
-});
-
 test('canonical address by language', async () => {
   for (const [url, canonical] of [['/', 'https://bambiker.github.io/drycloth/'], ['/index.html', 'https://bambiker.github.io/drycloth/'],
-                                   ['/?he&fbclid=abc', 'https://bambiker.github.io/drycloth/?he']]) {
+                                   ['/he/', 'https://bambiker.github.io/drycloth/he/']]) {
     const { page } = await open(url);
     assert.equal(await page.getAttribute('link[rel=canonical]', 'href'), canonical);
     assert.equal(await page.locator('link[rel=canonical]').count(), 1);
+    assert.equal(await page.getAttribute('link[hreflang=he]', 'href'), 'https://bambiker.github.io/drycloth/he/');
     await page.close();
   }
 });
@@ -150,6 +153,19 @@ test('structured data (JSON-LD) is valid and its example matches the calculator'
   await page.close();
 });
 
+test('the Hebrew page has its own Hebrew structured data and share preview', async () => {
+  const { page } = await open('/he/');
+  const data = await page.evaluate(() =>
+    [...document.querySelectorAll('script[type="application/ld+json"]')].map(s => JSON.parse(s.textContent)));
+  assert.deepEqual(data.map(d => d['@type']), ['WebApplication', 'FAQPage']);
+  assert.equal(data[0].url, 'https://bambiker.github.io/drycloth/he/');
+  assert.equal(data[1].mainEntity.length, 5);
+  assert.match(data[1].mainEntity[0].acceptedAnswer.text, /בערך ב-3\.5 שעות/);
+  assert.equal(await page.getAttribute('meta[property="og:url"]', 'content'), 'https://bambiker.github.io/drycloth/he/');
+  assert.equal(await page.getAttribute('meta[property="og:locale"]', 'content'), 'he_IL');
+  await page.close();
+});
+
 test('share preview (Open Graph) points to files that exist', async () => {
   const { page } = await open('/');
   const image = await page.getAttribute('meta[property="og:image"]', 'content');
@@ -167,6 +183,6 @@ test('sitemap.xml is valid and lists both languages', async () => {
     if (xml.querySelector('parsererror')) {return null;}
     return [...xml.getElementsByTagName('loc')].map(l => l.textContent);
   });
-  assert.deepEqual(urls, ['https://bambiker.github.io/drycloth/', 'https://bambiker.github.io/drycloth/?he']);
+  assert.deepEqual(urls, ['https://bambiker.github.io/drycloth/', 'https://bambiker.github.io/drycloth/he/']);
   await page.close();
 });

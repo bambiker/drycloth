@@ -1,5 +1,6 @@
 // Hebrew texts of index.html. The page itself is written in English.
-// Every element with data-i18n="key" gets translations.he[key] as its content,
+// scripts/build-he.js makes he/index.html from index.html and this file (npm run build):
+// every element with data-i18n="key" gets translations.he[key] as its content,
 // and data-i18n-<attribute>="key" sets that attribute (e.g. data-i18n-href="contacturl").
 // The calculation messages are in calc.js.
 
@@ -53,31 +54,23 @@ var translations = {
       opensource: 'קוד פתוח, הצטרפו אלינו ב-<a href="https://github.com/bambiker/drycloth" target="_blank">GitHub</a>',
       forecastsource: 'תחזית מזג האוויר מ-<a href="https://open-meteo.com/" target="_blank">Open-Meteo</a>',
       contacturl: 'https://forms.gle/FJx3CNFUcExcG9Fn9',
-      shareurl: 'https://bambiker.github.io/drycloth?he',
+      shareurl: 'https://bambiker.github.io/drycloth/he/',
       imagealt: 'תמונה של חבלי כביסה עם שעון'
    }
 };
 
 var translatedAttributes = ['href', 'value', 'alt', 'data-a2a-url'];
 
-function translatePage() {
-   var t = translations.he;
-   document.documentElement.setAttribute('lang', 'he');
-   document.documentElement.setAttribute('dir', 'rtl');
-   document.title = t.title;
-   document.querySelector('meta[name="description"]').setAttribute('content', t.description);
-
-   document.querySelectorAll('[data-i18n]').forEach(function(element) {
-      element.innerHTML = t[element.getAttribute('data-i18n')];
-   });
-   translatedAttributes.forEach(function(attribute) {
-      document.querySelectorAll('[data-i18n-' + attribute + ']').forEach(function(element) {
-         element.setAttribute(attribute, t[element.getAttribute('data-i18n-' + attribute)]);
-      });
-   });
-
-   // the link to the other language
-   var langswitch = document.getElementById('langswitch');
-   langswitch.href = 'index.html';
-   langswitch.textContent = 'En';
-}
+// the questions and answers for search engines (JSON-LD), the same as the English ones in index.html
+var faqHe = [
+   ['כמה זמן לוקח לכביסה להתייבש על חבל?',
+    'זה תלוי בטמפרטורה, בלחות היחסית, ברוח ובעובי הבד. לדוגמה, ב-25 מעלות, לחות 50% ובלי רוח, מגבת בעובי 2 מ"מ מתייבשת בערך ב-3.5 שעות. המחשבון מחשב את זה לפי מזג האוויר שלכם, או שעה אחרי שעה לפי התחזית במקום שלכם.'],
+   ['מה העובי של הכביסה שלי?',
+    'מגבת, חולצת חורף או ג\'ינס עוביים 2 מ"מ. חולצות קצרות עוביים 1 מ"מ. לחולצה מנדפת עובי אפקטיבי של 0.5 מ"מ. אם הבגדים התקפלו מעט כשהם ניתלו (למשל ליד השרוולים), העובי האפקטיבי שלהם מוכפל למעשה.'],
+   ['איזו טמפרטורה ולחות להזין כשמייבשים בבית?',
+    'אם תולים כביסה בבית בלי חימום, הטמפרטורה תהיה ממוצע של היום והלילה, וכך גם הלחות. אם תולים כביסה בבית עם חימום, הטמפרטורה תהיה הטמפרטורה המקסימלית, כלומר טמפרטורת הצהריים. בייבוש בתוך הבית מזינים מהירות רוח 0.'],
+   ['איך לגרום לכביסה להתייבש מהר יותר על החבל?',
+    'עדיף לתלות את הכביסה בצורה מרווחת, לשים את הכביסה שמתייבשת הכי לאט בחבלים החיצוניים, ואם אפשר לתלות אותה כשחבלי הכביסה מקבילים לכיוון הרוח הממוצעת. אם מייבשים בבית בלי חימום, כדאי לפתוח חלון (ועדיף שני חלונות או חלון ודלת).'],
+   ['האם ירד גשם לפני שהכביסה תתייבש?',
+    'בשימוש בתחזית, המחשבון מתריע אם צפוי גשם לפני שהכביסה תתייבש, מראה מתי הגשם צפוי להתחיל ואת הסיכוי הגבוה ביותר לגשם בזמן הייבוש.']
+];

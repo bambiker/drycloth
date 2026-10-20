@@ -3,6 +3,7 @@
   "private": true,
   "description": "Calculator for laundry drying duration on a clothesline",
   "scripts": {
+    "build": "node scripts/build-he.js",
     "test": "node --test test/*.test.js"
   },
   "devDependencies": {
