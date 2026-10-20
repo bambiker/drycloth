@@ -774,12 +774,30 @@ document.getElementById("hangnow").addEventListener("click", function() {
   if (weekt2 && document.querySelector('#useforecast').checked) {doCalc();}
 });
 
-// the thickness field only for "other"
+// recalculate right away when there is something to calculate (the forecast, or the weather typed in)
+function recalcIfReady() {
+  if (weekt2 && document.querySelector('#useforecast').checked) {doCalc(); return;}
+  if (document.getElementById("temp").value !== "" && document.getElementById("humid").value !== "") {doCalc();}
+}
+
+// the thickness field only for "other"; a different item is calculated right away
 document.querySelectorAll('input[name="fabric"]').forEach(function(radio) {
   radio.addEventListener("change", function() {
     document.getElementById("widthfield").hidden = this.value !== "other";
+    recalcIfReady();
   });
 });
+document.getElementById("width").addEventListener("input", function() {
+  if (this.value > 0) {recalcIfReady();}
+});
+
+// after the forecast: show the item choice, the button and the result together
+function showFabricChoice() {
+  var fabric = document.querySelector(".fabric");
+  var smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  fabric.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+  document.querySelector('input[name="fabric"]:checked').focus({ preventScroll: true });
+}
 
     function doCalc()
     {
@@ -849,6 +867,7 @@ document.querySelectorAll('input[name="fabric"]').forEach(function(radio) {
 
           status.textContent = '';
           doCalc();
+          showFabricChoice();
         }
 
         function error() {
