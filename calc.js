@@ -22,7 +22,7 @@ var messages = {
    dryby:  {en: "The laundry should be dry around {0}.",
             he: "הכביסה צפויה להתייבש בסביבות {0}."},
    windy:  {en: "It looks like it will be windy. Please use extra clothespins (clothes pegs).",
-            he: "נראה שיהיה סוער. כדאי להשתמש ביותר אטבי כביסה."},
+            he: "נראה שתהיה רוח חזקה. כדאי להשתמש ביותר אטבי כביסה."},
    nodry:  {en: "With these conditions the laundry will not dry (humidity too high).",
             he: "בתנאים האלה הכביסה לא תתייבש (הלחות גבוהה מדי)."},
    outofrange: {en: "The forecast covers only the next 7 days, please choose an earlier hanging time.",
