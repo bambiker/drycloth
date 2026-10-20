@@ -25,6 +25,10 @@ var messages = {
             he: "נראה שתהיה רוח חזקה. כדאי להשתמש ביותר אטבי כביסה."},
    nodry:  {en: "With these conditions the laundry will not dry (humidity too high).",
             he: "בתנאים האלה הכביסה לא תתייבש (הלחות גבוהה מדי)."},
+   indoorforecast: {en: "Drying indoors: the average temperature and humidity of the 24 hours from hanging, from the forecast, without wind. Change the temperature to check heating, or the wind to check a fan.",
+            he: "ייבוש בבית: ממוצע הטמפרטורה והלחות ב-24 השעות מזמן התלייה לפי התחזית, בלי רוח. אפשר לשנות את הטמפרטורה כדי לבדוק חימום, או את הרוח כדי לבדוק מאוורר."},
+   indoor: {en: "Drying indoors: change the temperature to check heating, or the wind to check a fan.",
+            he: "ייבוש בבית: אפשר לשנות את הטמפרטורה כדי לבדוק חימום, או את הרוח כדי לבדוק מאוורר."},
    outofrange: {en: "The forecast covers only the next 7 days, please choose an earlier hanging time.",
             he: "התחזית מכסה רק את 7 הימים הקרובים, נא לבחור זמן תלייה מוקדם יותר."},
    nodryforecast: {en: "The laundry will not dry within the 7 day forecast.",
@@ -172,11 +176,36 @@ async function getweather()
     weekradiation = json.hourly.shortwave_radiation;
     forecastStartHour = hour;
 
-    document.getElementById("temp").value = fromCelsius(weekt2[hour]).toFixed(0);
-    document.getElementById("humid").value = weekrh2[hour].toFixed(0);
-    document.getElementById("wind").value = fromKmh(weekwind10[hour]/2).toFixed(0); // wind at 1.5 meters height, same as in forecastcalc
-
+    showForecastHour(hour);
     document.querySelector('#useforecast').checked = true;
+}
+
+// the forecast of hour i in the fields
+function showForecastHour(i) {
+    i = Math.min(Math.max(0, i), weekt2.length - 1);
+    document.getElementById("temp").value = fromCelsius(weekt2[i]).toFixed(0);
+    document.getElementById("humid").value = weekrh2[i].toFixed(0);
+    document.getElementById("wind").value = fromKmh(weekwind10[i]/2).toFixed(0); // wind at 1.5 meters height, same as in forecastcalc
+}
+
+// the index of the forecast hour of a time (a Date, without it: the current hour)
+function forecastIndex(time) {
+    if (!time) {return forecastStartHour;}
+    return Math.max(0, Math.floor((time.getTime() - forecastTime(0).getTime()) / 3600000));
+}
+
+// the average temperature and humidity of the forecast for some hours from start (drying indoors without heating)
+function forecastAverage(start, hours) {
+    var i = forecastIndex(start);
+    var temp = 0, humid = 0, n = 0;
+    for (var j = i; j < i + hours && j < weekt2.length; j++) {
+        if (weekt2[j] == null || weekrh2[j] == null) {break;}
+        temp = temp + weekt2[j];
+        humid = humid + weekrh2[j];
+        n = n + 1;
+    }
+    if (n === 0) {return {outOfRange: true};}
+    return {temp: temp / n, humid: humid / n};
 }
 
 // width is the remaining water in mm, every hour the drying rate (mm/hour) of that hour is removed.

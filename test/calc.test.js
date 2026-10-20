@@ -154,6 +154,22 @@ test('rain that started before hanging is reported from the hanging time', () =>
   assert.equal(result.rainStart.getTime(), start.getTime());
 });
 
+test('forecastAverage gives the average of the 24 hours from hanging', () => {
+  const c = load();
+  forecast(c, { temp: 20, humid: 60 });
+  c.weekt2 = c.weekt2.map((t, i) => (i % 2 ? 30 : 20)); // day and night
+  c.weekrh2 = c.weekrh2.map((h, i) => (i % 2 ? 40 : 80));
+  const average = c.forecastAverage(c.forecastTime(10), 24);
+  close(average.temp, 25, 1e-9);
+  close(average.humid, 60, 1e-9);
+  // only the 24 hours from hanging count
+  c.weekt2.fill(0, 34);
+  close(c.forecastAverage(c.forecastTime(10), 24).temp, 25, 1e-9);
+  // near the end of the forecast: the hours that are left
+  close(c.forecastAverage(c.forecastTime(166), 24).temp, 0, 1e-9);
+  assert.equal(c.forecastAverage(c.forecastTime(200), 24).outOfRange, true);
+});
+
 test('direct sunlight is optional and shortens drying', () => {
   const c = load();
   forecast(c, { radiation: 600 });

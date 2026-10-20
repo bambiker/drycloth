@@ -330,6 +330,7 @@ a { color: var(--link); }
   transition: inset-inline-start 0.2s;
 }
 .switch input:checked { background: var(--on); }
+.switch:has(input:disabled) { opacity: 0.5; cursor: default; }
 .switch input:checked::after { inset-inline-start: 21px; }
 .segmented {
   display: inline-flex;
@@ -585,6 +586,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
 
       <div class="options">
         <label class="switch"><input type="checkbox" id="useforecast"> <span data-i18n="useforecast">Using forecast</span></label>
+        <label class="switch"><input type="checkbox" id="indoor"> <span data-i18n="indoor">Drying indoors</span></label>
         <label class="switch"><input type="checkbox" id="sun"> <span data-i18n="sun">Direct sunlight</span></label>
         <div class="segmented" role="radiogroup">
           <label><input type="radio" name="units" value="metric" checked><span data-i18n="metric">°C, km/h, mm</span></label>
@@ -729,6 +731,10 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
 ["temp", "humid", "wind"].forEach(function(id) {
   document.getElementById(id).addEventListener("input", function() {
     document.querySelector('#useforecast').checked = false;
+    if (document.querySelector('#indoor').checked) {
+      if (id !== "wind") {indoorAverage = false;}
+      recalcIfReady();
+    }
   });
 });
 
@@ -780,11 +786,11 @@ function hangTime() {
 resetHangTime();
 hangInput.addEventListener("input", function() {
   hangInput.dataset.chosen = hangInput.value ? "1" : "";
-  if (weekt2 && document.querySelector('#useforecast').checked) {doCalc();}
+  recalcIfReady();
 });
 document.getElementById("hangnow").addEventListener("click", function() {
   resetHangTime();
-  if (weekt2 && document.querySelector('#useforecast').checked) {doCalc();}
+  recalcIfReady();
 });
 
 // recalculate right away when there is something to calculate (the forecast, or the weather typed in)
@@ -802,6 +808,45 @@ document.querySelectorAll('input[name="fabric"]').forEach(function(radio) {
 });
 document.getElementById("width").addEventListener("input", function() {
   if (this.value > 0) {recalcIfReady();}
+});
+
+// drying indoors: the forecast fills the fields once (the average temperature and humidity of the 24 hours
+// from hanging, no wind), then the calculation uses only the fields, so the user can change the temperature
+// (heating) or the wind (a fan) and see how much it helps
+var windBeforeIndoor = "0";
+var indoorAverage = false; // the temperature and humidity are still the forecast average
+function applyIndoorAverage() {
+  var average = forecastAverage(hangTime(), 24);
+  if (average.outOfRange) {return;}
+  document.getElementById("temp").value = fromCelsius(average.temp).toFixed(0);
+  document.getElementById("humid").value = average.humid.toFixed(0);
+  document.getElementById("wind").value = "0";
+  document.querySelector('#useforecast').checked = false;
+  indoorAverage = true;
+}
+document.getElementById("indoor").addEventListener("change", function() {
+  var windInput = document.getElementById("wind");
+  document.getElementById("sun").disabled = this.checked;
+  if (this.checked) {
+    windBeforeIndoor = windInput.value;
+    windInput.value = "0";
+    if (weekt2) {
+      applyIndoorAverage();
+    } else if (document.getElementById("temp").value === "" || document.getElementById("humid").value === "") {
+      geoFindMe(); // nothing typed: the forecast average
+      return;
+    }
+  } else {
+    indoorAverage = false;
+    if (weekt2) {
+      // back to the forecast
+      document.querySelector('#useforecast').checked = true;
+      showForecastHour(forecastIndex(hangTime()));
+    } else {
+      windInput.value = windBeforeIndoor;
+    }
+  }
+  recalcIfReady();
 });
 
 // after the forecast: show the hanging time, the item choice and the result together
@@ -822,7 +867,8 @@ function showHangingTime() {
          var hang = hangTime();
          var wind = document.getElementById("wind").value;
          const elem = document.querySelector('#useforecast')
-         const sun = document.querySelector('#sun').checked;
+         const indoor = document.querySelector('#indoor').checked;
+         const sun = document.querySelector('#sun').checked && !indoor;
          const result = document.getElementById('result');
          const statusmsg = document.getElementById('statusmsg');
          var notes = [];
@@ -831,7 +877,7 @@ function showHangingTime() {
          result.innerHTML = '';
          statusmsg.innerHTML = '';
 
-         if (elem.checked && weekt2)
+         if (!indoor && elem.checked && weekt2)
             {
              const forecast = forecastcalc(width, sun, hang);
              hours = forecast.hours;
@@ -849,6 +895,7 @@ function showHangingTime() {
                  return;
                 }
              if (elem.checked) {notes.push(msg("noforecast"));}
+             if (indoor) {notes.push(msg(indoorAverage ? "indoorforecast" : "indoor"));}
              if (sun) {notes.push(msg("sunmanual"));}
              hours = calc(toCelsius(temp),humid,toKmh(wind),width);
              if (hours === Infinity) {notes.push(msg("nodry"));}
@@ -880,6 +927,7 @@ function showHangingTime() {
           }
 
           status.textContent = '';
+          if (document.querySelector('#indoor').checked) {applyIndoorAverage();}
           doCalc();
           showHangingTime();
         }
