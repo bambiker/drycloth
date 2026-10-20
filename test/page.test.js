@@ -457,3 +457,80 @@ test('in the header drawing every clothespin is on the clothesline, and the clot
     await page.close();
   }
 });
+
+// the Google Analytics events the page sent (gtag puts them in window.dataLayer)
+async function analyticsEvents(page) {
+  return page.evaluate(() => window.dataLayer
+    .map(entry => Array.from(entry))
+    .filter(entry => entry[0] === 'event')
+    .map(entry => ({ name: entry[1], ...entry[2] })));
+}
+
+test('Google Analytics events for sections, fabric, units, indoors and calculating', async () => {
+  const { page, errors } = await open('/he/');
+  await page.click('details[data-section="tips"] summary');
+  await page.click('details[data-section="checkdry"] summary');
+  await page.click('label:has(input[name=fabric][value="1"])');
+  await page.click('label:has(input[name=units][value=imperial])');
+  await page.click('label:has(input[name=units][value=metric])');
+  await page.fill('#temp', '25');
+  await page.fill('#humid', '50');
+  await page.click('label:has(#indoor)');
+  await page.click('#btncalc');
+  await page.click('#hangnow');
+  // calculating is sent once, after a short pause
+  await page.waitForFunction(() => window.dataLayer.some(entry => entry[0] === 'event' && entry[1] === 'calculate'), null, { timeout: 4000 });
+  const events = await analyticsEvents(page);
+  const has = (name, params) => events.some(e => e.name === name && Object.entries(params).every(([k, v]) => e[k] === v));
+  assert.ok(has('open_section', { section: 'tips', language: 'he' }));
+  assert.ok(has('open_section', { section: 'checkdry' }));
+  assert.ok(has('choose_fabric', { fabric: '1' }));
+  assert.ok(has('units', { units: 'imperial' }));
+  assert.ok(has('indoor', { on: true }));
+  assert.ok(has('hang_time', { hours_ahead: 0 }));
+  assert.ok(has('calculate', { mode: 'manual', indoor: true, fabric: '1', dries: true }));
+  assert.equal(events.filter(e => e.name === 'calculate').length, 1);
+  // closing a section is not an event
+  await page.click('details[data-section="tips"] summary');
+  assert.equal((await analyticsEvents(page)).filter(e => e.name === 'open_section' && e.section === 'tips').length, 1);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
+test('Google Analytics events for the forecast button and installing', async () => {
+  // no location
+  const denied = await browser.newPage();
+  await denied.route(url => !url.href.startsWith(base), route => route.abort());
+  await denied.goto(base + '/');
+  await denied.click('#find-me');
+  await denied.waitForFunction(() => window.dataLayer.some(entry => entry[1] === 'use_forecast'));
+  assert.equal((await analyticsEvents(denied)).find(e => e.name === 'use_forecast').result, 'no_location');
+  // the install prompt
+  await denied.evaluate(() => {
+    const event = new Event('beforeinstallprompt');
+    event.prompt = () => {};
+    event.userChoice = Promise.resolve({ outcome: 'accepted' });
+    window.dispatchEvent(event);
+  });
+  await denied.click('#install');
+  const install = (await analyticsEvents(denied)).find(e => e.name === 'install');
+  assert.equal(install.platform, 'prompt');
+  assert.equal(install.outcome, 'accepted');
+  await denied.close();
+
+  // the forecast loaded
+  const context = await browser.newContext({ geolocation: { latitude: 32, longitude: 35 }, permissions: ['geolocation'] });
+  const page = await context.newPage();
+  await page.route(url => !url.href.startsWith(base) && !url.href.includes('open-meteo'), route => route.abort());
+  const n = 168;
+  await page.route(/open-meteo/, route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ hourly: {
+    temperature_2m: Array(n).fill(25), relative_humidity_2m: Array(n).fill(50), precipitation: Array(n).fill(0),
+    precipitation_probability: Array(n).fill(0), wind_speed_10m: Array(n).fill(0), shortwave_radiation: Array(n).fill(0) } }) }));
+  await page.goto(base + '/');
+  await page.click('#find-me');
+  await page.waitForFunction(() => window.dataLayer.some(entry => entry[1] === 'calculate'), null, { timeout: 4000 });
+  const events = await analyticsEvents(page);
+  assert.equal(events.find(e => e.name === 'use_forecast').result, 'ok');
+  assert.equal(events.find(e => e.name === 'calculate').mode, 'forecast');
+  await context.close();
+});

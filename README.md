@@ -28,3 +28,22 @@ Don't edit `he/index.html` by hand; the tests fail if it is not up to date. Old 
 The calculation messages are in `calc.js`.
 
 The tests also run on GitHub for every pull request.
+
+## Google Analytics events ##
+Besides the automatic page views, the page sends these events (every event also has `language`: `he` or `en`).
+No location and no weather values are sent.
+
+| Event | When | Parameters |
+|---|---|---|
+| `open_section` | a section is opened | `section`: `why`, `checkdry`, `rules`, `tips` |
+| `use_forecast` | the forecast button | `result`: `ok`, `no_location`, `no_weather`, `not_supported` |
+| `calculate` | a calculation (once, after a short pause) | `mode`: `forecast`/`manual`, `indoor`, `sun`, `fabric`, `dries` |
+| `choose_fabric` | an item is chosen | `fabric`: `2`, `1`, `0.5`, `other` |
+| `indoor` | the "drying indoors" switch | `on` |
+| `hang_time` | the hanging time is changed | `hours_ahead` |
+| `install` | the "Add to home screen" button | `platform`: `prompt`/`ios`, `outcome` |
+| `units` | °C/°F is changed | `units`: `metric`/`imperial` |
+
+The events show in Reports → Realtime right away, and in Reports → Engagement → Events after about a day.
+To see a parameter (for example which section was opened), add it once in
+Admin → Custom definitions → Create custom dimension (scope: Event, event parameter: e.g. `section`).

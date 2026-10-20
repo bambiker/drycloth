@@ -636,7 +636,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
     </section>
 
     <section class="info">
-      <details>
+      <details data-section="why">
         <summary><span class="emoji" aria-hidden="true">🌱</span><h2 data-i18n="why">למה המחשבון חשוב</h2></summary>
         <div class="body">
           <img class="picture" src="../clothlineclock.jpg" width="512" height="512" loading="lazy" alt="תמונה של חבלי כביסה עם שעון" data-i18n-alt="imagealt">
@@ -648,7 +648,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           </ul>
         </div>
       </details>
-      <details>
+      <details data-section="checkdry">
         <summary><span class="emoji" aria-hidden="true">✋</span><h2 data-i18n="checkdry">איך בודקים שהכביסה יבשה?</h2></summary>
         <div class="body">
           <ul>
@@ -660,7 +660,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           </ul>
         </div>
       </details>
-      <details>
+      <details data-section="rules">
         <summary><span class="emoji" aria-hidden="true">📏</span><h2 data-i18n="rules">כללי אצבע למחשבון</h2></summary>
         <div class="body">
           <ul>
@@ -673,7 +673,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           </ul>
         </div>
       </details>
-      <details>
+      <details data-section="tips">
         <summary><span class="emoji" aria-hidden="true">🧺</span><h2 data-i18n="tips">טיפים</h2></summary>
         <div class="body">
           <ul>
@@ -708,9 +708,28 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
     </footer>
 
 <script>
+// Google Analytics events (see README); nothing personal is sent, no location and no weather values
+function track(name, params) {
+  if (typeof gtag !== "function") {return;}
+  gtag("event", name, Object.assign({ language: isHe ? "he" : "en" }, params || {}));
+}
+// for events that can come many times in a row (typing a number): only the last one after a short pause
+var trackTimers = {};
+function trackLater(name, params) {
+  clearTimeout(trackTimers[name]);
+  trackTimers[name] = setTimeout(function() { track(name, params); }, 1500);
+}
+
+document.querySelectorAll('details[data-section]').forEach(function(details) {
+  details.addEventListener("toggle", function() {
+    if (details.open) {track("open_section", { section: details.dataset.section });}
+  });
+});
+
 document.querySelectorAll('input[name="units"]').forEach(radio => {
   radio.addEventListener('change', function() {
     setUnits(this.value, true);
+    track("units", { units: this.value });
   });
 });
 
@@ -749,10 +768,12 @@ window.addEventListener("beforeinstallprompt", function(event) {
 installButton.addEventListener("click", async function() {
   if (installPrompt) {
     installPrompt.prompt();
-    await installPrompt.userChoice;
+    var choice = await installPrompt.userChoice;
+    track("install", { platform: "prompt", outcome: choice && choice.outcome });
     installPrompt = null;
     installButton.hidden = true;
   } else {
+    if (installHint.hidden) {track("install", { platform: "ios" });}
     installHint.hidden = !installHint.hidden;
   }
 });
@@ -782,10 +803,12 @@ resetHangTime();
 hangInput.addEventListener("input", function() {
   hangInput.dataset.chosen = hangInput.value ? "1" : "";
   recalcIfReady();
+  trackLater("hang_time", { hours_ahead: Math.round((hangTime().getTime() - Date.now()) / 3600000) });
 });
 document.getElementById("hangnow").addEventListener("click", function() {
   resetHangTime();
   recalcIfReady();
+  track("hang_time", { hours_ahead: 0 });
 });
 
 // recalculate right away when there is something to calculate (the forecast, or the weather typed in)
@@ -799,6 +822,7 @@ document.querySelectorAll('input[name="fabric"]').forEach(function(radio) {
   radio.addEventListener("change", function() {
     document.getElementById("widthfield").hidden = this.value !== "other";
     recalcIfReady();
+    track("choose_fabric", { fabric: this.value });
   });
 });
 document.getElementById("width").addEventListener("input", function() {
@@ -820,6 +844,7 @@ function applyIndoorAverage() {
   indoorAverage = true;
 }
 document.getElementById("indoor").addEventListener("change", function() {
+  track("indoor", { on: this.checked });
   var windInput = document.getElementById("wind");
   document.getElementById("sun").disabled = this.checked;
   if (this.checked) {
@@ -899,6 +924,13 @@ function showHangingTime() {
 
          result.innerHTML = (hours === Infinity) ? '-' : formatDuration(hours);
          statusmsg.innerHTML = notes.join('<br>');
+         trackLater("calculate", {
+           mode: (!indoor && elem.checked && weekt2) ? "forecast" : "manual",
+           indoor: indoor,
+           sun: sun,
+           fabric: fabric,
+           dries: hours !== Infinity
+         });
     }
 
     </script>
@@ -918,8 +950,10 @@ function showHangingTime() {
               await getweather(); // wait for the forecast, so we don't calculate with old values
           } catch (e) {
               status.textContent = msg("noweather");
+              track("use_forecast", { result: "no_weather" });
               return;
           }
+          track("use_forecast", { result: "ok" });
 
           status.textContent = '';
           if (document.querySelector('#indoor').checked) {applyIndoorAverage();}
@@ -929,10 +963,12 @@ function showHangingTime() {
 
         function error() {
           status.textContent = msg("nolocation");
+          track("use_forecast", { result: "no_location" });
         }
 
         if(!navigator.geolocation) {
           status.textContent = msg("nogeo");
+          track("use_forecast", { result: "not_supported" });
         } else {
           status.textContent = msg("locating");
           navigator.geolocation.getCurrentPosition(success, error);
