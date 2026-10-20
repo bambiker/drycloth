@@ -114,7 +114,7 @@ test('the language links lead to the other language', async () => {
 });
 
 test('the calculator works in both languages', async () => {
-  for (const [url, expected] of [['/', '3 hours and 25 minutes'], ['/he/', '3 שעות ו-25 דקות']]) {
+  for (const [url, expected] of [['/', '6 hours and 55 minutes'], ['/he/', '6 שעות ו-55 דקות']]) {
     const { page, errors } = await open(url);
     await page.fill('#temp', '25');
     await page.fill('#humid', '50');
@@ -146,11 +146,11 @@ test('structured data (JSON-LD) is valid and its example matches the calculator'
     assert.equal(q['@type'], 'Question');
     assert.ok(q.name && q.acceptedAnswer.text);
   }
-  // "at 25°C, 50% humidity and no wind, a 2 mm towel dries in about 3.5 hours" (also in llms.txt)
-  assert.match(data[1].mainEntity[0].acceptedAnswer.text, /about 3\.5 hours/);
-  const hours = await page.evaluate(() => calc(25, 50, 0, 2 / 2));
-  assert.equal(Math.round(hours * 2) / 2, 3.5);
-  assert.match(fs.readFileSync(path.join(root, 'llms.txt'), 'utf8'), /about 3\.5 hours/);
+  // "at 25°C, 50% humidity and no wind, a 2 mm towel dries in about 7 hours" (also in llms.txt)
+  assert.match(data[1].mainEntity[0].acceptedAnswer.text, /about 7 hours/);
+  const hours = await page.evaluate(() => calc(25, 50, 0, 2));
+  assert.equal(Math.round(hours), 7);
+  assert.match(fs.readFileSync(path.join(root, 'llms.txt'), 'utf8'), /about 7 hours/);
   await page.close();
 });
 
@@ -161,7 +161,7 @@ test('the Hebrew page has its own Hebrew structured data and share preview', asy
   assert.deepEqual(data.map(d => d['@type']), ['WebApplication', 'FAQPage']);
   assert.equal(data[0].url, 'https://bambiker.github.io/drycloth/he/');
   assert.equal(data[1].mainEntity.length, 6);
-  assert.match(data[1].mainEntity[0].acceptedAnswer.text, /בערך ב-3\.5 שעות/);
+  assert.match(data[1].mainEntity[0].acceptedAnswer.text, /בערך ב-7 שעות/);
   assert.equal(await page.getAttribute('meta[property="og:url"]', 'content'), 'https://bambiker.github.io/drycloth/he/');
   assert.equal(await page.getAttribute('meta[property="og:locale"]', 'content'), 'he_IL');
   await page.close();
@@ -216,16 +216,16 @@ test('choosing what is hung instead of the thickness', async () => {
   await page.fill('#temp', '25');
   await page.fill('#humid', '50');
   await page.click('#btncalc');
-  assert.equal(await page.textContent('#result'), '3 hours and 25 minutes'); // towel, the default
+  assert.equal(await page.textContent('#result'), '6 hours and 55 minutes'); // towel, the default
   await page.click('label:has(input[name=fabric][value="1"])');
   await page.click('#btncalc');
-  assert.equal(await page.textContent('#result'), '1 hour and 45 minutes'); // T-shirt
+  assert.equal(await page.textContent('#result'), '3 hours and 25 minutes'); // T-shirt
   assert.equal(await page.isVisible('#width'), false);
   await page.click('label:has(input[name=fabric][value=other])');
   assert.equal(await page.isVisible('#width'), true);
   await page.fill('#width', '1');
   await page.click('#btncalc');
-  assert.equal(await page.textContent('#result'), '1 hour and 45 minutes');
+  assert.equal(await page.textContent('#result'), '3 hours and 25 minutes');
   assert.deepEqual(errors, []);
   await page.close();
 
@@ -239,7 +239,7 @@ test('the hanging time is now by default and can be changed', async () => {
   const { page, errors } = await open('/');
   const now = await page.evaluate(() => [hangInput.value, localInputValue(new Date())]);
   assert.equal(now[0], now[1]);
-  // hang tomorrow at 08:00: a towel at 25°C and 50% takes about 3.5 hours, dry around 11:27
+  // hang tomorrow at 08:00: a towel at 25°C and 50% takes about 6.9 hours, dry around 14:54
   const tomorrow = await page.evaluate(() => {
     const d = new Date(Date.now() + 24 * 3600 * 1000);
     return localInputValue(d).slice(0, 10) + 'T08:00';
@@ -248,7 +248,7 @@ test('the hanging time is now by default and can be changed', async () => {
   await page.fill('#temp', '25');
   await page.fill('#humid', '50');
   await page.click('#btncalc');
-  assert.match(await page.textContent('#statusmsg'), /11:27/);
+  assert.match(await page.textContent('#statusmsg'), /14:54/);
   // back to now
   await page.click('#hangnow');
   assert.equal(await page.evaluate(() => hangInput.dataset.chosen), '');
@@ -340,7 +340,7 @@ test('after the forecast the page goes to the hanging time, and a different item
     precipitation_probability: Array(n).fill(0), wind_speed_10m: Array(n).fill(0), shortwave_radiation: Array(n).fill(0) } }) }));
   await page.goto(base + '/he/');
   await page.click('#find-me');
-  await page.waitForFunction(() => document.getElementById('result').textContent === '3 שעות ו-25 דקות');
+  await page.waitForFunction(() => document.getElementById('result').textContent === '6 שעות ו-55 דקות');
   // the hanging time is at the top of the screen, and the item choice and the whole result are on the screen too
   await page.waitForFunction(() => Math.abs(document.querySelector('.field.hang').getBoundingClientRect().top - 12) < 20);
   assert.ok(await page.evaluate(() => document.querySelector('.fabric').getBoundingClientRect().bottom <= window.innerHeight));
@@ -348,7 +348,7 @@ test('after the forecast the page goes to the hanging time, and a different item
   assert.notEqual(await page.evaluate(() => document.activeElement.id), 'hangtime');
   // a T-shirt, without pressing "calculate"
   await page.click('label:has(input[name=fabric][value="1"])');
-  assert.equal(await page.textContent('#result'), 'שעה ו-45 דקות');
+  assert.equal(await page.textContent('#result'), '3 שעות ו-25 דקות');
   assert.deepEqual(errors, []);
   await context.close();
 });

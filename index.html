@@ -82,7 +82,7 @@
         "name": "How long does laundry take to dry on a clothesline?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "It depends on the temperature, the relative humidity, the wind and the thickness of the fabric. For example, at 25°C (77°F), 50% humidity and no wind, a 2 mm towel dries in about 3.5 hours. The calculator computes it for your weather, or hour by hour from the forecast for your location."
+          "text": "It depends on the temperature, the relative humidity, the wind and the thickness of the fabric. For example, at 25°C (77°F), 50% humidity and no wind, a 2 mm towel dries in about 7 hours. The calculator computes it for your weather, or hour by hour from the forecast for your location."
         }
       },
       {
@@ -122,7 +122,7 @@
         "name": "How do I check that the laundry is dry?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Check the item that dries the slowest first, usually the thickest one: touch the middle of it and check that it feels dry. If it does, also check the thick parts of the item, for example a built-in waistband, and areas like where the sleeve joins the shirt, where folds can form when the laundry is hung and dry the slowest."
+          "text": "Check the item that dries the slowest first, usually the thickest one: touch the middle of it and check that it feels dry. If it does, also check the thick parts of the item, for example a built-in waistband, and areas like where the sleeve joins the shirt, where folds can form when the laundry is hung and dry the slowest, and where the clothespins hold the item."
         }
       }
     ]
@@ -659,6 +659,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <li data-i18n="check2">Touch the middle of it and check that it feels dry.</li>
           <li data-i18n="check3">If it does, also check the thick parts of the item, for example a built-in waistband.</li>
           <li data-i18n="check4">Check areas like where the sleeve joins the shirt: folds can form there when the laundry is hung, and they dry the slowest.</li>
+          <li data-i18n="check5">Check also where the clothespins hold the item: the fabric is pressed together there and dries slowly.</li>
           </ul>
         </div>
       </details>
@@ -816,7 +817,8 @@ function showHangingTime() {
          var temp = document.getElementById("temp").value;
          var humid = document.getElementById("humid").value;
          var fabric = document.querySelector('input[name="fabric"]:checked').value;
-         var width = (fabric === "other" ? document.getElementById("width").value : fabric) / 2.;  //it dries from both sides
+         // the whole thickness: most clothes have a front and a back, so each side of the item dries its own layer
+         var width = Number(fabric === "other" ? document.getElementById("width").value : fabric);
          var hang = hangTime();
          var wind = document.getElementById("wind").value;
          const elem = document.querySelector('#useforecast')

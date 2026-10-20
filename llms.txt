@@ -9,14 +9,14 @@
 ## How it works
 
 - Evaporation rate (kg per m² per hour, which is also mm of water per hour): (25 + 19 × wind in m/s) × saturation humidity × (1 − relative humidity), the standard formula for evaporation from a water surface.
-- The fabric dries from both sides, so half of its thickness is used.
+- The whole thickness of the item is used: most clothes have a front and a back, so each side of the item dries its own layer.
 - With the forecast, the rate of every hour is subtracted until the laundry is dry; the wind is taken at 1.5 m (half of the 10 m forecast wind).
 - Optional direct sunlight adds evaporation from the solar radiation (only with the forecast; inner clotheslines are usually shaded).
 - It warns about rain before the laundry dries, the chance of rain, and strong wind (above 12 km/h at 10 m).
 
 ## Example
 
-At 25°C (77°F), 50% relative humidity and no wind, a towel (2 mm) dries in about 3.5 hours.
+At 25°C (77°F), 50% relative humidity and no wind, a towel (2 mm) dries in about 7 hours.
 
 ## Rules of thumb
 
