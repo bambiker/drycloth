@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content='Calculate how long it takes for clothes to dry on a clothesline using real-time weather forecasts. Get accurate drying times based on temperature, humidity and wind'>
@@ -44,7 +44,7 @@
       justify-content: space-between;
       margin-bottom: 1em;
     }
- p    {color: red;}
+#status {color: red;}
 
      label {
       display: block;
@@ -118,7 +118,12 @@
     <script>
     var isHe = new URLSearchParams(window.location.search).has('he'); // also works with extra parameters, e.g. ?he&fbclid=...
     if (isHe)
-       {document.body.setAttribute('dir', 'rtl')}
+       {
+        document.documentElement.setAttribute('lang', 'he');
+        document.documentElement.setAttribute('dir', 'rtl');
+        document.title = 'מחשבון זמן ייבוש כביסה על חבל';
+        document.querySelector('meta[name="description"]').setAttribute('content', 'חישוב כמה זמן לוקח לכביסה להתייבש על חבל הכביסה לפי תחזית מזג האוויר: טמפרטורה, לחות ורוח');
+       }
     </script>
     <script type="text/javascript" src="calc.js"></script>
     <div class="container"> 
@@ -129,7 +134,7 @@ if (isHe)
   var myString = `
   <span class="langen"><a href="index.html">En</a></span>
               <h1>מחשבון לחישוב זמן ייבוש הכביסה</h1>
-   <button class="button" id = "find-me"><b>לחצו כאן כדי להשתמש טמפרטורה ולחות מהתחזית</b></button><br/>
+   <button class="button" id = "find-me"><b>לחצו כאן כדי להשתמש בטמפרטורה ובלחות מהתחזית</b></button><br/>
      <p id = "status"></p>
      
 <div class="options">
@@ -154,22 +159,18 @@ if (isHe)
     <small>שמש ישירה נלקחת בחשבון רק בשימוש בתחזית. אם יש כמה חבלים, החבלים הפנימיים בדרך כלל מוצלים על ידי החיצוניים, ולכן עבורם עדיף לא לסמן.</small>
     <br>
 
-    הטמפרטורה במעלות <span id="temp-unit">צלזיוס</span>:<input  type="number"  id="temp" size="4">
-    <br>
-    הלחות היחסית:<input  type="number"  id="humid"  size="4" >
-    <br>
-    מהירות הרוח [<span id="wind-unit">קמ"ש</span>] (אפס בשביל ייבוש בתוך הבית):<input  type="number"  id="wind" value="0" size="4"  >
-    <br>
-    עובי הבד במ"מ, נא לבחור את הבד הכי עבה:<input  type="number"  id="width" value="2"   size="4" >
-    <br>
+    <label for="temp">הטמפרטורה במעלות <span id="temp-unit">צלזיוס</span>:</label><input  type="number"  id="temp" size="4">
+    <label for="humid">הלחות היחסית [%]:</label><input  type="number"  id="humid"  size="4" >
+    <label for="wind">מהירות הרוח [<span id="wind-unit">קמ"ש</span>] (אפס בשביל ייבוש בתוך הבית):</label><input  type="number"  id="wind" value="0" size="4"  >
+    <label for="width">עובי הבד במ"מ, נא לבחור את הבד הכי עבה:</label><input  type="number"  id="width" value="2"   size="4" >
    
     <br>
     <button class="button" id="btncalc"><b>חשב</b></button><br><br>
    
    זמן הייבוש:
-  <b>  <label id="result" value ="<נא להזין נתונים וללחוץ על כפתור חשב>"></label>  </b>
+  <b>  <span id="result">נא להזין נתונים וללחוץ על חשב</span>  </b>
     <br>
- <b>   <label id="statusmsg" value ="status massages will be here"></label>  </b>
+ <b>   <span id="statusmsg"></span>  </b>
     <br>
     <h2>למה המחשבון חשוב</h2>
     לתלות כביסה על החבלים חשוב לאיכות הסביבה וגם חוסך חשמל וכסף. השתמשו במחשבון על מנת:<br>
@@ -180,8 +181,8 @@ if (isHe)
     </ul>
     <h2>כללי אצבע למחשבון</h2>
     <ul>
-    <li>אם תולים כביסה בבית בלי חימום הטמפרטורה תיהיה ממוצע של היום והלילה, וכך גם הלחות</li>    
-    <li>אם תולים כביסה בבית עם חימום, הטמפרטורה תיהיה הטמפרטורה המקסימלית, כלומר טמפרטורת הצהריים</li>    
+    <li>אם תולים כביסה בבית בלי חימום הטמפרטורה תהיה ממוצע של היום והלילה, וכך גם הלחות</li>    
+    <li>אם תולים כביסה בבית עם חימום, הטמפרטורה תהיה הטמפרטורה המקסימלית, כלומר טמפרטורת הצהריים</li>    
     <li>מגבת, חולצת חורף או ג'ינס עוביים 2 מ"מ </li>    
     <li>חולצות קצרות עוביים 1 מ"מ</li>  
     <li>חולצה מנדפת עובייה האפקטיבי הוא 0.5 מ"מ</li>  
@@ -192,11 +193,11 @@ if (isHe)
     <li>אם תולים כביסה בבית ולא מפעילים חימום כדאי לפתוח חלון (ועדיף שני חלונות או חלון ודלת).</li>    
     <li>את הכביסה שמתייבשת הכי לאט יש לשים בחבלים החיצוניים</li>
     <li>עדיף לתלות את הכביסה בצורה מרווחת</li>
-    <li>מומלץ לתלות בגדים הפוך (שתוך הבגד יהיה בחוץ) כדי להפחית נזקי השמש לבד.</li>
+    <li>מומלץ לתלות בגדים הפוך (שהצד הפנימי של הבגד יהיה בחוץ) כדי להפחית נזקי השמש לבד.</li>
     <li>נער את הבגדים לפני תלייתם, זה יגרום לפחות קמטים ויכול להסיר לכלוך שנותר על הבגדים.</li>
     <li>אם הבגדים התקפלו מעט כשהם ניתלו (למשל ליד השרוולים), העובי האפקטיבי שלהם מוכפל למעשה.</li>
     <li>אם זה אפשרי, יש לתלות את הכביסה כשחבלי הכביסה מקבילים לכיוון הרוח הממוצעת</li>  
-    <li>אם הרוח חזקה, כדי להשתמש ביותר אטבי כביסה</li>
+    <li>אם הרוח חזקה, כדאי להשתמש ביותר אטבי כביסה</li>
     </ul>
            `;
         }
@@ -232,22 +233,18 @@ if (isHe)
     <br>
 
     <br>
-    Temperature [<span id="temp-unit">°C</span>]: <input type="number" id="temp" size="4"><br>
-    <br>
-    Relative humidity [%]: <input  type="number"  id="humid"  size="4"  >
-    <br>
-    Wind speed [<span id="wind-unit">km/h</span>] (assume 0 for indoor): <input type="number" id="wind" value="0" size="4">
-    <br>
-    Fabric thickness [mm], please choose the thickest fabric: <input  type="number"  id="width" value="2" size="4"  >
-    <br>
+    <label for="temp">Temperature [<span id="temp-unit">°C</span>]:</label><input type="number" id="temp" size="4">
+    <label for="humid">Relative humidity [%]:</label><input  type="number"  id="humid"  size="4"  >
+    <label for="wind">Wind speed [<span id="wind-unit">km/h</span>] (assume 0 for indoor):</label><input type="number" id="wind" value="0" size="4">
+    <label for="width">Fabric thickness [mm], please choose the thickest fabric:</label><input  type="number"  id="width" value="2" size="4"  >
    
     <br>
     <button class="button" id="btncalc"><b>calculate</b></button><br><br>
  
    Drying time:
- <b>   <label id="result" value ="<Please insert data and press "calculate"></label>  </b>
+ <b>   <span id="result">Please enter the data and press "calculate"</span>  </b>
     <br>
- <b>   <label id="statusmsg" value ="status massages will be here"></label>  </b>
+ <b>   <span id="statusmsg"></span>  </b>
     <br>
 
     
@@ -263,14 +260,14 @@ if (isHe)
     <li>If you hang laundry at home without heating, the temperature will be the average day and night, as well as the humidity.</li> 
     <li>If you hang laundry at home with heating, the temperature will be the maximum temperature, i.e. the midday temperature.</li>  
     <li>Towels, winter shirts, or jeans are 2 mm thick.</li>
-    <li>Short shirts are 1 mm thick.</li>
-    <li>Evaporator shirt, the effective thickness is 0.5 mm. </li>
+    <li>T-shirts are 1 mm thick.</li>
+    <li>Moisture-wicking shirts have an effective thickness of 0.5 mm.</li>
     <li>The calculator works only above zero degrees Celsius.</li>
     </ul>
     <h2>Tips</h2>
     <ul>
     <li>If you hang laundry at home and do not turn on the heating, you should open a window (preferably two windows or a window and a door).</li>
-    <li>The laundry that dries the slowest should be put on the outer ropes.</li>
+    <li>The laundry that dries the slowest should be put on the outer lines.</li>
     <li>It is better to hang the laundry in a spacious way.</li>
     <li>It is a good idea to hang clothes inside out to reduce sun damage to the fabric.</li>
     <li>If the clothes were slightly folded when hung (for example near the sleeves), their effective thickness is doubled.</li>
@@ -300,7 +297,6 @@ Weather forecast is taken from  <a href="https://open-meteo.com/" target="_blank
 <br>
 
 <span id="span2"></span>
-<div class=\"2a_kit a2a_kit_size_32 a2a_default_style\" data-a2a-url=\"https://bambiker.github.io/drycloth/\">
 <script>
  if (isHe)    
 {
@@ -441,9 +437,9 @@ document.getElementById("btncalc").addEventListener("click",doCalc);
     </script> 
  <br>
  <br>
- <center>
-      <img src="clothlineclock.jpg" width="80%"  alt="Image of clothlines with a clock">
- </center>
+ <div style="text-align: center;">
+      <img src="clothlineclock.jpg" width="80%" loading="lazy" alt="Image of clothlines with a clock">
+ </div>
   </div> 
      
   </body>
