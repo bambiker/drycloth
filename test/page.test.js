@@ -422,3 +422,38 @@ test('drying indoors takes the 24 hour average from the forecast once, then heat
   assert.deepEqual(errors, []);
   await context.close();
 });
+
+test('in the header drawing every clothespin is on the clothesline, and the clothes are whole', async () => {
+  for (const width of [390, 768, 1100, 1600]) {
+    const page = await browser.newPage({ viewport: { width, height: 800 } });
+    await page.route(url => !url.href.startsWith(base), route => route.abort());
+    await page.goto(base + '/');
+    const pegs = await page.evaluate(() => {
+      const rope = document.querySelector('.scene path');
+      const matrix = rope.getScreenCTM();
+      const points = [];
+      for (let l = 0; l <= rope.getTotalLength(); l += 1) {
+        const p = rope.getPointAtLength(l);
+        points.push({ x: matrix.a * p.x + matrix.c * p.y + matrix.e, y: matrix.b * p.x + matrix.d * p.y + matrix.f });
+      }
+      return [...document.querySelectorAll('.scene rect[fill="#8d6e63"]')].map(peg => {
+        const box = peg.getBoundingClientRect();
+        const middle = box.left + box.width / 2;
+        const ropeY = points.reduce((a, b) => (Math.abs(b.x - middle) < Math.abs(a.x - middle) ? b : a)).y;
+        return { top: box.top, bottom: box.bottom, ropeY };
+      });
+    });
+    assert.ok(pegs.length >= 9);
+    // the clothes are not cut at the top or the bottom of the drawing
+    const cut = await page.evaluate(() => {
+      const scene = document.querySelector('.scene').getBoundingClientRect();
+      return [...document.querySelectorAll('.scene g')].map(item => item.getBoundingClientRect())
+        .filter(box => box.top < scene.top - 0.5 || box.bottom > scene.bottom + 0.5).length;
+    });
+    assert.equal(cut, 0, `clothes cut at width ${width}`);
+    for (const peg of pegs) {
+      assert.ok(peg.top < peg.ropeY && peg.ropeY < peg.bottom, `a clothespin at ${peg.top}-${peg.bottom} is not on the rope at ${peg.ropeY} (width ${width})`);
+    }
+    await page.close();
+  }
+});
