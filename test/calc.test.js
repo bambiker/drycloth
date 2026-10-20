@@ -188,9 +188,9 @@ test('msg replaces the parameters in the right language', () => {
   assert.equal(load({ he: true }).msg('rainprob', 40), 'הסיכוי הגבוה ביותר לגשם בזמן הייבוש: 40%.');
 });
 
-test('the wind warning says strong wind, not a storm', () => {
+test('the Hebrew wind warning says strong wind, not a storm', () => {
   assert.equal(load({ he: true }).msg('windy'), 'נראה שתהיה רוח חזקה. כדאי להשתמש ביותר אטבי כביסה.');
-  assert.match(load().msg('windy'), /strong wind/);
+  assert.equal(load().msg('windy'), 'It looks like it will be windy. Please use extra clothespins (clothes pegs).');
 });
 
 test('default units by where the user is', () => {
