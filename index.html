@@ -392,7 +392,7 @@ input[type="number"] {
 input[type="number"]:focus { border-color: var(--navy-2); outline: none; }
 
 /* hanging time */
-.field.hang { grid-template-columns: 44px 1fr; }
+.field.hang { grid-template-columns: 44px 1fr; scroll-margin-top: 12px; }
 .hang-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .hang-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
 input[type="datetime-local"] {
@@ -803,12 +803,12 @@ document.getElementById("width").addEventListener("input", function() {
   if (this.value > 0) {recalcIfReady();}
 });
 
-// after the forecast: show the item choice, the button and the result together
-function showFabricChoice() {
-  var fabric = document.querySelector(".fabric");
+// after the forecast: show the hanging time, the item choice and the result together
+// (no focus on the date field, on some phones that opens the date picker)
+function showHangingTime() {
+  var hang = document.querySelector(".field.hang");
   var smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  fabric.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
-  document.querySelector('input[name="fabric"]:checked').focus({ preventScroll: true });
+  hang.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
 }
 
     function doCalc()
@@ -879,7 +879,7 @@ function showFabricChoice() {
 
           status.textContent = '';
           doCalc();
-          showFabricChoice();
+          showHangingTime();
         }
 
         function error() {
