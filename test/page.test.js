@@ -534,3 +534,21 @@ test('Google Analytics events for the forecast button and installing', async () 
   assert.equal(events.find(e => e.name === 'calculate').mode, 'forecast');
   await context.close();
 });
+
+test('a large share and search image for each language, and the photo is visible on the page', async () => {
+  for (const [url, file] of [['/', 'share-en.png'], ['/he/', 'share-he.png']]) {
+    const { page, missing } = await open(url);
+    assert.equal(await page.getAttribute('meta[property="og:image"]', 'content'), 'https://bambiker.github.io/drycloth/' + file);
+    assert.equal(pngSize(path.join(root, file)), '1200x630');
+    assert.equal(await page.getAttribute('meta[name="twitter:card"]', 'content'), 'summary_large_image');
+    const data = await page.evaluate(() => JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent));
+    assert.equal(data.image[0], 'https://bambiker.github.io/drycloth/' + file);
+    // the photo is not inside a folded section, and it loads
+    assert.equal(await page.evaluate(() => document.querySelector('img.picture').closest('details')), null);
+    await page.locator('img.picture').scrollIntoViewIfNeeded();
+    assert.ok(await page.isVisible('img.picture'));
+    assert.ok(await page.evaluate(() => document.querySelector('img.picture').complete && document.querySelector('img.picture').naturalWidth > 0));
+    assert.deepEqual(missing, []);
+    await page.close();
+  }
+});

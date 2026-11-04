@@ -49,7 +49,8 @@ function buildHebrewPage() {
     'og:title': t.title,
     'og:description': t.description,
     'og:url': `${site}he/`,
-    'og:image:alt': t.imagealt,
+    'og:image': `${site}share-he.png`,
+    'og:image:alt': t.heading,
     'og:locale': 'he_IL',
     'og:locale:alternate': 'en_US',
   };
@@ -65,6 +66,7 @@ function buildHebrewPage() {
       data.name = t.heading;
       data.url = `${site}he/`;
       data.description = t.description;
+      data.image = [`${site}share-he.png`].concat(data.image.slice(1));
     } else if (data['@type'] === 'FAQPage') {
       data.mainEntity = faq.map(([question, answer]) => ({
         '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } }));

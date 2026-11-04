@@ -28,13 +28,14 @@
   <meta property="og:title" content="כמה זמן לוקח לכביסה להתייבש? מחשבון זמן ייבוש כביסה על חבל">
   <meta property="og:description" content="חישוב כמה זמן לוקח לכביסה להתייבש על חבל הכביסה לפי תחזית מזג האוויר: טמפרטורה, לחות ורוח">
   <meta property="og:url" content="https://bambiker.github.io/drycloth/he/">
-  <meta property="og:image" content="https://bambiker.github.io/drycloth/clothlineclock.jpg">
-  <meta property="og:image:width" content="512">
-  <meta property="og:image:height" content="512">
-  <meta property="og:image:alt" content="תמונה של חבלי כביסה עם שעון">
+  <!-- share-en.png and share-he.png are made by scripts/make-share-image.js -->
+  <meta property="og:image" content="https://bambiker.github.io/drycloth/share-he.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="מחשבון לחישוב זמן ייבוש הכביסה">
   <meta property="og:locale" content="he_IL">
   <meta property="og:locale:alternate" content="en_US">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
 
   <script type="application/ld+json">
   {
@@ -56,7 +57,10 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "image": "https://bambiker.github.io/drycloth/clothlineclock.jpg",
+    "image": [
+      "https://bambiker.github.io/drycloth/share-he.png",
+      "https://bambiker.github.io/drycloth/clothlineclock.jpg"
+    ],
     "codeRepository": "https://github.com/bambiker/drycloth"
   }
   </script>
@@ -521,14 +525,13 @@ input[type="datetime-local"]:focus { border-color: var(--navy-2); outline: none;
 .info li { margin: 6px 0; }
 .info li::marker { color: var(--sun-hover); }
 .picture {
-  float: inline-end;
-  width: 140px;
+  display: block;
+  width: min(100%, 420px);
   height: auto;
-  margin: 4px 0 8px;
-  margin-inline-start: 16px;
-  border-radius: 14px;
+  margin: 28px auto 0;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
 }
-@media (max-width: 480px) { .picture { width: 110px; } }
 
 /* footer */
 footer {
@@ -635,11 +638,12 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
       </div>
     </section>
 
+    <img class="picture" src="../clothlineclock.jpg" width="512" height="512" loading="lazy" alt="תמונה של חבלי כביסה עם שעון" data-i18n-alt="imagealt">
+
     <section class="info">
       <details data-section="why">
         <summary><span class="emoji" aria-hidden="true">🌱</span><h2 data-i18n="why">למה המחשבון חשוב</h2></summary>
         <div class="body">
-          <img class="picture" src="../clothlineclock.jpg" width="512" height="512" loading="lazy" alt="תמונה של חבלי כביסה עם שעון" data-i18n-alt="imagealt">
           <span data-i18n="whyintro">לתלות כביסה על החבלים חשוב לאיכות הסביבה וגם חוסך חשמל וכסף. השתמשו במחשבון על מנת:</span>
           <ul>
           <li data-i18n="why1">לוודא שהכביסה תתייבש לפני שיתחיל לרדת גשם</li>
