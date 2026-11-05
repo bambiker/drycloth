@@ -18,7 +18,7 @@ and `test/page.test.js` that opens the page in a browser, in English and in Hebr
     npm test
 
 ## Translations ##
-`index.html` is written in English. The pages in the other languages (`he/`, `de/`, `it/`, `es/`) are made from it
+`index.html` is written in English. The pages in the other languages (`he/`, `de/`, `it/`, `es/`, `pt/`, `fr/`, `ja/`, `pl/`, `el/`, `tr/`, `ar/`) are made from it
 and the texts in `lang.js`: every element with `data-i18n="key"` gets the text of that key, and `faqs` has the
 questions and answers of each language. The calculation messages are in `calc.js`. After changing `index.html` or
 `lang.js`, run:
@@ -27,11 +27,11 @@ questions and answers of each language. The calculation messages are in `calc.js
 
 Don't edit the language pages by hand; the tests fail if they are not up to date. Old links with `?he` go to `he/`.
 To add a language: its texts in `lang.js` (`translations` and `faqs`), its messages and duration words in `calc.js`,
-its locale in `scripts/build-lang.js`, a link in the language menu and an `hreflang` link in `index.html`, then
+its locale in `scripts/build-lang.js`, a link in the language menu and an `hreflang` link in `index.html`, its pages in `sitemap.xml`, `SiteMap` and `llms.txt`, then
 `npm run build` and `node scripts/make-share-image.js`.
 
 ## Google Analytics events ##
-Besides the automatic page views, the page sends these events (every event also has `language`: `he` or `en`).
+Besides the automatic page views, the page sends these events (every event also has `language`: the page language, `en`, `he`, `de`...).
 No location and no weather values are sent.
 
 | Event | When | Parameters |

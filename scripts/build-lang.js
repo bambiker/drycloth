@@ -15,6 +15,13 @@ const languages = {
   de: { locale: 'de_DE', dir: 'ltr' },
   it: { locale: 'it_IT', dir: 'ltr' },
   es: { locale: 'es_ES', dir: 'ltr' },
+  pt: { locale: 'pt_BR', dir: 'ltr' },
+  fr: { locale: 'fr_FR', dir: 'ltr' },
+  ja: { locale: 'ja_JP', dir: 'ltr' },
+  pl: { locale: 'pl_PL', dir: 'ltr' },
+  el: { locale: 'el_GR', dir: 'ltr' },
+  tr: { locale: 'tr_TR', dir: 'ltr' },
+  ar: { locale: 'ar_AR', dir: 'rtl' },
 };
 
 function loadTexts() {
@@ -110,6 +117,9 @@ function buildPage(lang) {
   html = html.replace(/<a class="lang" data-lang="(\w+)" href="[^"]*"( hreflang="\w+" lang="\w+")(?: aria-current="page")?>/g,
     (m, to, rest) => `<a class="lang" data-lang="${to}" href="${to === lang ? './' : to === 'en' ? '../' : `../${to}/`}"${rest}` +
       (to === lang ? ' aria-current="page">' : '>'));
+  // the menu button shows the name of this page's language
+  const name = html.match(new RegExp(`<a class="lang" data-lang="${lang}"[^>]*>([^<]+)</a>`))[1];
+  html = replaceOnce(html, '<span class="lang-current">English</span>', `<span class="lang-current">${name}</span>`);
 
   // texts: <tag ... data-i18n="key" ...>English</tag>
   const used = new Set();
