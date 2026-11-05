@@ -1,0 +1,31 @@
+{
+  "name": "Calculateur du temps de séchage du linge",
+  "short_name": "Linge sec ?",
+  "description": "Votre linge va-t-il sécher aujourd'hui ? Découvrez quand, selon la météo de chez vous.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "lang": "fr",
+  "dir": "ltr",
+  "background_color": "#f3f6fb",
+  "theme_color": "#3d8fd9",
+  "icons": [
+    {
+      "src": "../icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "../icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "../icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

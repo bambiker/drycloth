@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<!-- Made from index.html and lang.js by scripts/build-lang.js. Do not edit, run: npm run build -->
+<html lang="fr" dir="ltr">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Mon linge va-t-il sécher aujourd'hui ? Découvrez combien de temps le linge met à sécher dehors et quand le rentrer, selon la météo de chez vous : température, humidité, vent et pluie.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../drycloth.svg">
+  <!-- install as an app (home screen, desktop) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#3d8fd9">
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="Linge sec ?">
+
+  <base target="_top">
+  <title>Combien de temps met le linge à sécher sur un étendoir ? Calculateur</title>
+  <!-- the other languages (he/, de/, it/, es/) are made from this page by scripts/build-lang.js -->
+  <link rel="canonical" href="https://bambiker.github.io/drycloth/fr/">
+  <link rel="alternate" hreflang="en" href="https://bambiker.github.io/drycloth/">
+  <link rel="alternate" hreflang="he" href="https://bambiker.github.io/drycloth/he/">
+  <link rel="alternate" hreflang="de" href="https://bambiker.github.io/drycloth/de/">
+  <link rel="alternate" hreflang="it" href="https://bambiker.github.io/drycloth/it/">
+  <link rel="alternate" hreflang="es" href="https://bambiker.github.io/drycloth/es/">
+  <link rel="alternate" hreflang="pt" href="https://bambiker.github.io/drycloth/pt/">
+  <link rel="alternate" hreflang="fr" href="https://bambiker.github.io/drycloth/fr/">
+  <link rel="alternate" hreflang="ja" href="https://bambiker.github.io/drycloth/ja/">
+  <link rel="alternate" hreflang="pl" href="https://bambiker.github.io/drycloth/pl/">
+  <link rel="alternate" hreflang="el" href="https://bambiker.github.io/drycloth/el/">
+  <link rel="alternate" hreflang="tr" href="https://bambiker.github.io/drycloth/tr/">
+  <link rel="alternate" hreflang="ar" href="https://bambiker.github.io/drycloth/ar/">
+  <link rel="alternate" hreflang="x-default" href="https://bambiker.github.io/drycloth/">
+
+  <!-- preview when the link is shared (WhatsApp, Facebook, X...) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Calculateur du temps de séchage du linge">
+  <meta property="og:title" content="Combien de temps met le linge à sécher sur un étendoir ? Calculateur">
+  <meta property="og:description" content="Mon linge va-t-il sécher aujourd'hui ? Découvrez combien de temps le linge met à sécher dehors et quand le rentrer, selon la météo de chez vous : température, humidité, vent et pluie.">
+  <meta property="og:url" content="https://bambiker.github.io/drycloth/fr/">
+  <!-- share-en.png and share-he.png are made by scripts/make-share-image.js -->
+  <meta property="og:image" content="https://bambiker.github.io/drycloth/share-fr.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Calculateur du temps de séchage du linge">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculateur du temps de séchage du linge",
+    "alternateName": "Clothesline drying time calculator",
+    "url": "https://bambiker.github.io/drycloth/fr/",
+    "description": "Mon linge va-t-il sécher aujourd'hui ? Découvrez combien de temps le linge met à sécher dehors et quand le rentrer, selon la météo de chez vous : température, humidité, vent et pluie.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "inLanguage": [
+      "en",
+      "he",
+      "de",
+      "it",
+      "es",
+      "pt",
+      "fr",
+      "ja",
+      "pl",
+      "el",
+      "tr",
+      "ar"
+    ],
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "image": [
+      "https://bambiker.github.io/drycloth/share-fr.png",
+      "https://bambiker.github.io/drycloth/clothlineclock.jpg"
+    ],
+    "codeRepository": "https://github.com/bambiker/drycloth"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Combien de temps met le linge à sécher sur un étendoir ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "En général quelques heures par une journée chaude avec un peu de vent, et beaucoup plus quand il fait frais et humide. Utilisez les prévisions météo pour voir quand votre linge sera sec aujourd'hui."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quelle est l’épaisseur de mon linge ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Les serviettes, les pulls ou les jeans font 2 mm d’épaisseur. Les T-shirts, 1 mm. Les T-shirts techniques ont une épaisseur effective de 0,5 mm. Si les vêtements sont un peu pliés une fois étendus (par exemple près des manches), leur épaisseur effective double."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quelle température et quelle humidité indiquer pour un séchage à l’intérieur ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sans chauffage, la température moyenne du jour et de la nuit, et de même pour l'humidité. Avec chauffage, la température maximale, c'est-à-dire celle de midi. À l'intérieur, la vitesse du vent est 0."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Comment faire sécher le linge plus vite sur l’étendoir ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Étendez le linge en laissant de l’espace entre les pièces, mettez sur les fils extérieurs celui qui sèche le plus lentement et, si possible, tendez les fils parallèlement à la direction du vent dominant. Si vous séchez à l'intérieur sans chauffage, ouvrez une fenêtre (de préférence deux fenêtres, ou une fenêtre et une porte)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Va-t-il pleuvoir avant que le linge sèche ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Avec les prévisions, le calculateur vous prévient si de la pluie est attendue avant que le linge sèche, et indique quand la pluie devrait commencer et la plus forte probabilité de pluie pendant le séchage."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Comment savoir si le linge est sec ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Vérifiez d’abord la pièce qui sèche le plus lentement, en général la plus épaisse : touchez son milieu et vérifiez qu’elle est sèche. Si c’est le cas, vérifiez aussi les parties épaisses, par exemple une ceinture, des zones comme la jonction de la manche et du T-shirt, où des plis se forment en étendant et sèchent le plus lentement, et l’endroit des pinces à linge."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Mon linge va-t-il sécher aujourd'hui ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Utilisez les prévisions météo : le calculateur utilise les prévisions de chez vous, heure par heure, et indique combien de temps votre linge mettra à sécher et vers quelle heure il sera sec. Il vous prévient aussi si de la pluie est attendue avant."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "À quelle heure rentrer le linge ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Choisissez quand vous étendez et ce que vous étendez (la pièce la plus épaisse), et le calculateur indique vers quelle heure le linge sera sec. Si de la pluie est attendue avant, il indique aussi quand elle devrait commencer, pour que vous puissiez rentrer le linge à temps."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Combien de temps met le linge à sécher à l’intérieur ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "À l'intérieur, il n'y a pas de vent, donc le linge sèche plus lentement. Activez « Séchage à l’intérieur » : le calculateur utilise la température et l'humidité moyennes des prochaines 24 heures, sans vent. Augmentez la température pour voir l'effet du chauffage, ou le vent pour un ventilateur."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Le linge sèche-t-il la nuit ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lentement. La nuit, la température baisse et l'humidité monte, parfois presque jusqu'à 100 %, donc l'air absorbe très peu d'eau. Choisissez une heure en soirée pour voir combien de temps il faut avec les prévisions pour la nuit."
+        }
+      }
+    ]
+  }
+  </script>
+   
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G78VLV9YZF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-G78VLV9YZF');
+</script>    
+<style>
+:root {
+  --sky-1: #3d8fd9;
+  --sky-2: #9fd0f5;
+  --page: #f3f6fb;
+  --card: #ffffff;
+  --text: #17223b;
+  --muted: #5f6b80;
+  --line: #e3e9f2;
+  --navy: #14205c;
+  --navy-2: #22318a;
+  --sun: #ffc93c;
+  --sun-hover: #ffbb12;
+  --sun-text: #2b2100;
+  --tile: #f6f8fc;
+  --on: #2fbf71;
+  --link: #22318a;
+  --error: #c62828;
+  --shadow: 0 18px 40px -18px rgba(20, 32, 92, 0.35);
+  --c-temp: #ff7a59;
+  --c-humid: #3d8fd9;
+  --c-wind: #26b3a6;
+  --c-width: #9a6bff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sky-1: #0b1a3a;
+    --sky-2: #1d3b70;
+    --page: #0c1424;
+    --card: #162138;
+    --text: #e8edf6;
+    --muted: #9aa7bd;
+    --line: #26344f;
+    --navy: #0a1230;
+    --navy-2: #1a2a66;
+    --tile: #1b2843;
+    --link: #a9b8ff;
+    --error: #ff8a80;
+    --shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  font-family: 'Rubik', system-ui, sans-serif;
+  background: var(--page);
+  margin: 0;
+  color: var(--text);
+  line-height: 1.55;
+}
+a { color: var(--link); }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+/* sky header with a clothesline */
+.hero {
+  position: relative;
+  background: linear-gradient(180deg, var(--sky-1), var(--sky-2));
+  color: #fff;
+  text-align: center;
+  /* room for the drawing: 82px above the card's overlap + the drawing's height */
+  padding: 56px 16px calc(94px + var(--scene-height));
+  overflow: hidden;
+  /* the drawing is 800x110 and fills the width, so it grows with the width (up to 1160px wide)
+     to show the clothes whole */
+  --scene-height: clamp(120px, 13.8vw, 160px);
+}
+.hero h1 {
+  font-size: clamp(1.8rem, 6vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 auto 10px;
+  max-width: 16ch;
+  text-shadow: 0 2px 12px rgba(10, 30, 80, 0.25);
+}
+.hero .subtitle { margin: 0 auto; max-width: 34ch; font-size: 1.05rem; opacity: 0.95; }
+.hero .scene {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 82px;
+  width: 100%;
+  max-width: 1160px;
+  height: var(--scene-height);
+  margin-inline: auto;
+  pointer-events: none;
+}
+.langs {
+  position: absolute;
+  top: 14px;
+  inset-inline-end: 14px;
+  z-index: 5;
+}
+.langs summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  cursor: pointer;
+  list-style: none;
+  backdrop-filter: blur(4px);
+}
+.langs summary::-webkit-details-marker { display: none; }
+.langs summary:hover, .langs details[open] summary { background: rgba(255, 255, 255, 0.35); }
+.lang-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  inset-inline-end: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(110px, 1fr));
+  gap: 2px;
+  padding: 6px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(10, 30, 80, 0.25);
+}
+.lang {
+  padding: 7px 12px;
+  font-size: 0.95rem;
+  border-radius: 9px;
+  color: var(--navy);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.lang:hover { background: rgba(61, 143, 217, 0.12); }
+.lang[aria-current="page"] { background: var(--navy); color: #fff; }
+
+.install {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+  margin-top: 16px;
+  padding: 8px 18px;
+  font: inherit;
+  font-weight: 500;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.22);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+.install:hover { background: rgba(255, 255, 255, 0.35); }
+.install-hint { position: relative; z-index: 1; margin: 10px auto 0; max-width: 34ch; font-size: 0.95rem; }
+.install[hidden], .install-hint[hidden] { display: none; }
+
+/* the calculator, overlapping the sky */
+.calc {
+  position: relative;
+  margin-top: -64px;
+  background: var(--card);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+@media (max-width: 480px) { .calc { padding: 16px; border-radius: 20px; } }
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px;
+  font: inherit;
+  font-size: 1.08rem;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s, transform 0.05s;
+}
+.button:active { transform: translateY(1px); }
+.button.sun { background: var(--sun); color: var(--sun-text); box-shadow: 0 6px 0 -2px #e0a800; }
+.button.sun:hover { background: var(--sun-hover); }
+.button.navy { background: var(--navy-2); color: #fff; }
+.button.navy:hover { background: var(--navy); }
+.button svg { flex: none; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+
+#status { color: var(--error); margin: 10px 0 0; text-align: center; }
+#status:empty { display: none; }
+
+/* switches and units */
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+  margin: 20px 2px 6px;
+}
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.switch input {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  width: 44px;
+  height: 26px;
+  margin: 0;
+  border-radius: 999px;
+  background: var(--line);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex: none;
+}
+.switch input::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: inset-inline-start 0.2s;
+}
+.switch input:checked { background: var(--on); }
+.switch:has(input:disabled) { opacity: 0.5; cursor: default; }
+.switch input:checked::after { inset-inline-start: 21px; }
+.segmented {
+  display: inline-flex;
+  margin-inline-start: auto;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--tile);
+  border: 1px solid var(--line);
+}
+.segmented label { padding: 5px 12px; border-radius: 999px; font-size: 0.9rem; cursor: pointer; }
+.segmented label:has(input:checked) { background: var(--navy-2); color: #fff; }
+.segmented input { position: absolute; opacity: 0; pointer-events: none; }
+@media (max-width: 520px) { .segmented { margin-inline-start: 0; } }
+.note { display: block; color: var(--muted); font-size: 0.85rem; margin: 0 2px; }
+
+/* the four inputs, as tiles with an icon */
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0;
+}
+@media (max-width: 560px) { .fields { grid-template-columns: 1fr; gap: 10px; } }
+.field {
+  display: grid;
+  grid-template-columns: 44px 1fr 96px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--tile);
+  border: 1px solid var(--line);
+}
+.field .icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: #fff;
+}
+.field label { font-size: 0.88rem; line-height: 1.3; color: var(--muted); font-weight: 500; }
+.temp .icon { background: var(--c-temp); }
+.humid .icon { background: var(--c-humid); }
+.wind .icon { background: var(--c-wind); }
+.width .icon { background: var(--c-width); }
+.hang .icon { background: #f4a261; }
+input[type="number"] {
+  width: 100%;
+  padding: 10px 8px;
+  font: inherit;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text);
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+}
+input[type="number"]:focus { border-color: var(--navy-2); outline: none; }
+
+/* hanging time */
+.field.hang { grid-template-columns: 44px 1fr; scroll-margin-top: 12px; }
+.hang-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.hang-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+input[type="datetime-local"] {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 10px;
+  font: inherit;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+}
+input[type="datetime-local"]:focus { border-color: var(--navy-2); outline: none; }
+.now {
+  flex: none;
+  padding: 2px 10px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--link);
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+/* fabric */
+.fabric { border: none; margin: 0 0 18px; padding: 0; }
+.fabric legend { font-weight: 500; margin-bottom: 10px; padding: 0; }
+.fabric-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+@media (max-width: 640px) { .fabric-options { grid-template-columns: 1fr 1fr; } }
+.fabric-options label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 64px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 2px solid var(--line);
+  background: var(--tile);
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.25;
+  cursor: pointer;
+}
+.fabric-options label small { color: var(--muted); font-weight: 400; }
+.fabric-options label:has(input:checked) { border-color: var(--c-width); background: var(--card); box-shadow: 0 0 0 3px rgba(154, 107, 255, 0.18); }
+.fabric-options label:has(input:focus-visible) { outline: 3px solid var(--sun); outline-offset: 2px; }
+.fabric-options input { position: absolute; opacity: 0; pointer-events: none; }
+.fabric .field { margin-top: 10px; }
+.fabric .field[hidden] { display: none; }
+.fabric .field.width { grid-template-columns: 44px 1fr 96px; }
+
+/* result */
+.result {
+  margin-top: 16px;
+  padding: 22px 20px;
+  border-radius: 20px;
+  background: radial-gradient(circle at 85% 0%, #2c47b8 0, var(--navy) 60%);
+  color: #fff;
+  text-align: center;
+}
+.result-label { display: block; font-size: 0.95rem; opacity: 0.8; letter-spacing: 0.02em; }
+#result {
+  display: block;
+  margin-top: 4px;
+  font-size: clamp(1.5rem, 6vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--sun);
+}
+#statusmsg {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  text-align: start;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+#statusmsg:empty { display: none; }
+
+/* information, folded */
+.info { margin: 28px 0; }
+.info details {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.info summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  cursor: pointer;
+  list-style: none;
+}
+.info summary::-webkit-details-marker { display: none; }
+.info summary h2 { font-size: 1.1rem; margin: 0; flex: 1; }
+.info summary .emoji {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--tile);
+  font-size: 1.2rem;
+  flex: none;
+}
+.info summary::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg);
+  transition: transform 0.2s;
+  flex: none;
+}
+.info details[open] summary::after { transform: rotate(225deg); }
+.info .body { padding: 0 18px 16px; }
+.info ul { margin: 8px 0 0; padding-inline-start: 22px; }
+.info h3 { font-size: 1rem; margin: 14px 0 4px; }
+.info h3:first-child { margin-top: 4px; }
+.info p { margin: 0; }
+.answer {
+  margin-top: 24px;
+  padding: 20px 22px;
+  border-radius: 18px;
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+.answer h2 { font-size: 1.15rem; margin: 0 0 6px; }
+.answer p { margin: 0; }
+.info li { margin: 6px 0; }
+.info li::marker { color: var(--sun-hover); }
+.picture {
+  display: block;
+  width: min(100%, 420px);
+  height: auto;
+  margin: 28px auto 0;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+/* footer */
+footer {
+  background: var(--navy);
+  color: #c9d3ee;
+  text-align: center;
+  padding: 28px 16px 36px;
+  margin-top: 36px;
+  font-size: 0.92rem;
+}
+footer a { color: #fff; }
+footer p { margin: 6px 0; }
+footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-size: 0.95rem; }
+.a2a_kit { display: inline-block; margin: 18px auto 10px; }
+</style>
+</head>
+ 
+<body>
+    <script>
+    var pageLang = "fr"; // the language of the page; he/, de/, fr/... are made from this page by scripts/build-lang.js
+    </script>
+    <script type="text/javascript" src="../calc.js"></script>
+    <header class="hero">
+      <nav class="langs" aria-label="Language">
+        <details>
+          <summary><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20a15 15 0 0 1 0-20"/></svg><span class="lang-current">Français</span></summary>
+          <div class="lang-list">
+          <a class="lang" data-lang="en" href="../" hreflang="en" lang="en">English</a>
+          <a class="lang" data-lang="he" href="../he/" hreflang="he" lang="he">עברית</a>
+          <a class="lang" data-lang="de" href="../de/" hreflang="de" lang="de">Deutsch</a>
+          <a class="lang" data-lang="it" href="../it/" hreflang="it" lang="it">Italiano</a>
+          <a class="lang" data-lang="es" href="../es/" hreflang="es" lang="es">Español</a>
+          <a class="lang" data-lang="pt" href="../pt/" hreflang="pt" lang="pt">Português</a>
+          <a class="lang" data-lang="fr" href="./" hreflang="fr" lang="fr" aria-current="page">Français</a>
+          <a class="lang" data-lang="ja" href="../ja/" hreflang="ja" lang="ja">日本語</a>
+          <a class="lang" data-lang="pl" href="../pl/" hreflang="pl" lang="pl">Polski</a>
+          <a class="lang" data-lang="el" href="../el/" hreflang="el" lang="el">Ελληνικά</a>
+          <a class="lang" data-lang="tr" href="../tr/" hreflang="tr" lang="tr">Türkçe</a>
+          <a class="lang" data-lang="ar" href="../ar/" hreflang="ar" lang="ar">العربية</a>
+          </div>
+        </details>
+      </nav>
+      <h1 data-i18n="heading">Calculateur du temps de séchage du linge</h1>
+      <p class="subtitle" data-i18n="subtitle">Votre linge va-t-il sécher aujourd'hui ? Découvrez quand, selon la météo de chez vous.</p>
+      <button type="button" class="install" id="install" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+        <span data-i18n="install">Ajouter à l'écran d'accueil</span>
+      </button>
+      <p class="install-hint" id="installhint" hidden data-i18n="installios">Dans Safari, touchez le bouton Partager (le carré avec la flèche), puis « Sur l'écran d'accueil ».</p>
+      <svg class="scene" viewBox="0 0 800 110" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <!-- the rope: y = 18 + 92·t·(1−t) at x = 40 + 720·t; each item hangs at the rope's height where it is -->
+        <path d="M40 18 Q400 64 760 18" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="2.5"/>
+        <g transform="translate(200 32.9)"><path d="M-30,8 L-18,0 L-8,3 Q0,9 8,3 L18,0 L30,8 L24,20 L18,16 L18,56 L-18,56 L-18,16 L-24,20 Z" fill="#ff7a59"/><rect x="-14" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="9" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(305 38.4)"><rect x="-22" y="0" width="44" height="62" rx="3" fill="#ffd166"/><rect x="-22" y="44" width="44" height="6" fill="#f4a261"/><rect x="-22" y="53" width="44" height="3" fill="#f4a261"/><rect x="-18" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="13" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(410 40.0)"><path d="M-20,0 H20 L22,64 H6 L0,22 L-6,64 H-22 Z" fill="#3a5a99"/><rect x="-16" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="11" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(515 37.7)"><path d="M-30,8 L-18,0 L-8,3 Q0,9 8,3 L18,0 L30,8 L24,20 L18,16 L18,56 L-18,56 L-18,16 L-24,20 Z" fill="#2ec4b6"/><rect x="-14" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/><rect x="9" y="-4" width="5" height="10" rx="1" fill="#8d6e63"/></g>
+        <g transform="translate(612 33.0) scale(0.72)"><path d="M-30,8 L-18,0 L-8,3 Q0,9 8,3 L18,0 L30,8 L24,20 L18,16 L18,56 L-18,56 L-18,16 L-24,20 Z" fill="#ff5d8f"/><rect x="-3" y="-6" width="6" height="12" rx="1" fill="#8d6e63"/></g>
+      </svg>
+    </header>
+
+    <main class="wrap">
+    <section class="calc">
+      <button class="button sun" id="find-me">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <b data-i18n="findme">Prendre la température et l’humidité dans les prévisions météo</b>
+      </button>
+      <p id="status"></p>
+
+      <div class="options">
+        <label class="switch"><input type="checkbox" id="useforecast"> <span data-i18n="useforecast">Utiliser les prévisions</span></label>
+        <label class="switch"><input type="checkbox" id="indoor"> <span data-i18n="indoor">Séchage à l’intérieur</span></label>
+        <label class="switch"><input type="checkbox" id="sun"> <span data-i18n="sun">Soleil direct</span></label>
+        <div class="segmented" role="radiogroup">
+          <label><input type="radio" name="units" value="metric" checked><span data-i18n="metric">°C, km/h, mm</span></label>
+          <label><input type="radio" name="units" value="imperial"><span data-i18n="imperial">°F, mph, mm</span></label>
+        </div>
+      </div>
+      <small class="note" data-i18n="sunnote">Le soleil direct n'est pris en compte qu'avec les prévisions. Avec plusieurs fils, ceux de l'intérieur sont souvent à l'ombre de ceux de l'extérieur : pour eux, mieux vaut le laisser désactivé.</small>
+
+      <div class="fields">
+        <div class="field temp">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></span>
+          <label for="temp" data-i18n="temp">Température [<span id="temp-unit">°C</span>] :</label><input type="number" id="temp" size="4" inputmode="decimal">
+        </div>
+        <div class="field humid">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
+          <label for="humid" data-i18n="humid">Humidité relative [%] :</label><input type="number" id="humid" size="4" inputmode="decimal">
+        </div>
+        <div class="field wind">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg></span>
+          <label for="wind" data-i18n="wind">Vitesse du vent [<span id="wind-unit">km/h</span>] (0 à l’intérieur) :</label><input type="number" id="wind" value="0" size="4" inputmode="decimal">
+        </div>
+        <div class="field hang">
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <div class="hang-body">
+            <div class="hang-top"><label for="hangtime" data-i18n="hangtime">Quand étendez-vous le linge ?</label><button type="button" class="now" id="hangnow" data-i18n="now">Maintenant</button></div>
+            <input type="datetime-local" id="hangtime">
+          </div>
+        </div>
+      </div>
+
+      <fieldset class="fabric">
+        <legend data-i18n="fabric">Qu’étendez-vous ? Choisissez la pièce la plus épaisse :</legend>
+        <div class="fabric-options">
+          <label><input type="radio" name="fabric" value="2" checked><span data-i18n="fabric2">Serviette, jean ou pull</span><small data-i18n="mm2">2 mm</small></label>
+          <label><input type="radio" name="fabric" value="1"><span data-i18n="fabric1">T-shirt</span><small data-i18n="mm1">1 mm</small></label>
+          <label><input type="radio" name="fabric" value="0.5"><span data-i18n="fabric05">T-shirt technique</span><small data-i18n="mm05">0,5 mm</small></label>
+          <label><input type="radio" name="fabric" value="other"><span data-i18n="fabricother">Autre épaisseur</span><small data-i18n="mmother">mm</small></label>
+        </div>
+        <div class="field width" id="widthfield" hidden>
+          <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+          <label for="width" data-i18n="width">Épaisseur du tissu [mm] :</label><input type="number" id="width" value="2" size="4" inputmode="decimal">
+        </div>
+      </fieldset>
+
+      <button class="button navy" id="btncalc"><b data-i18n="calculate">Calculer</b></button>
+
+      <div class="result" aria-live="polite">
+        <span class="result-label" data-i18n="dryingtime">Temps de séchage :</span>
+        <span id="result" data-i18n="placeholder">Saisissez les données et appuyez sur « Calculer »</span>
+        <div id="statusmsg"></div>
+      </div>
+    </section>
+
+    <section class="answer">
+      <h2 data-i18n="answerq">Combien de temps met le linge à sécher sur un étendoir ?</h2>
+      <p data-i18n="answer">En général quelques heures par une journée chaude avec un peu de vent, et beaucoup plus quand il fait frais et humide. Utilisez les prévisions météo pour voir quand votre linge sera sec aujourd'hui.</p>
+    </section>
+
+    <img class="picture" src="../clothlineclock.jpg" width="512" height="512" loading="lazy" alt="Fils à linge avec une horloge" data-i18n-alt="imagealt">
+
+    <section class="info">
+      <details data-section="why">
+        <summary><span class="emoji" aria-hidden="true">🌱</span><h2 data-i18n="why">À quoi sert le calculateur ?</h2></summary>
+        <div class="body">
+          <span data-i18n="whyintro">Faire sécher le linge sur un étendoir est bon pour l'environnement et permet d'économiser de l'électricité et de l'argent. Utilisez le calculateur pour :</span>
+          <ul>
+          <li data-i18n="why1">être sûr que le linge sèche avant qu’il commence à pleuvoir.</li>
+          <li data-i18n="why2">si vous séchez à l’intérieur, savoir s’il vaut la peine d’allumer le chauffage ou un ventilateur.</li>
+          <li data-i18n="why3">si vous avez besoin d’un vêtement pour une occasion, savoir s’il faut le laver maintenant ou si cela peut attendre demain.</li>
+          </ul>
+        </div>
+      </details>
+      <details data-section="faq">
+        <summary><span class="emoji" aria-hidden="true">❓</span><h2 data-i18n="faq">Questions et réponses</h2></summary>
+        <div class="body" data-faq-list>
+          <h3>Quelle est l’épaisseur de mon linge ?</h3>
+          <p>Les serviettes, les pulls ou les jeans font 2 mm d’épaisseur. Les T-shirts, 1 mm. Les T-shirts techniques ont une épaisseur effective de 0,5 mm. Si les vêtements sont un peu pliés une fois étendus (par exemple près des manches), leur épaisseur effective double.</p>
+          <h3>Quelle température et quelle humidité indiquer pour un séchage à l’intérieur ?</h3>
+          <p>Sans chauffage, la température moyenne du jour et de la nuit, et de même pour l'humidité. Avec chauffage, la température maximale, c'est-à-dire celle de midi. À l'intérieur, la vitesse du vent est 0.</p>
+          <h3>Comment faire sécher le linge plus vite sur l’étendoir ?</h3>
+          <p>Étendez le linge en laissant de l’espace entre les pièces, mettez sur les fils extérieurs celui qui sèche le plus lentement et, si possible, tendez les fils parallèlement à la direction du vent dominant. Si vous séchez à l'intérieur sans chauffage, ouvrez une fenêtre (de préférence deux fenêtres, ou une fenêtre et une porte).</p>
+          <h3>Va-t-il pleuvoir avant que le linge sèche ?</h3>
+          <p>Avec les prévisions, le calculateur vous prévient si de la pluie est attendue avant que le linge sèche, et indique quand la pluie devrait commencer et la plus forte probabilité de pluie pendant le séchage.</p>
+          <h3>Comment savoir si le linge est sec ?</h3>
+          <p>Vérifiez d’abord la pièce qui sèche le plus lentement, en général la plus épaisse : touchez son milieu et vérifiez qu’elle est sèche. Si c’est le cas, vérifiez aussi les parties épaisses, par exemple une ceinture, des zones comme la jonction de la manche et du T-shirt, où des plis se forment en étendant et sèchent le plus lentement, et l’endroit des pinces à linge.</p>
+          <h3>Mon linge va-t-il sécher aujourd'hui ?</h3>
+          <p>Utilisez les prévisions météo : le calculateur utilise les prévisions de chez vous, heure par heure, et indique combien de temps votre linge mettra à sécher et vers quelle heure il sera sec. Il vous prévient aussi si de la pluie est attendue avant.</p>
+          <h3>À quelle heure rentrer le linge ?</h3>
+          <p>Choisissez quand vous étendez et ce que vous étendez (la pièce la plus épaisse), et le calculateur indique vers quelle heure le linge sera sec. Si de la pluie est attendue avant, il indique aussi quand elle devrait commencer, pour que vous puissiez rentrer le linge à temps.</p>
+          <h3>Combien de temps met le linge à sécher à l’intérieur ?</h3>
+          <p>À l'intérieur, il n'y a pas de vent, donc le linge sèche plus lentement. Activez « Séchage à l’intérieur » : le calculateur utilise la température et l'humidité moyennes des prochaines 24 heures, sans vent. Augmentez la température pour voir l'effet du chauffage, ou le vent pour un ventilateur.</p>
+          <h3>Le linge sèche-t-il la nuit ?</h3>
+          <p>Lentement. La nuit, la température baisse et l'humidité monte, parfois presque jusqu'à 100 %, donc l'air absorbe très peu d'eau. Choisissez une heure en soirée pour voir combien de temps il faut avec les prévisions pour la nuit.</p>
+        </div>
+      </details>
+      <details data-section="checkdry">
+        <summary><span class="emoji" aria-hidden="true">✋</span><h2 data-i18n="checkdry">Comment savoir si le linge est sec ?</h2></summary>
+        <div class="body">
+          <ul>
+          <li data-i18n="check1">Vérifiez d’abord la pièce qui sèche le plus lentement, en général la plus épaisse.</li>
+          <li data-i18n="check2">Touchez le milieu de la pièce et vérifiez qu’elle est sèche.</li>
+          <li data-i18n="check3">Si c’est le cas, vérifiez aussi les parties épaisses, par exemple une ceinture.</li>
+          <li data-i18n="check4">Vérifiez des zones comme la jonction de la manche et du T-shirt : en étendant, des plis peuvent s’y former, et ce sont eux qui sèchent le plus lentement.</li>
+          <li data-i18n="check5">Vérifiez aussi l’endroit des pinces à linge : le tissu y est serré et sèche lentement.</li>
+          </ul>
+        </div>
+      </details>
+      <details data-section="rules">
+        <summary><span class="emoji" aria-hidden="true">📏</span><h2 data-i18n="rules">Règles pratiques pour le calculateur</h2></summary>
+        <div class="body">
+          <ul>
+          <li data-i18n="rule1">À l'intérieur sans chauffage, utilisez la température moyenne du jour et de la nuit, et de même pour l'humidité.</li>
+          <li data-i18n="rule2">À l'intérieur avec chauffage, utilisez la température maximale, c'est-à-dire celle de midi.</li>
+          <li data-i18n="rule3">Les serviettes, les pulls ou les jeans font 2 mm d’épaisseur.</li>
+          <li data-i18n="rule4">Les T-shirts font 1 mm d’épaisseur.</li>
+          <li data-i18n="rule5">Les T-shirts techniques ont une épaisseur effective de 0,5 mm.</li>
+          <li data-i18n="rule6">Le calculateur ne fonctionne qu’au-dessus de 0 °C.</li>
+          </ul>
+        </div>
+      </details>
+      <details data-section="tips">
+        <summary><span class="emoji" aria-hidden="true">🧺</span><h2 data-i18n="tips">Conseils</h2></summary>
+        <div class="body">
+          <ul>
+          <li data-i18n="tip1">Si vous étendez le linge à l'intérieur sans chauffage, ouvrez une fenêtre (de préférence deux fenêtres, ou une fenêtre et une porte).</li>
+          <li data-i18n="tip2">Mettez sur les fils extérieurs le linge qui sèche le plus lentement.</li>
+          <li data-i18n="tip3">Étendez le linge en laissant de l’espace entre les pièces.</li>
+          <li data-i18n="tip4">Étendez les vêtements à l’envers pour protéger le tissu du soleil.</li>
+          <li data-i18n="tip5">Si les vêtements sont un peu pliés une fois étendus (par exemple près des manches), leur épaisseur effective double.</li>
+          <li data-i18n="tip6">Secouez les vêtements avant de les étendre : ils auront moins de plis et perdront la saleté restante.</li>
+          <li data-i18n="tip7">Si possible, tendez les fils parallèlement à la direction du vent dominant.</li>
+          <li data-i18n="tip8">Par vent fort, utilisez plus de pinces à linge.</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+    </main>
+
+    <footer>
+      <a class="button sun" href="https://forms.gle/1oiFPe4BZNYsyZLv7" data-i18n-href="contacturl" target="_blank" data-i18n="contact">Contact</a>
+      <br>
+      <div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://bambiker.github.io/drycloth/fr/" data-i18n-data-a2a-url="shareurl">
+      <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+      <a class="a2a_button_copy_link"></a>
+      <a class="a2a_button_whatsapp"></a>
+      <a class="a2a_button_facebook"></a>
+      <a class="a2a_button_x"></a>
+      <a class="a2a_button_telegram"></a>
+      <a class="a2a_button_email"></a>
+      </div>
+      <p data-i18n="opensource">Open source, rejoignez-nous sur <a href="https://github.com/bambiker/drycloth" target="_blank">GitHub</a></p>
+      <p data-i18n="forecastsource">Prévisions météo de <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a></p>
+    </footer>
+
+<script>
+// Google Analytics events (see README); nothing personal is sent, no location and no weather values
+function track(name, params) {
+  if (typeof gtag !== "function") {return;}
+  gtag("event", name, Object.assign({ language: pageLang }, params || {}));
+}
+// for events that can come many times in a row (typing a number): only the last one after a short pause
+var trackTimers = {};
+function trackLater(name, params) {
+  clearTimeout(trackTimers[name]);
+  trackTimers[name] = setTimeout(function() { track(name, params); }, 1500);
+}
+
+document.querySelectorAll('details[data-section]').forEach(function(details) {
+  details.addEventListener("toggle", function() {
+    if (details.open) {track("open_section", { section: details.dataset.section });}
+  });
+});
+
+document.querySelectorAll('input[name="units"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    setUnits(this.value, true);
+    track("units", { units: this.value });
+  });
+});
+
+// Fahrenheit and mph by default only in the countries that use them
+document.querySelector('input[name="units"][value="' + units + '"]').checked = true;
+setUnits(units, false);
+</script>
+    <script async src="https://static.addtoany.com/menu/page.js"></script>
+    <script>
+document.getElementById("btncalc").addEventListener("click",doCalc);
+
+// editing the values by hand means the user doesn't want the forecast anymore
+["temp", "humid", "wind"].forEach(function(id) {
+  document.getElementById(id).addEventListener("input", function() {
+    document.querySelector('#useforecast').checked = false;
+    if (document.querySelector('#indoor').checked) {
+      if (id !== "wind") {indoorAverage = false;}
+      recalcIfReady();
+    }
+  });
+});
+
+// add the site to the home screen or the desktop as an app:
+// Android, Chrome and Edge give an install prompt; on iPhone and iPad it is done from Safari's Share menu
+var installPrompt = null;
+var installButton = document.getElementById("install");
+var installHint = document.getElementById("installhint");
+var isIos = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+var isInstalled = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+if (isIos && !isInstalled) {installButton.hidden = false;}
+window.addEventListener("beforeinstallprompt", function(event) {
+  event.preventDefault();
+  installPrompt = event;
+  installButton.hidden = false;
+});
+installButton.addEventListener("click", async function() {
+  if (installPrompt) {
+    installPrompt.prompt();
+    var choice = await installPrompt.userChoice;
+    track("install", { platform: "prompt", outcome: choice && choice.outcome });
+    installPrompt = null;
+    installButton.hidden = true;
+  } else {
+    if (installHint.hidden) {track("install", { platform: "ios" });}
+    installHint.hidden = !installHint.hidden;
+  }
+});
+window.addEventListener("appinstalled", function() {
+  installButton.hidden = true;
+  installHint.hidden = true;
+});
+if ("serviceWorker" in navigator) {navigator.serviceWorker.register("../sw.js").catch(function() {});}
+
+// when the laundry is hung: now, unless the user chose a time
+var hangInput = document.getElementById("hangtime");
+function localInputValue(date) {
+  var d = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return d.toISOString().slice(0, 16);
+}
+function resetHangTime() {
+  var now = new Date();
+  hangInput.value = localInputValue(now);
+  hangInput.max = localInputValue(new Date(now.getTime() + 7 * 24 * 3600 * 1000));
+  hangInput.dataset.chosen = "";
+}
+function hangTime() {
+  if (!hangInput.dataset.chosen || !hangInput.value) {return new Date();}
+  return new Date(hangInput.value);
+}
+resetHangTime();
+hangInput.addEventListener("input", function() {
+  hangInput.dataset.chosen = hangInput.value ? "1" : "";
+  recalcIfReady();
+  trackLater("hang_time", { hours_ahead: Math.round((hangTime().getTime() - Date.now()) / 3600000) });
+});
+document.getElementById("hangnow").addEventListener("click", function() {
+  resetHangTime();
+  recalcIfReady();
+  track("hang_time", { hours_ahead: 0 });
+});
+
+// recalculate right away when there is something to calculate (the forecast, or the weather typed in)
+function recalcIfReady() {
+  if (weekt2 && document.querySelector('#useforecast').checked) {doCalc(); return;}
+  if (document.getElementById("temp").value !== "" && document.getElementById("humid").value !== "") {doCalc();}
+}
+
+// the thickness field only for "other"; a different item is calculated right away
+document.querySelectorAll('input[name="fabric"]').forEach(function(radio) {
+  radio.addEventListener("change", function() {
+    document.getElementById("widthfield").hidden = this.value !== "other";
+    recalcIfReady();
+    track("choose_fabric", { fabric: this.value });
+  });
+});
+document.getElementById("width").addEventListener("input", function() {
+  if (this.value > 0) {recalcIfReady();}
+});
+
+// drying indoors: the forecast fills the fields once (the average temperature and humidity of the 24 hours
+// from hanging, no wind), then the calculation uses only the fields, so the user can change the temperature
+// (heating) or the wind (a fan) and see how much it helps
+var windBeforeIndoor = "0";
+var indoorAverage = false; // the temperature and humidity are still the forecast average
+function applyIndoorAverage() {
+  var average = forecastAverage(hangTime(), 24);
+  if (average.outOfRange) {return;}
+  document.getElementById("temp").value = fromCelsius(average.temp).toFixed(0);
+  document.getElementById("humid").value = average.humid.toFixed(0);
+  document.getElementById("wind").value = "0";
+  document.querySelector('#useforecast').checked = false;
+  indoorAverage = true;
+}
+document.getElementById("indoor").addEventListener("change", function() {
+  track("indoor", { on: this.checked });
+  var windInput = document.getElementById("wind");
+  document.getElementById("sun").disabled = this.checked;
+  if (this.checked) {
+    windBeforeIndoor = windInput.value;
+    windInput.value = "0";
+    if (weekt2) {
+      applyIndoorAverage();
+    } else if (document.getElementById("temp").value === "" || document.getElementById("humid").value === "") {
+      geoFindMe(); // nothing typed: the forecast average
+      return;
+    }
+  } else {
+    indoorAverage = false;
+    if (weekt2) {
+      // back to the forecast
+      document.querySelector('#useforecast').checked = true;
+      showForecastHour(forecastIndex(hangTime()));
+    } else {
+      windInput.value = windBeforeIndoor;
+    }
+  }
+  recalcIfReady();
+});
+
+// after the forecast: show the hanging time, the item choice and the result together
+// (no focus on the date field, on some phones that opens the date picker)
+function showHangingTime() {
+  var hang = document.querySelector(".field.hang");
+  var smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  hang.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+}
+
+    function doCalc()
+    {
+         var temp = document.getElementById("temp").value;
+         var humid = document.getElementById("humid").value;
+         var fabric = document.querySelector('input[name="fabric"]:checked').value;
+         // the whole thickness: most clothes have a front and a back, so each side of the item dries its own layer
+         var width = Number(fabric === "other" ? document.getElementById("width").value : fabric);
+         var hang = hangTime();
+         var wind = document.getElementById("wind").value;
+         const elem = document.querySelector('#useforecast')
+         const indoor = document.querySelector('#indoor').checked;
+         const sun = document.querySelector('#sun').checked && !indoor;
+         const result = document.getElementById('result');
+         const statusmsg = document.getElementById('statusmsg');
+         var notes = [];
+         var hours;
+
+         result.innerHTML = '';
+         statusmsg.innerHTML = '';
+
+         if (!indoor && elem.checked && weekt2)
+            {
+             const forecast = forecastcalc(width, sun, hang);
+             hours = forecast.hours;
+             if (forecast.outOfRange) {notes.push(msg("outofrange"));}
+             else if (hours === Infinity) {notes.push(msg("nodryforecast"));}
+             else {notes.push(msg("dryby", formatTime(new Date(hang.getTime() + hours*3600*1000))));}
+             if (forecast.rain) {notes.push(msg("rain") + " " + msg("rainstart", formatTime(forecast.rainStart)));}
+             notes.push(msg("rainprob", forecast.maxProb));
+             if (forecast.windy) {notes.push(msg("windy"));}
+            } else
+            {
+             if (temp === "" || humid === "" || wind === "" || !(width > 0) || humid < 0 || humid > 100)
+                {
+                 statusmsg.innerHTML = msg("badinput");
+                 return;
+                }
+             if (elem.checked) {notes.push(msg("noforecast"));}
+             if (indoor) {notes.push(msg(indoorAverage ? "indoorforecast" : "indoor"));}
+             if (sun) {notes.push(msg("sunmanual"));}
+             hours = calc(toCelsius(temp),humid,toKmh(wind),width);
+             if (hours === Infinity) {notes.push(msg("nodry"));}
+             else {notes.push(msg("dryby", formatTime(new Date(hang.getTime() + hours*3600*1000))));}
+            }
+
+         result.innerHTML = (hours === Infinity) ? '-' : formatDuration(hours);
+         statusmsg.innerHTML = notes.join('<br>');
+         trackLater("calculate", {
+           mode: (!indoor && elem.checked && weekt2) ? "forecast" : "manual",
+           indoor: indoor,
+           sun: sun,
+           fabric: fabric,
+           dries: hours !== Infinity
+         });
+    }
+
+    </script>
+
+
+    <script>
+      function geoFindMe() {
+
+        const status = document.querySelector('#status');
+
+        async function success(position) {
+
+          latitude  = position.coords.latitude;
+          longitude = position.coords.longitude;
+
+          try {
+              await getweather(); // wait for the forecast, so we don't calculate with old values
+          } catch (e) {
+              status.textContent = msg("noweather");
+              track("use_forecast", { result: "no_weather" });
+              return;
+          }
+          track("use_forecast", { result: "ok" });
+
+          status.textContent = '';
+          if (document.querySelector('#indoor').checked) {applyIndoorAverage();}
+          doCalc();
+          showHangingTime();
+        }
+
+        function error() {
+          status.textContent = msg("nolocation");
+          track("use_forecast", { result: "no_location" });
+        }
+
+        if(!navigator.geolocation) {
+          status.textContent = msg("nogeo");
+          track("use_forecast", { result: "not_supported" });
+        } else {
+          status.textContent = msg("locating");
+          navigator.geolocation.getCurrentPosition(success, error);
+        }
+
+      }
+
+      document.querySelector('#find-me').addEventListener('click', geoFindMe);
+
+      // close the language menu when clicking outside it
+      document.addEventListener('click', function(event) {
+        var menu = document.querySelector('.langs details');
+        if (menu.open && !menu.contains(event.target)) {menu.open = false;}
+      });
+    </script>
+
+  </body>
+</html>

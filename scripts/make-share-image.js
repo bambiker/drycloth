@@ -16,7 +16,7 @@ vm.runInContext(fs.readFileSync(path.join(root, 'lang.js'), 'utf8') + '\nthis.tr
 const images = [
   ['share-en.png', 'ltr', 'Clothesline drying time calculator', 'When will the laundry be dry? From the weather forecast for your location.'],
 ].concat(Object.entries(sandbox.translations).map(([lang, t]) =>
-  [`share-${lang}.png`, lang === 'he' ? 'rtl' : 'ltr', t.heading, t.subtitle]));
+  [`share-${lang}.png`, lang === 'he' || lang === 'ar' ? 'rtl' : 'ltr', t.heading, t.subtitle]));
 
 (async () => {
   const browser = await chromium.launch();

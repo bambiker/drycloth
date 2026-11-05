@@ -1,0 +1,31 @@
+{
+  "name": "洗濯物の乾燥時間計算ツール",
+  "short_name": "洗濯物乾く？",
+  "description": "今日、洗濯物は乾く？お住まいの地域の天気予報から、いつ乾くかがわかります。",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "lang": "ja",
+  "dir": "ltr",
+  "background_color": "#f3f6fb",
+  "theme_color": "#3d8fd9",
+  "icons": [
+    {
+      "src": "../icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "../icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "../icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -35,6 +35,13 @@
   <link rel="alternate" hreflang="de" href="https://bambiker.github.io/drycloth/de/">
   <link rel="alternate" hreflang="it" href="https://bambiker.github.io/drycloth/it/">
   <link rel="alternate" hreflang="es" href="https://bambiker.github.io/drycloth/es/">
+  <link rel="alternate" hreflang="pt" href="https://bambiker.github.io/drycloth/pt/">
+  <link rel="alternate" hreflang="fr" href="https://bambiker.github.io/drycloth/fr/">
+  <link rel="alternate" hreflang="ja" href="https://bambiker.github.io/drycloth/ja/">
+  <link rel="alternate" hreflang="pl" href="https://bambiker.github.io/drycloth/pl/">
+  <link rel="alternate" hreflang="el" href="https://bambiker.github.io/drycloth/el/">
+  <link rel="alternate" hreflang="tr" href="https://bambiker.github.io/drycloth/tr/">
+  <link rel="alternate" hreflang="ar" href="https://bambiker.github.io/drycloth/ar/">
   <link rel="alternate" hreflang="x-default" href="https://bambiker.github.io/drycloth/">
 
   <!-- preview when the link is shared (WhatsApp, Facebook, X...) -->
@@ -67,7 +74,14 @@
       "he",
       "de",
       "it",
-      "es"
+      "es",
+      "pt",
+      "fr",
+      "ja",
+      "pl",
+      "el",
+      "tr",
+      "ar"
     ],
     "isAccessibleForFree": true,
     "offers": {
@@ -269,21 +283,46 @@ a { color: var(--link); }
   position: absolute;
   top: 14px;
   inset-inline-end: 14px;
-  display: flex;
-  gap: 4px;
+  z-index: 5;
 }
-.lang {
-  padding: 5px 10px;
+.langs summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
   font-size: 0.9rem;
+  font-weight: 500;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.22);
   color: #fff;
-  font-weight: 500;
-  text-decoration: none;
+  cursor: pointer;
+  list-style: none;
   backdrop-filter: blur(4px);
 }
-.lang:hover { background: rgba(255, 255, 255, 0.35); }
-.lang[aria-current="page"] { background: #fff; color: var(--navy); }
+.langs summary::-webkit-details-marker { display: none; }
+.langs summary:hover, .langs details[open] summary { background: rgba(255, 255, 255, 0.35); }
+.lang-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  inset-inline-end: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(110px, 1fr));
+  gap: 2px;
+  padding: 6px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(10, 30, 80, 0.25);
+}
+.lang {
+  padding: 7px 12px;
+  font-size: 0.95rem;
+  border-radius: 9px;
+  color: var(--navy);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.lang:hover { background: rgba(61, 143, 217, 0.12); }
+.lang[aria-current="page"] { background: var(--navy); color: #fff; }
 
 .install {
   display: inline-flex;
@@ -619,16 +658,28 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
  
 <body>
     <script>
-    var pageLang = "en"; // the language of the page; he/, de/, it/, es/ are made from this page by scripts/build-lang.js
+    var pageLang = "en"; // the language of the page; he/, de/, fr/... are made from this page by scripts/build-lang.js
     </script>
     <script type="text/javascript" src="calc.js"></script>
     <header class="hero">
       <nav class="langs" aria-label="Language">
-        <a class="lang" data-lang="en" href="./" hreflang="en" lang="en" aria-current="page">EN</a>
-        <a class="lang" data-lang="he" href="he/" hreflang="he" lang="he">עב</a>
-        <a class="lang" data-lang="de" href="de/" hreflang="de" lang="de">DE</a>
-        <a class="lang" data-lang="it" href="it/" hreflang="it" lang="it">IT</a>
-        <a class="lang" data-lang="es" href="es/" hreflang="es" lang="es">ES</a>
+        <details>
+          <summary><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20a15 15 0 0 1 0-20"/></svg><span class="lang-current">English</span></summary>
+          <div class="lang-list">
+          <a class="lang" data-lang="en" href="./" hreflang="en" lang="en" aria-current="page">English</a>
+          <a class="lang" data-lang="he" href="he/" hreflang="he" lang="he">עברית</a>
+          <a class="lang" data-lang="de" href="de/" hreflang="de" lang="de">Deutsch</a>
+          <a class="lang" data-lang="it" href="it/" hreflang="it" lang="it">Italiano</a>
+          <a class="lang" data-lang="es" href="es/" hreflang="es" lang="es">Español</a>
+          <a class="lang" data-lang="pt" href="pt/" hreflang="pt" lang="pt">Português</a>
+          <a class="lang" data-lang="fr" href="fr/" hreflang="fr" lang="fr">Français</a>
+          <a class="lang" data-lang="ja" href="ja/" hreflang="ja" lang="ja">日本語</a>
+          <a class="lang" data-lang="pl" href="pl/" hreflang="pl" lang="pl">Polski</a>
+          <a class="lang" data-lang="el" href="el/" hreflang="el" lang="el">Ελληνικά</a>
+          <a class="lang" data-lang="tr" href="tr/" hreflang="tr" lang="tr">Türkçe</a>
+          <a class="lang" data-lang="ar" href="ar/" hreflang="ar" lang="ar">العربية</a>
+          </div>
+        </details>
       </nav>
       <h1 data-i18n="heading">Clothesline drying time calculator</h1>
       <p class="subtitle" data-i18n="subtitle">Will your washing dry today? Find out when, from the weather forecast for your location.</p>
@@ -1083,6 +1134,12 @@ function showHangingTime() {
       }
 
       document.querySelector('#find-me').addEventListener('click', geoFindMe);
+
+      // close the language menu when clicking outside it
+      document.addEventListener('click', function(event) {
+        var menu = document.querySelector('.langs details');
+        if (menu.open && !menu.contains(event.target)) {menu.open = false;}
+      });
     </script>
 
   </body>

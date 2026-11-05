@@ -18,119 +18,238 @@ var messages = {
       he: "נראה שירד גשם לפני שהכביסה תספיק להתייבש. אם אין לכם גג או כיסוי, כדאי לחכות עם הכביסה.",
       de: "Es sieht so aus, als würde es regnen, bevor die Wäsche trocken ist. Wenn Sie kein Dach und keine Abdeckung haben, warten Sie mit dem Waschen besser noch.",
       it: "Sembra che pioverà prima che il bucato si asciughi. Se non hai una tettoia o una copertura, forse è meglio aspettare a fare il bucato.",
-      es: "Parece que lloverá antes de que la ropa se seque. Si no tienes un techo o una cubierta, quizá sea mejor esperar para lavar."
+      es: "Parece que lloverá antes de que la ropa se seque. Si no tienes un techo o una cubierta, quizá sea mejor esperar para lavar.",
+      pt: "Parece que vai chover antes de a roupa secar. Se você não tiver um telhado ou uma cobertura, talvez seja melhor esperar para lavar.",
+      fr: "Il semble qu’il va pleuvoir avant que le linge ait le temps de sécher. Si vous n’avez pas de toit ou d’abri, mieux vaut peut-être attendre pour faire la lessive.",
+      ja: "洗濯物が乾く前に雨が降りそうです。屋根やカバーがない場合は、洗濯を待ったほうがよいかもしれません。",
+      pl: "Wygląda na to, że zacznie padać, zanim pranie wyschnie. Jeśli nie masz dachu ani osłony, lepiej poczekać z praniem.",
+      el: "Φαίνεται ότι θα βρέξει πριν στεγνώσουν τα ρούχα. Αν δεν έχετε στέγαστρο ή κάλυμμα, ίσως είναι καλύτερα να περιμένετε με την μπουγάδα.",
+      tr: "Çamaşır kurumadan yağmur yağacak gibi görünüyor. Çatınız veya örtünüz yoksa çamaşırı yıkamak için beklemek daha iyi olabilir.",
+      ar: "يبدو أن المطر سيهطل قبل أن يجف الغسيل. إذا لم يكن لديك سقف أو غطاء، فقد يكون من الأفضل الانتظار قبل الغسيل."
    },
    rainstart: {
       en: "The rain is expected to start around {0}.",
       he: "הגשם צפוי להתחיל בסביבות {0}.",
       de: "Voraussichtlicher Regenbeginn: {0}.",
       it: "Inizio previsto della pioggia: {0}.",
-      es: "Inicio previsto de la lluvia: {0}."
+      es: "Inicio previsto de la lluvia: {0}.",
+      pt: "Início previsto da chuva: {0}.",
+      fr: "Début prévu de la pluie : {0}.",
+      ja: "雨の降り始め予想：{0}。",
+      pl: "Przewidywany początek deszczu: {0}.",
+      el: "Αναμενόμενη έναρξη βροχής: {0}.",
+      tr: "Yağmurun beklenen başlangıcı: {0}.",
+      ar: "بدء المطر المتوقع: {0}."
    },
    rainprob: {
       en: "Highest chance of rain while drying: {0}%.",
       he: "הסיכוי הגבוה ביותר לגשם בזמן הייבוש: {0}%.",
       de: "Höchste Regenwahrscheinlichkeit während des Trocknens: {0} %.",
       it: "Probabilità di pioggia più alta durante l'asciugatura: {0}%.",
-      es: "Mayor probabilidad de lluvia durante el secado: {0} %."
+      es: "Mayor probabilidad de lluvia durante el secado: {0} %.",
+      pt: "Maior probabilidade de chuva durante a secagem: {0}%.",
+      fr: "Plus forte probabilité de pluie pendant le séchage : {0} %.",
+      ja: "乾くまでの最大降水確率：{0}%。",
+      pl: "Najwyższe prawdopodobieństwo deszczu w czasie schnięcia: {0}%.",
+      el: "Μεγαλύτερη πιθανότητα βροχής κατά το στέγνωμα: {0}%.",
+      tr: "Kuruma sırasındaki en yüksek yağış olasılığı: %{0}.",
+      ar: "أعلى احتمال للمطر خلال التجفيف: {0}%."
    },
    dryby: {
       en: "The laundry should be dry around {0}.",
       he: "הכביסה צפויה להתייבש בסביבות {0}.",
       de: "Die Wäsche ist voraussichtlich trocken: {0}.",
       it: "Il bucato dovrebbe essere asciutto: {0}.",
-      es: "La ropa debería estar seca: {0}."
+      es: "La ropa debería estar seca: {0}.",
+      pt: "A roupa deve estar seca: {0}.",
+      fr: "Le linge devrait être sec : {0}.",
+      ja: "乾く見込み：{0}。",
+      pl: "Pranie powinno być suche: {0}.",
+      el: "Τα ρούχα αναμένεται να στεγνώσουν: {0}.",
+      tr: "Çamaşırın kuruması beklenen zaman: {0}.",
+      ar: "من المتوقع أن يجف الغسيل: {0}."
    },
    windy: {
       en: "It looks like it will be windy. Please use extra clothespins (clothes pegs).",
       he: "נראה שתהיה רוח חזקה. כדאי להשתמש ביותר אטבי כביסה.",
       de: "Es sieht windig aus. Verwenden Sie mehr Wäscheklammern.",
       it: "Sembra che ci sarà vento. Usa più mollette.",
-      es: "Parece que hará viento. Usa más pinzas."
+      es: "Parece que hará viento. Usa más pinzas.",
+      pt: "Parece que vai ventar forte. Use mais prendedores.",
+      fr: "Il semble qu’il va y avoir du vent. Utilisez plus de pinces à linge.",
+      ja: "風が強くなりそうです。洗濯ばさみを多めに使いましょう。",
+      pl: "Zapowiada się silny wiatr. Użyj więcej klamerek.",
+      el: "Φαίνεται ότι θα φυσάει δυνατά. Χρησιμοποιήστε περισσότερα μανταλάκια.",
+      tr: "Rüzgarlı olacak gibi görünüyor. Daha fazla mandal kullanın.",
+      ar: "يبدو أن الرياح ستكون قوية. استخدم مشابك أكثر."
    },
    nodry: {
       en: "With these conditions the laundry will not dry (humidity too high).",
       he: "בתנאים האלה הכביסה לא תתייבש (הלחות גבוהה מדי).",
       de: "Unter diesen Bedingungen trocknet die Wäsche nicht (zu hohe Luftfeuchtigkeit).",
       it: "In queste condizioni il bucato non si asciuga (umidità troppo alta).",
-      es: "En estas condiciones la ropa no se seca (humedad demasiado alta)."
+      es: "En estas condiciones la ropa no se seca (humedad demasiado alta).",
+      pt: "Nessas condições a roupa não seca (umidade alta demais).",
+      fr: "Dans ces conditions, le linge ne sèche pas (humidité trop élevée).",
+      ja: "この条件では洗濯物は乾きません（湿度が高すぎます）。",
+      pl: "W tych warunkach pranie nie wyschnie (zbyt wysoka wilgotność).",
+      el: "Με αυτές τις συνθήκες τα ρούχα δεν στεγνώνουν (πολύ υψηλή υγρασία).",
+      tr: "Bu koşullarda çamaşır kurumaz (nem çok yüksek).",
+      ar: "في هذه الظروف لن يجف الغسيل (الرطوبة مرتفعة جدًا)."
    },
    indoorforecast: {
       en: "Drying indoors: the average temperature and humidity of the 24 hours from hanging, from the forecast, without wind. Change the temperature to check heating, or the wind to check a fan.",
       he: "ייבוש בבית: ממוצע הטמפרטורה והלחות ב-24 השעות מזמן התלייה לפי התחזית, בלי רוח. אפשר לשנות את הטמפרטורה כדי לבדוק חימום, או את הרוח כדי לבדוק מאוורר.",
       de: "Trocknen in der Wohnung: durchschnittliche Temperatur und Luftfeuchtigkeit der 24 Stunden ab dem Aufhängen laut Vorhersage, ohne Wind. Ändern Sie die Temperatur, um die Heizung zu testen, oder den Wind für einen Ventilator.",
       it: "Asciugatura in casa: temperatura e umidità medie delle 24 ore da quando stendi, secondo le previsioni, senza vento. Cambia la temperatura per provare il riscaldamento, o il vento per un ventilatore.",
-      es: "Secado en casa: temperatura y humedad medias de las 24 horas desde que tiendes, según el pronóstico, sin viento. Cambia la temperatura para probar la calefacción, o el viento para un ventilador."
+      es: "Secado en casa: temperatura y humedad medias de las 24 horas desde que tiendes, según el pronóstico, sin viento. Cambia la temperatura para probar la calefacción, o el viento para un ventilador.",
+      pt: "Secagem dentro de casa: temperatura e umidade médias das 24 horas a partir de quando você estende, segundo a previsão, sem vento. Mude a temperatura para testar o aquecimento, ou o vento para um ventilador.",
+      fr: "Séchage à l’intérieur : température et humidité moyennes des 24 heures à partir de l’étendage, selon les prévisions, sans vent. Modifiez la température pour tester le chauffage, ou le vent pour un ventilateur.",
+      ja: "部屋干し：天気予報による、干してから24時間の平均気温と湿度、風なしで計算しています。気温を変えると暖房、風速を変えると扇風機の効果がわかります。",
+      pl: "Suszenie w domu: średnia temperatura i wilgotność z 24 godzin od powieszenia według prognozy, bez wiatru. Zmień temperaturę, aby sprawdzić ogrzewanie, albo wiatr, aby sprawdzić wentylator.",
+      el: "Στέγνωμα μέσα στο σπίτι: μέση θερμοκρασία και υγρασία των 24 ωρών από το άπλωμα, σύμφωνα με την πρόγνωση, χωρίς αέρα. Αλλάξτε τη θερμοκρασία για να δοκιμάσετε τη θέρμανση, ή τον αέρα για έναν ανεμιστήρα.",
+      tr: "Evde kurutma: tahmine göre asıldıktan sonraki 24 saatin ortalama sıcaklık ve nemi, rüzgarsız. Isıtmayı denemek için sıcaklığı, vantilatör için rüzgarı değiştirin.",
+      ar: "التجفيف داخل البيت: متوسط درجة الحرارة والرطوبة في الـ24 ساعة من وقت النشر حسب التوقعات، بدون رياح. غيّر درجة الحرارة لتجربة التدفئة، أو الرياح لتجربة مروحة."
    },
    indoor: {
       en: "Drying indoors: change the temperature to check heating, or the wind to check a fan.",
       he: "ייבוש בבית: אפשר לשנות את הטמפרטורה כדי לבדוק חימום, או את הרוח כדי לבדוק מאוורר.",
       de: "Trocknen in der Wohnung: Ändern Sie die Temperatur, um die Heizung zu testen, oder den Wind für einen Ventilator.",
       it: "Asciugatura in casa: cambia la temperatura per provare il riscaldamento, o il vento per un ventilatore.",
-      es: "Secado en casa: cambia la temperatura para probar la calefacción, o el viento para un ventilador."
+      es: "Secado en casa: cambia la temperatura para probar la calefacción, o el viento para un ventilador.",
+      pt: "Secagem dentro de casa: mude a temperatura para testar o aquecimento, ou o vento para um ventilador.",
+      fr: "Séchage à l’intérieur : modifiez la température pour tester le chauffage, ou le vent pour un ventilateur.",
+      ja: "部屋干し：気温を変えると暖房、風速を変えると扇風機の効果がわかります。",
+      pl: "Suszenie w domu: zmień temperaturę, aby sprawdzić ogrzewanie, albo wiatr, aby sprawdzić wentylator.",
+      el: "Στέγνωμα μέσα στο σπίτι: αλλάξτε τη θερμοκρασία για να δοκιμάσετε τη θέρμανση, ή τον αέρα για έναν ανεμιστήρα.",
+      tr: "Evde kurutma: ısıtmayı denemek için sıcaklığı, vantilatör için rüzgarı değiştirin.",
+      ar: "التجفيف داخل البيت: غيّر درجة الحرارة لتجربة التدفئة، أو الرياح لتجربة مروحة."
    },
    outofrange: {
       en: "The forecast covers only the next 7 days, please choose an earlier hanging time.",
       he: "התחזית מכסה רק את 7 הימים הקרובים, נא לבחור זמן תלייה מוקדם יותר.",
       de: "Die Vorhersage reicht nur 7 Tage, bitte eine frühere Aufhängezeit wählen.",
       it: "Le previsioni coprono solo i prossimi 7 giorni, scegli un orario precedente.",
-      es: "El pronóstico solo cubre los próximos 7 días, elige una hora anterior."
+      es: "El pronóstico solo cubre los próximos 7 días, elige una hora anterior.",
+      pt: "A previsão cobre só os próximos 7 dias; escolha um horário anterior.",
+      fr: "Les prévisions ne couvrent que les 7 prochains jours ; choisissez une heure plus proche.",
+      ja: "天気予報は今後7日間のみです。もっと早い時刻を選んでください。",
+      pl: "Prognoza obejmuje tylko najbliższe 7 dni, wybierz wcześniejszą godzinę.",
+      el: "Η πρόγνωση καλύπτει μόνο τις επόμενες 7 ημέρες, επιλέξτε νωρίτερη ώρα.",
+      tr: "Tahmin yalnızca önümüzdeki 7 günü kapsıyor, daha erken bir saat seçin.",
+      ar: "تغطي التوقعات الأيام السبعة القادمة فقط، اختر وقتًا أقرب."
    },
    nodryforecast: {
       en: "The laundry will not dry within the 7 day forecast.",
       he: "הכביסה לא תתייבש במהלך 7 ימי התחזית.",
       de: "Die Wäsche trocknet nicht innerhalb der 7-Tage-Vorhersage.",
       it: "Il bucato non si asciugherà entro i 7 giorni delle previsioni.",
-      es: "La ropa no se secará dentro de los 7 días del pronóstico."
+      es: "La ropa no se secará dentro de los 7 días del pronóstico.",
+      pt: "A roupa não vai secar dentro dos 7 dias da previsão.",
+      fr: "Le linge ne séchera pas dans les 7 jours de prévisions.",
+      ja: "7日間の予報期間内に洗濯物は乾きません。",
+      pl: "Pranie nie wyschnie w ciągu 7 dni prognozy.",
+      el: "Τα ρούχα δεν θα στεγνώσουν μέσα στις 7 ημέρες της πρόγνωσης.",
+      tr: "Çamaşır 7 günlük tahmin süresi içinde kurumayacak.",
+      ar: "لن يجف الغسيل خلال أيام التوقعات السبعة."
    },
    noforecast: {
       en: "Forecast data is not loaded yet, please press the forecast button first. Calculated with the values above.",
       he: "התחזית עוד לא נטענה, נא ללחוץ קודם על כפתור התחזית. החישוב בוצע לפי הערכים שהוזנו.",
       de: "Die Vorhersage ist noch nicht geladen, bitte zuerst die Wettervorhersage übernehmen. Berechnet mit den eingegebenen Werten.",
       it: "Le previsioni non sono ancora caricate, premi prima il pulsante delle previsioni. Calcolato con i valori inseriti.",
-      es: "El pronóstico aún no se ha cargado, pulsa primero el botón del pronóstico. Calculado con los valores introducidos."
+      es: "El pronóstico aún no se ha cargado, pulsa primero el botón del pronóstico. Calculado con los valores introducidos.",
+      pt: "A previsão ainda não foi carregada; use primeiro o botão da previsão. Calculado com os valores informados.",
+      fr: "Les prévisions ne sont pas encore chargées ; utilisez d’abord le bouton des prévisions. Calcul fait avec les valeurs saisies.",
+      ja: "天気予報がまだ読み込まれていません。先に天気予報のボタンを押してください。入力された値で計算しました。",
+      pl: "Prognoza nie jest jeszcze wczytana, najpierw naciśnij przycisk prognozy. Obliczono na podstawie wpisanych wartości.",
+      el: "Η πρόγνωση δεν έχει φορτωθεί ακόμα, πατήστε πρώτα το κουμπί της πρόγνωσης. Ο υπολογισμός έγινε με τις τιμές που δώσατε.",
+      tr: "Hava tahmini henüz yüklenmedi, önce tahmin düğmesine basın. Girilen değerlerle hesaplandı.",
+      ar: "لم يتم تحميل التوقعات بعد، اضغط أولًا على زر التوقعات. تم الحساب بالقيم المدخلة."
    },
    sunmanual: {
       en: "Direct sunlight is only taken into account when using the forecast.",
       he: "שמש ישירה נלקחת בחשבון רק בשימוש בתחזית.",
       de: "Direkte Sonne wird nur mit der Vorhersage berücksichtigt.",
       it: "Il sole diretto viene considerato solo con le previsioni.",
-      es: "El sol directo solo se tiene en cuenta con el pronóstico."
+      es: "El sol directo solo se tiene en cuenta con el pronóstico.",
+      pt: "O sol direto só é considerado com a previsão.",
+      fr: "Le soleil direct n’est pris en compte qu’avec les prévisions.",
+      ja: "直射日光は天気予報を使うときだけ考慮されます。",
+      pl: "Bezpośrednie słońce jest uwzględniane tylko z prognozą.",
+      el: "Ο άμεσος ήλιος λαμβάνεται υπόψη μόνο με την πρόγνωση.",
+      tr: "Doğrudan güneş yalnızca hava tahminiyle hesaba katılır.",
+      ar: "لا تُحسب الشمس المباشرة إلا مع التوقعات."
    },
    badinput: {
       en: "Please enter temperature, relative humidity (0-100), wind speed and fabric thickness.",
       he: "נא להזין טמפרטורה, לחות יחסית (0-100), מהירות רוח ועובי בד.",
       de: "Bitte Temperatur, relative Luftfeuchtigkeit (0–100), Windgeschwindigkeit und Stoffdicke eingeben.",
       it: "Inserisci temperatura, umidità relativa (0-100), velocità del vento e spessore del tessuto.",
-      es: "Introduce la temperatura, la humedad relativa (0-100), la velocidad del viento y el grosor de la tela."
+      es: "Introduce la temperatura, la humedad relativa (0-100), la velocidad del viento y el grosor de la tela.",
+      pt: "Informe a temperatura, a umidade relativa (0-100), a velocidade do vento e a espessura do tecido.",
+      fr: "Saisissez la température, l’humidité relative (0-100), la vitesse du vent et l’épaisseur du tissu.",
+      ja: "気温、相対湿度（0〜100）、風速、生地の厚さを入力してください。",
+      pl: "Wpisz temperaturę, wilgotność względną (0-100), prędkość wiatru i grubość tkaniny.",
+      el: "Συμπληρώστε θερμοκρασία, σχετική υγρασία (0-100), ταχύτητα ανέμου και πάχος υφάσματος.",
+      tr: "Sıcaklık, bağıl nem (0-100), rüzgar hızı ve kumaş kalınlığını girin.",
+      ar: "أدخل درجة الحرارة والرطوبة النسبية (0-100) وسرعة الرياح وسُمك القماش."
    },
    locating: {
       en: "Locating…",
       he: "מאתר מיקום…",
       de: "Standort wird ermittelt…",
       it: "Ricerca della posizione…",
-      es: "Buscando tu ubicación…"
+      es: "Buscando tu ubicación…",
+      pt: "Localizando…",
+      fr: "Localisation en cours…",
+      ja: "現在地を確認しています…",
+      pl: "Ustalanie lokalizacji…",
+      el: "Εντοπισμός θέσης…",
+      tr: "Konum bulunuyor…",
+      ar: "جارٍ تحديد الموقع…"
    },
    nolocation: {
       en: "Unable to retrieve your location",
       he: "לא ניתן לקבל את המיקום שלך",
       de: "Ihr Standort konnte nicht ermittelt werden",
       it: "Impossibile ottenere la tua posizione",
-      es: "No se pudo obtener tu ubicación"
+      es: "No se pudo obtener tu ubicación",
+      pt: "Não foi possível obter a sua localização",
+      fr: "Impossible d’obtenir votre position",
+      ja: "現在地を取得できませんでした",
+      pl: "Nie udało się ustalić Twojej lokalizacji",
+      el: "Δεν ήταν δυνατός ο εντοπισμός της θέσης σας",
+      tr: "Konumunuz alınamadı",
+      ar: "تعذّر تحديد موقعك"
    },
    nogeo: {
       en: "Geolocation is not supported by your browser",
       he: "הדפדפן לא תומך באיתור מיקום",
       de: "Ihr Browser unterstützt keine Standortbestimmung",
       it: "Il tuo browser non supporta la geolocalizzazione",
-      es: "Tu navegador no admite la geolocalización"
+      es: "Tu navegador no admite la geolocalización",
+      pt: "O seu navegador não suporta geolocalização",
+      fr: "Votre navigateur ne prend pas en charge la géolocalisation",
+      ja: "お使いのブラウザは位置情報に対応していません",
+      pl: "Twoja przeglądarka nie obsługuje geolokalizacji",
+      el: "Ο περιηγητής σας δεν υποστηρίζει γεωεντοπισμό",
+      tr: "Tarayıcınız konum belirlemeyi desteklemiyor",
+      ar: "متصفحك لا يدعم تحديد الموقع"
    },
    noweather: {
       en: "Weather data not available",
       he: "נתוני מזג האוויר אינם זמינים",
       de: "Wetterdaten nicht verfügbar",
       it: "Dati meteo non disponibili",
-      es: "Datos del tiempo no disponibles"
+      es: "Datos del tiempo no disponibles",
+      pt: "Dados do tempo indisponíveis",
+      fr: "Données météo indisponibles",
+      ja: "天気データを取得できません",
+      pl: "Dane pogodowe są niedostępne",
+      el: "Τα δεδομένα καιρού δεν είναι διαθέσιμα",
+      tr: "Hava durumu verileri kullanılamıyor",
+      ar: "بيانات الطقس غير متوفرة"
    }
 };
 
@@ -227,13 +346,34 @@ function formatDuration(hours) {
       if (m > 0) {parts.push(m + " דקות");}
       return parts.join(" ו-");
    }
+   var lang = currentLang();
+   if (lang === "ja") {
+      return (h > 0 ? h + "時間" : "") + (m > 0 ? m + "分" : "");
+   }
+   if (lang === "ar") {
+      if (h === 1) {parts.push("ساعة واحدة");}
+      else if (h === 2) {parts.push("ساعتان");}
+      else if (h > 0) {parts.push(h + (h <= 10 ? " ساعات" : " ساعة"));}
+      if (m > 0) {parts.push(m + (m <= 10 ? " دقائق" : " دقيقة"));}
+      return parts.join(" و");
+   }
+   if (lang === "pl") {
+      var few = h % 10 >= 2 && h % 10 <= 4 && (h % 100 < 12 || h % 100 > 14);
+      if (h > 0) {parts.push(h + " " + (h === 1 ? "godzina" : few ? "godziny" : "godzin"));}
+      if (m > 0) {parts.push(m + " minut");}  // the minutes are multiples of 5, so always "minut"
+      return parts.join(" i ");
+   }
    // [one hour, hours, minutes, "and"]
    var words = {
       en: ["hour", "hours", "minutes", " and "],
       de: ["Stunde", "Stunden", "Minuten", " und "],
       it: ["ora", "ore", "minuti", " e "],
-      es: ["hora", "horas", "minutos", " y "]
-   }[currentLang()] || ["hour", "hours", "minutes", " and "];
+      es: ["hora", "horas", "minutos", " y "],
+      pt: ["hora", "horas", "minutos", " e "],
+      fr: ["heure", "heures", "minutes", " et "],
+      el: ["ώρα", "ώρες", "λεπτά", " και "],
+      tr: ["saat", "saat", "dakika", " "]
+   }[lang] || ["hour", "hours", "minutes", " and "];
    if (h > 0) {parts.push(h + " " + (h === 1 ? words[0] : words[1]));}
    if (m > 0) {parts.push(m + " " + words[2]);}
    return parts.join(words[3]);
@@ -245,7 +385,8 @@ function formatTime(date) {
    if (date.toDateString() !== new Date().toDateString()) {
       options.weekday = "long";
    }
-   var locale = {he: "he-IL", de: "de-DE", it: "it-IT", es: "es-ES"}[currentLang()] || [];
+   var locale = {he: "he-IL", de: "de-DE", it: "it-IT", es: "es-ES", pt: "pt-BR", fr: "fr-FR", ja: "ja-JP",
+                 pl: "pl-PL", el: "el-GR", tr: "tr-TR", ar: "ar-u-nu-latn"}[currentLang()] || [];
    return date.toLocaleString(locale, options);
 }
 
