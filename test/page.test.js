@@ -567,3 +567,14 @@ test('every question in the FAQ structured data is on the page, and the short an
     await page.close();
   }
 });
+
+test('the Hebrew page opened from the USA (like Google\'s crawler) is in Celsius', async () => {
+  const page = await browser.newPage({ locale: 'en-US', timezoneId: 'America/Los_Angeles' });
+  await page.route(url => !url.href.startsWith(base), route => route.abort());
+  await page.goto(base + '/he/');
+  assert.equal(await page.textContent('#temp-unit'), 'צלזיוס');
+  assert.equal(await page.textContent('#wind-unit'), 'קמ"ש');
+  await page.goto(base + '/');
+  assert.equal(await page.textContent('#temp-unit'), '°F');
+  await page.close();
+});
