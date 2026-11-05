@@ -13,41 +13,135 @@ var SUN_FACTOR = 0.25; // part of the sun radiation that is used for evaporation
 var LATENT_HEAT = 2.45e6; // J/kg, energy to evaporate 1 kg of water
 
 var messages = {
-   rain:   {en: "It looks like it will rain before the laundry has a chance to dry. If you don’t have a roof or cover, it might be a good idea to wait before doing the laundry.",
-            he: "נראה שירד גשם לפני שהכביסה תספיק להתייבש. אם אין לכם גג או כיסוי, כדאי לחכות עם הכביסה."},
-   rainstart: {en: "The rain is expected to start around {0}.",
-            he: "הגשם צפוי להתחיל בסביבות {0}."},
-   rainprob: {en: "Highest chance of rain while drying: {0}%.",
-            he: "הסיכוי הגבוה ביותר לגשם בזמן הייבוש: {0}%."},
-   dryby:  {en: "The laundry should be dry around {0}.",
-            he: "הכביסה צפויה להתייבש בסביבות {0}."},
-   windy:  {en: "It looks like it will be windy. Please use extra clothespins (clothes pegs).",
-            he: "נראה שתהיה רוח חזקה. כדאי להשתמש ביותר אטבי כביסה."},
-   nodry:  {en: "With these conditions the laundry will not dry (humidity too high).",
-            he: "בתנאים האלה הכביסה לא תתייבש (הלחות גבוהה מדי)."},
-   indoorforecast: {en: "Drying indoors: the average temperature and humidity of the 24 hours from hanging, from the forecast, without wind. Change the temperature to check heating, or the wind to check a fan.",
-            he: "ייבוש בבית: ממוצע הטמפרטורה והלחות ב-24 השעות מזמן התלייה לפי התחזית, בלי רוח. אפשר לשנות את הטמפרטורה כדי לבדוק חימום, או את הרוח כדי לבדוק מאוורר."},
-   indoor: {en: "Drying indoors: change the temperature to check heating, or the wind to check a fan.",
-            he: "ייבוש בבית: אפשר לשנות את הטמפרטורה כדי לבדוק חימום, או את הרוח כדי לבדוק מאוורר."},
-   outofrange: {en: "The forecast covers only the next 7 days, please choose an earlier hanging time.",
-            he: "התחזית מכסה רק את 7 הימים הקרובים, נא לבחור זמן תלייה מוקדם יותר."},
-   nodryforecast: {en: "The laundry will not dry within the 7 day forecast.",
-            he: "הכביסה לא תתייבש במהלך 7 ימי התחזית."},
-   noforecast: {en: "Forecast data is not loaded yet, please press the forecast button first. Calculated with the values above.",
-            he: "התחזית עוד לא נטענה, נא ללחוץ קודם על כפתור התחזית. החישוב בוצע לפי הערכים שהוזנו."},
-   sunmanual: {en: "Direct sunlight is only taken into account when using the forecast.",
-            he: "שמש ישירה נלקחת בחשבון רק בשימוש בתחזית."},
-   badinput: {en: "Please enter temperature, relative humidity (0-100), wind speed and fabric thickness.",
-            he: "נא להזין טמפרטורה, לחות יחסית (0-100), מהירות רוח ועובי בד."},
-   locating: {en: "Locating…", he: "מאתר מיקום…"},
-   nolocation: {en: "Unable to retrieve your location", he: "לא ניתן לקבל את המיקום שלך"},
-   nogeo:  {en: "Geolocation is not supported by your browser", he: "הדפדפן לא תומך באיתור מיקום"},
-   noweather: {en: "Weather data not available", he: "נתוני מזג האוויר אינם זמינים"}
+   rain: {
+      en: "It looks like it will rain before the laundry has a chance to dry. If you don’t have a roof or cover, it might be a good idea to wait before doing the laundry.",
+      he: "נראה שירד גשם לפני שהכביסה תספיק להתייבש. אם אין לכם גג או כיסוי, כדאי לחכות עם הכביסה.",
+      de: "Es sieht so aus, als würde es regnen, bevor die Wäsche trocken ist. Wenn Sie kein Dach und keine Abdeckung haben, warten Sie mit dem Waschen besser noch.",
+      it: "Sembra che pioverà prima che il bucato si asciughi. Se non hai una tettoia o una copertura, forse è meglio aspettare a fare il bucato.",
+      es: "Parece que lloverá antes de que la ropa se seque. Si no tienes un techo o una cubierta, quizá sea mejor esperar para lavar."
+   },
+   rainstart: {
+      en: "The rain is expected to start around {0}.",
+      he: "הגשם צפוי להתחיל בסביבות {0}.",
+      de: "Voraussichtlicher Regenbeginn: {0}.",
+      it: "Inizio previsto della pioggia: {0}.",
+      es: "Inicio previsto de la lluvia: {0}."
+   },
+   rainprob: {
+      en: "Highest chance of rain while drying: {0}%.",
+      he: "הסיכוי הגבוה ביותר לגשם בזמן הייבוש: {0}%.",
+      de: "Höchste Regenwahrscheinlichkeit während des Trocknens: {0} %.",
+      it: "Probabilità di pioggia più alta durante l'asciugatura: {0}%.",
+      es: "Mayor probabilidad de lluvia durante el secado: {0} %."
+   },
+   dryby: {
+      en: "The laundry should be dry around {0}.",
+      he: "הכביסה צפויה להתייבש בסביבות {0}.",
+      de: "Die Wäsche ist voraussichtlich trocken: {0}.",
+      it: "Il bucato dovrebbe essere asciutto: {0}.",
+      es: "La ropa debería estar seca: {0}."
+   },
+   windy: {
+      en: "It looks like it will be windy. Please use extra clothespins (clothes pegs).",
+      he: "נראה שתהיה רוח חזקה. כדאי להשתמש ביותר אטבי כביסה.",
+      de: "Es sieht windig aus. Verwenden Sie mehr Wäscheklammern.",
+      it: "Sembra che ci sarà vento. Usa più mollette.",
+      es: "Parece que hará viento. Usa más pinzas."
+   },
+   nodry: {
+      en: "With these conditions the laundry will not dry (humidity too high).",
+      he: "בתנאים האלה הכביסה לא תתייבש (הלחות גבוהה מדי).",
+      de: "Unter diesen Bedingungen trocknet die Wäsche nicht (zu hohe Luftfeuchtigkeit).",
+      it: "In queste condizioni il bucato non si asciuga (umidità troppo alta).",
+      es: "En estas condiciones la ropa no se seca (humedad demasiado alta)."
+   },
+   indoorforecast: {
+      en: "Drying indoors: the average temperature and humidity of the 24 hours from hanging, from the forecast, without wind. Change the temperature to check heating, or the wind to check a fan.",
+      he: "ייבוש בבית: ממוצע הטמפרטורה והלחות ב-24 השעות מזמן התלייה לפי התחזית, בלי רוח. אפשר לשנות את הטמפרטורה כדי לבדוק חימום, או את הרוח כדי לבדוק מאוורר.",
+      de: "Trocknen in der Wohnung: durchschnittliche Temperatur und Luftfeuchtigkeit der 24 Stunden ab dem Aufhängen laut Vorhersage, ohne Wind. Ändern Sie die Temperatur, um die Heizung zu testen, oder den Wind für einen Ventilator.",
+      it: "Asciugatura in casa: temperatura e umidità medie delle 24 ore da quando stendi, secondo le previsioni, senza vento. Cambia la temperatura per provare il riscaldamento, o il vento per un ventilatore.",
+      es: "Secado en casa: temperatura y humedad medias de las 24 horas desde que tiendes, según el pronóstico, sin viento. Cambia la temperatura para probar la calefacción, o el viento para un ventilador."
+   },
+   indoor: {
+      en: "Drying indoors: change the temperature to check heating, or the wind to check a fan.",
+      he: "ייבוש בבית: אפשר לשנות את הטמפרטורה כדי לבדוק חימום, או את הרוח כדי לבדוק מאוורר.",
+      de: "Trocknen in der Wohnung: Ändern Sie die Temperatur, um die Heizung zu testen, oder den Wind für einen Ventilator.",
+      it: "Asciugatura in casa: cambia la temperatura per provare il riscaldamento, o il vento per un ventilatore.",
+      es: "Secado en casa: cambia la temperatura para probar la calefacción, o el viento para un ventilador."
+   },
+   outofrange: {
+      en: "The forecast covers only the next 7 days, please choose an earlier hanging time.",
+      he: "התחזית מכסה רק את 7 הימים הקרובים, נא לבחור זמן תלייה מוקדם יותר.",
+      de: "Die Vorhersage reicht nur 7 Tage, bitte eine frühere Aufhängezeit wählen.",
+      it: "Le previsioni coprono solo i prossimi 7 giorni, scegli un orario precedente.",
+      es: "El pronóstico solo cubre los próximos 7 días, elige una hora anterior."
+   },
+   nodryforecast: {
+      en: "The laundry will not dry within the 7 day forecast.",
+      he: "הכביסה לא תתייבש במהלך 7 ימי התחזית.",
+      de: "Die Wäsche trocknet nicht innerhalb der 7-Tage-Vorhersage.",
+      it: "Il bucato non si asciugherà entro i 7 giorni delle previsioni.",
+      es: "La ropa no se secará dentro de los 7 días del pronóstico."
+   },
+   noforecast: {
+      en: "Forecast data is not loaded yet, please press the forecast button first. Calculated with the values above.",
+      he: "התחזית עוד לא נטענה, נא ללחוץ קודם על כפתור התחזית. החישוב בוצע לפי הערכים שהוזנו.",
+      de: "Die Vorhersage ist noch nicht geladen, bitte zuerst die Wettervorhersage übernehmen. Berechnet mit den eingegebenen Werten.",
+      it: "Le previsioni non sono ancora caricate, premi prima il pulsante delle previsioni. Calcolato con i valori inseriti.",
+      es: "El pronóstico aún no se ha cargado, pulsa primero el botón del pronóstico. Calculado con los valores introducidos."
+   },
+   sunmanual: {
+      en: "Direct sunlight is only taken into account when using the forecast.",
+      he: "שמש ישירה נלקחת בחשבון רק בשימוש בתחזית.",
+      de: "Direkte Sonne wird nur mit der Vorhersage berücksichtigt.",
+      it: "Il sole diretto viene considerato solo con le previsioni.",
+      es: "El sol directo solo se tiene en cuenta con el pronóstico."
+   },
+   badinput: {
+      en: "Please enter temperature, relative humidity (0-100), wind speed and fabric thickness.",
+      he: "נא להזין טמפרטורה, לחות יחסית (0-100), מהירות רוח ועובי בד.",
+      de: "Bitte Temperatur, relative Luftfeuchtigkeit (0–100), Windgeschwindigkeit und Stoffdicke eingeben.",
+      it: "Inserisci temperatura, umidità relativa (0-100), velocità del vento e spessore del tessuto.",
+      es: "Introduce la temperatura, la humedad relativa (0-100), la velocidad del viento y el grosor de la tela."
+   },
+   locating: {
+      en: "Locating…",
+      he: "מאתר מיקום…",
+      de: "Standort wird ermittelt…",
+      it: "Ricerca della posizione…",
+      es: "Buscando tu ubicación…"
+   },
+   nolocation: {
+      en: "Unable to retrieve your location",
+      he: "לא ניתן לקבל את המיקום שלך",
+      de: "Ihr Standort konnte nicht ermittelt werden",
+      it: "Impossibile ottenere la tua posizione",
+      es: "No se pudo obtener tu ubicación"
+   },
+   nogeo: {
+      en: "Geolocation is not supported by your browser",
+      he: "הדפדפן לא תומך באיתור מיקום",
+      de: "Ihr Browser unterstützt keine Standortbestimmung",
+      it: "Il tuo browser non supporta la geolocalizzazione",
+      es: "Tu navegador no admite la geolocalización"
+   },
+   noweather: {
+      en: "Weather data not available",
+      he: "נתוני מזג האוויר אינם זמינים",
+      de: "Wetterdaten nicht verfügbar",
+      it: "Dati meteo non disponibili",
+      es: "Datos del tiempo no disponibles"
+   }
 };
+
+// the language of the page: pageLang is set in index.html (and by scripts/build-lang.js in the other languages)
+function currentLang() {
+   return (typeof pageLang !== "undefined" && pageLang) || "en";
+}
 
 // msg("dryby", "16:30") replaces {0} with "16:30"
 function msg(key) {
-   var text = messages[key][isHe ? "he" : "en"];
+   var text = messages[key][currentLang()] || messages[key].en;
    for (var i = 1; i < arguments.length; i++) {
       text = text.replace("{" + (i-1) + "}", arguments[i]);
    }
@@ -69,9 +163,10 @@ function defaultUnits() {
       var saved = localStorage.getItem("units");
       if (saved === "metric" || saved === "imperial") {return saved;}
    } catch (e) {}
-   // the Hebrew page is for Israel: Celsius, also when it is opened from abroad (and by Google's crawler,
-   // which shows the page's text in the search results)
-   if (typeof isHe !== "undefined" && isHe) {return "metric";}
+   // the other languages are for countries that use Celsius (Hebrew for Israel, German, Italian, Spanish):
+   // Celsius also when the page is opened from abroad, and by Google's crawler, which runs in the USA
+   // and shows the page's text in the search results
+   if (currentLang() !== "en") {return "metric";}
    // the time zone says where the user is; the browser language doesn't
    // (many browsers in Israel, for example, are in English (US))
    try {
@@ -114,6 +209,7 @@ function setUnits(newUnits, convert) {
    }
    units = newUnits;
    var imperial = units === "imperial";
+   var isHe = currentLang() === "he";
    document.getElementById("temp-unit").textContent = isHe ? (imperial ? "פרנהייט" : "צלזיוס") : (imperial ? "°F" : "°C");
    document.getElementById("wind-unit").textContent = isHe ? (imperial ? "MPH" : "קמ\"ש") : (imperial ? "mph" : "km/h");
 }
@@ -124,16 +220,23 @@ function formatDuration(hours) {
    var h = Math.floor(totalMinutes / 60);
    var m = totalMinutes % 60;
    var parts = [];
-   if (isHe) {
+   if (currentLang() === "he") {
       if (h === 1) {parts.push("שעה");}
       else if (h === 2) {parts.push("שעתיים");}
       else if (h > 0) {parts.push(h + " שעות");}
       if (m > 0) {parts.push(m + " דקות");}
       return parts.join(" ו-");
    }
-   if (h > 0) {parts.push(h + (h === 1 ? " hour" : " hours"));}
-   if (m > 0) {parts.push(m + " minutes");}
-   return parts.join(" and ");
+   // [one hour, hours, minutes, "and"]
+   var words = {
+      en: ["hour", "hours", "minutes", " and "],
+      de: ["Stunde", "Stunden", "Minuten", " und "],
+      it: ["ora", "ore", "minuti", " e "],
+      es: ["hora", "horas", "minutos", " y "]
+   }[currentLang()] || ["hour", "hours", "minutes", " and "];
+   if (h > 0) {parts.push(h + " " + (h === 1 ? words[0] : words[1]));}
+   if (m > 0) {parts.push(m + " " + words[2]);}
+   return parts.join(words[3]);
 }
 
 // local time, with the day name if it is not today
@@ -142,7 +245,8 @@ function formatTime(date) {
    if (date.toDateString() !== new Date().toDateString()) {
       options.weekday = "long";
    }
-   return date.toLocaleString(isHe ? "he-IL" : [], options);
+   var locale = {he: "he-IL", de: "de-DE", it: "it-IT", es: "es-ES"}[currentLang()] || [];
+   return date.toLocaleString(locale, options);
 }
 
 // the time of index i in the forecast arrays (open-meteo starts at 00:00 GMT of the day it was asked)

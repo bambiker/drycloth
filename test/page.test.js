@@ -61,7 +61,7 @@ for (const url of ['/', '/index.html']) {
     assert.equal(l.dir, '');
     assert.equal(l.title, 'How Long Do Clothes Take to Dry on a Clothesline? Calculator');
     assert.equal(l.heading, 'Clothesline drying time calculator');
-    assert.equal(await page.textContent('#langswitch'), 'עב');
+    assert.equal(await page.textContent('.lang[aria-current="page"]'), 'EN');
     assert.deepEqual(errors, []);
     await page.close();
   });
@@ -74,7 +74,7 @@ test('/he/ is in Hebrew, also without JavaScript (for search engines and AI craw
   assert.equal(l.dir, 'rtl');
   assert.equal(l.title, 'כמה זמן לוקח לכביסה להתייבש? מחשבון זמן ייבוש כביסה על חבל');
   assert.equal(l.heading, 'מחשבון לחישוב זמן ייבוש הכביסה');
-  assert.equal(await page.textContent('#langswitch'), 'En');
+  assert.equal(await page.textContent('.lang[aria-current="page"]'), 'עב');
   assert.equal(await page.textContent('#temp-unit'), 'צלזיוס');
   assert.equal(await page.textContent('[data-i18n="contact"]'), 'צור קשר');
   assert.equal(await page.getAttribute('[data-i18n="contact"]', 'href'), 'https://forms.gle/FJx3CNFUcExcG9Fn9');
@@ -102,14 +102,17 @@ for (const [url, expected] of [['/?he', '/he/'], ['/index.html?he', '/he/'], ['/
   });
 }
 
-test('the language links lead to the other language', async () => {
+test('the language links lead from every page to every language', async () => {
+  const pages = { en: '/', he: '/he/', de: '/de/', it: '/it/', es: '/es/' };
   const { page } = await open('/');
-  await page.click('#langswitch');
-  await page.waitForURL(base + '/he/');
-  assert.equal((await language(page)).lang, 'he');
-  await page.click('#langswitch');
-  await page.waitForURL(base + '/');
-  assert.equal((await language(page)).lang, 'en');
+  for (const [from, fromUrl] of Object.entries(pages)) {
+    for (const [to, toUrl] of Object.entries(pages)) {
+      await page.goto(base + fromUrl);
+      await page.click(`.lang[data-lang="${to}"]`);
+      await page.waitForURL(base + toUrl);
+      assert.equal((await language(page)).lang, to, `from ${from} to ${to}`);
+    }
+  }
   await page.close();
 });
 
@@ -175,14 +178,14 @@ test('share preview (Open Graph) points to files that exist', async () => {
   await page.close();
 });
 
-test('sitemap.xml is valid and lists both languages', async () => {
+test('sitemap.xml is valid and lists all the languages', async () => {
   const { page } = await open('/');
   const urls = await page.evaluate(async () => {
     const xml = new DOMParser().parseFromString(await (await fetch('sitemap.xml')).text(), 'application/xml');
     if (xml.querySelector('parsererror')) {return null;}
     return [...xml.getElementsByTagName('loc')].map(l => l.textContent);
   });
-  assert.deepEqual(urls, ['https://bambiker.github.io/drycloth/', 'https://bambiker.github.io/drycloth/he/']);
+  assert.deepEqual(urls, ['', 'he/', 'de/', 'it/', 'es/'].map(l => 'https://bambiker.github.io/drycloth/' + l));
   await page.close();
 });
 
@@ -534,7 +537,7 @@ test('Google Analytics events for the forecast button and installing', async () 
 });
 
 test('a large share and search image for each language, and the photo is visible on the page', async () => {
-  for (const [url, file] of [['/', 'share-en.png'], ['/he/', 'share-he.png']]) {
+  for (const [url, file] of [['/', 'share-en.png'], ['/he/', 'share-he.png'], ['/de/', 'share-de.png'], ['/it/', 'share-it.png'], ['/es/', 'share-es.png']]) {
     const { page, missing } = await open(url);
     assert.equal(await page.getAttribute('meta[property="og:image"]', 'content'), 'https://bambiker.github.io/drycloth/' + file);
     assert.equal(pngSize(path.join(root, file)), '1200x630');
@@ -578,3 +581,36 @@ test('the Hebrew page opened from the USA (like Google\'s crawler) is in Celsius
   assert.equal(await page.textContent('#temp-unit'), '°F');
   await page.close();
 });
+
+// the German, Italian and Spanish pages
+for (const [lang, title, heading, duration] of [
+  ['de', 'Wie lange braucht Wäsche zum Trocknen auf der Leine? Rechner', 'Rechner für die Trocknungszeit der Wäsche', '6 Stunden und 55 Minuten'],
+  ['it', 'Quanto ci mette il bucato ad asciugare steso? Calcolatore', 'Calcolatore del tempo di asciugatura del bucato', '6 ore e 55 minuti'],
+  ['es', '¿Cuánto tarda en secarse la ropa tendida? Calculadora', 'Calculadora del tiempo de secado de la ropa', '6 horas y 55 minutos'],
+]) {
+  test(`/${lang}/ is in its language, in Celsius, and the calculator works`, async () => {
+    // opened from the USA, like Google's crawler: still Celsius
+    const page = await browser.newPage({ locale: 'en-US', timezoneId: 'America/Los_Angeles' });
+    const errors = [], missing = [];
+    page.on('pageerror', e => errors.push(e.message));
+    page.on('response', r => { if (r.url().startsWith(base) && r.status() >= 400) {missing.push(r.url());} });
+    await page.route(url => !url.href.startsWith(base), route => route.abort());
+    await page.goto(base + `/${lang}/`);
+    const l = await language(page);
+    assert.equal(l.lang, lang);
+    assert.equal(l.dir, 'ltr');
+    assert.equal(l.title, title);
+    assert.equal(l.heading, heading);
+    assert.equal(await page.textContent('#temp-unit'), '°C');
+    assert.equal(await page.getAttribute('link[rel=canonical]', 'href'), `https://bambiker.github.io/drycloth/${lang}/`);
+    assert.equal(await page.getAttribute('meta[property="og:image"]', 'content'), `https://bambiker.github.io/drycloth/share-${lang}.png`);
+    assert.equal(await page.locator('link[rel=alternate][hreflang]').count(), 6);
+    await page.fill('#temp', '25');
+    await page.fill('#humid', '50');
+    await page.click('#btncalc');
+    assert.equal(await page.textContent('#result'), duration);
+    assert.deepEqual(errors, []);
+    assert.deepEqual(missing, []);
+    await page.close();
+  });
+}

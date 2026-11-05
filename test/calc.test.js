@@ -8,9 +8,9 @@ const vm = require('node:vm');
 
 const source = fs.readFileSync(path.join(__dirname, '..', 'calc.js'), 'utf8');
 
-function load({ languages = ['en-GB'], timeZone = 'Europe/London', he = false, saved = null } = {}) {
+function load({ languages = ['en-GB'], timeZone = 'Europe/London', he = false, lang = he ? 'he' : 'en', saved = null } = {}) {
   const sandbox = {
-    isHe: he,
+    pageLang: lang,
     localStorage: { getItem: () => saved, setItem: () => {} },
     navigator: { languages, language: languages[0] },
     Intl: { DateTimeFormat: () => ({ resolvedOptions: () => ({ timeZone }) }) },
@@ -199,6 +199,27 @@ test('formatDuration in Hebrew', () => {
   assert.equal(c.formatDuration(0.25), '15 דקות');
 });
 
+test('formatDuration in German, Italian and Spanish', () => {
+  assert.equal(load({ lang: 'de' }).formatDuration(3.42), '3 Stunden und 25 Minuten');
+  assert.equal(load({ lang: 'de' }).formatDuration(1), '1 Stunde');
+  assert.equal(load({ lang: 'it' }).formatDuration(1.75), '1 ora e 45 minuti');
+  assert.equal(load({ lang: 'it' }).formatDuration(2), '2 ore');
+  assert.equal(load({ lang: 'es' }).formatDuration(6.9), '6 horas y 55 minutos');
+  assert.equal(load({ lang: 'es' }).formatDuration(0.25), '15 minutos');
+});
+
+test('every message is in every language', () => {
+  const c = load();
+  for (const [key, texts] of Object.entries(c.messages)) {
+    for (const lang of ['en', 'he', 'de', 'it', 'es']) {
+      assert.ok(texts[lang], `message "${key}" has no ${lang} text`);
+      // the same parameters as the English text
+      assert.deepEqual(texts[lang].match(/\{\d\}/g), texts.en.match(/\{\d\}/g), `message "${key}" in ${lang}`);
+    }
+  }
+  assert.equal(load({ lang: 'de' }).msg('rainprob', 40), 'Höchste Regenwahrscheinlichkeit während des Trocknens: 40 %.');
+});
+
 test('msg replaces the parameters in the right language', () => {
   assert.equal(load().msg('rainprob', 40), 'Highest chance of rain while drying: 40%.');
   assert.equal(load({ he: true }).msg('rainprob', 40), 'הסיכוי הגבוה ביותר לגשם בזמן הייבוש: 40%.');
@@ -231,6 +252,10 @@ test('the Hebrew page is in Celsius, also from abroad, unless the user chose Fah
   assert.equal(load({ he: true, languages: ['en-US'], timeZone: 'America/Los_Angeles' }).units, 'metric');
   assert.equal(load({ he: true, languages: ['he-IL'], timeZone: 'America/New_York' }).units, 'metric');
   assert.equal(load({ he: true, timeZone: 'America/New_York', saved: 'imperial' }).units, 'imperial');
+  // German, Italian and Spanish too
+  for (const lang of ['de', 'it', 'es']) {
+    assert.equal(load({ lang, languages: ['en-US'], timeZone: 'America/New_York' }).units, 'metric');
+  }
   // the English page still follows where the user is
   assert.equal(load({ languages: ['en-US'], timeZone: 'America/Los_Angeles' }).units, 'imperial');
 });
