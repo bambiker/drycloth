@@ -59,7 +59,7 @@ for (const url of ['/', '/index.html']) {
     const l = await language(page);
     assert.equal(l.lang, 'en');
     assert.equal(l.dir, '');
-    assert.equal(l.title, 'How long does laundry take to dry? Clothesline drying time calculator');
+    assert.equal(l.title, 'How Long Do Clothes Take to Dry on a Clothesline? Calculator');
     assert.equal(l.heading, 'Clothesline drying time calculator');
     assert.equal(await page.textContent('#langswitch'), 'עב');
     assert.deepEqual(errors, []);
@@ -146,8 +146,7 @@ test('structured data (JSON-LD) is valid and its example matches the calculator'
     assert.equal(q['@type'], 'Question');
     assert.ok(q.name && q.acceptedAnswer.text);
   }
-  // "at 25°C, 50% humidity and no wind, a 2 mm towel dries in about 7 hours" (also in llms.txt)
-  assert.match(data[1].mainEntity[0].acceptedAnswer.text, /about 7 hours/);
+  // llms.txt: "at 25°C, 50% humidity and no wind, a 2 mm towel dries in about 7 hours"
   const hours = await page.evaluate(() => calc(25, 50, 0, 2));
   assert.equal(Math.round(hours), 7);
   assert.match(fs.readFileSync(path.join(root, 'llms.txt'), 'utf8'), /about 7 hours/);
@@ -160,8 +159,7 @@ test('the Hebrew page has its own Hebrew structured data and share preview', asy
     [...document.querySelectorAll('script[type="application/ld+json"]')].map(s => JSON.parse(s.textContent)));
   assert.deepEqual(data.map(d => d['@type']), ['WebApplication', 'FAQPage']);
   assert.equal(data[0].url, 'https://bambiker.github.io/drycloth/he/');
-  assert.equal(data[1].mainEntity.length, 6);
-  assert.match(data[1].mainEntity[0].acceptedAnswer.text, /בערך ב-7 שעות/);
+  assert.equal(data[1].mainEntity.length, 10);
   assert.equal(await page.getAttribute('meta[property="og:url"]', 'content'), 'https://bambiker.github.io/drycloth/he/');
   assert.equal(await page.getAttribute('meta[property="og:locale"]', 'content'), 'he_IL');
   await page.close();
@@ -549,6 +547,23 @@ test('a large share and search image for each language, and the photo is visible
     assert.ok(await page.isVisible('img.picture'));
     assert.ok(await page.evaluate(() => document.querySelector('img.picture').complete && document.querySelector('img.picture').naturalWidth > 0));
     assert.deepEqual(missing, []);
+    await page.close();
+  }
+});
+
+test('every question in the FAQ structured data is on the page, and the short answer is visible', async () => {
+  for (const url of ['/', '/he/']) {
+    const { page } = await open(url);
+    const result = await page.evaluate(() => {
+      const faq = [...document.querySelectorAll('script[type="application/ld+json"]')]
+        .map(s => JSON.parse(s.textContent)).find(d => d['@type'] === 'FAQPage');
+      const text = document.body.textContent.replace(/\s+/g, ' ');
+      return { count: faq.mainEntity.length,
+               missing: faq.mainEntity.flatMap(q => [q.name, q.acceptedAnswer.text]).filter(t => !text.includes(t.replace(/\s+/g, ' '))) };
+    });
+    assert.ok(result.count >= 10);
+    assert.deepEqual(result.missing, [], `questions or answers not on the page ${url}`);
+    assert.ok(await page.isVisible('.answer h2'));
     await page.close();
   }
 });
