@@ -25,6 +25,10 @@ function replaceOnce(html, from, to) {
   return html.replace(from, () => to);
 }
 
+function escapeText(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 function escapeAttribute(text) {
   return text.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 }
@@ -41,7 +45,8 @@ function buildHebrewPage() {
   html = replaceOnce(html, 'var isHe = false;', 'var isHe = true; ');
 
   // head
-  html = html.replace(/(<meta name="description" content=)'[^']*'/, (m, start) => `${start}"${escapeAttribute(t.description)}"`);
+  html = replaceOnce(html, html.match(/<meta name="description" content=("[^"]*"|'[^']*')>/)[0],
+    `<meta name="description" content="${escapeAttribute(t.description)}">`);
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${t.title}</title>`);
   html = replaceOnce(html, `<link rel="canonical" href="${site}">`, `<link rel="canonical" href="${site}he/">`);
   const meta = {
@@ -73,6 +78,11 @@ function buildHebrewPage() {
     }
     return open + '  ' + JSON.stringify(data, null, 2).replace(/\n/g, '\n  ') + close;
   });
+
+  // the questions and answers shown on the page: the same as the structured data (the first one is the short answer)
+  html = html.replace(/(<div class="body" data-faq-list>\n)[\s\S]*?(\n        <\/div>)/, (m, open, close) =>
+    open + faq.slice(1).map(([question, answer]) =>
+      `          <h3>${escapeText(question)}</h3>\n          <p>${escapeText(answer)}</p>`).join('\n') + close);
 
   // files are one folder up (he/ has its own manifest.webmanifest)
   for (const file of ['drycloth.svg', 'calc.js', 'clothlineclock.jpg']) {

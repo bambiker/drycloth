@@ -17,7 +17,8 @@ test('every text in the page has a Hebrew text, and every Hebrew text is used', 
 
 test('no English text is left in the Hebrew page', () => {
   const html = buildHebrewPage();
-  for (const english of ['Clothesline drying time calculator</h1>', 'Using forecast', 'Drying time:', 'Rules of thumb', 'Contact us']) {
+  for (const english of ['Clothesline drying time calculator</h1>', 'Using forecast', 'Drying time:', 'Rules of thumb', 'Contact us',
+                         'Will my washing dry today', 'How thick is my laundry', 'the weather forecast for your location']) {
     assert.ok(!html.includes(english), `"${english}" is still in he/index.html`);
   }
 });
