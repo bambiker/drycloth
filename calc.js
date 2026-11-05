@@ -69,6 +69,9 @@ function defaultUnits() {
       var saved = localStorage.getItem("units");
       if (saved === "metric" || saved === "imperial") {return saved;}
    } catch (e) {}
+   // the Hebrew page is for Israel: Celsius, also when it is opened from abroad (and by Google's crawler,
+   // which shows the page's text in the search results)
+   if (typeof isHe !== "undefined" && isHe) {return "metric";}
    // the time zone says where the user is; the browser language doesn't
    // (many browsers in Israel, for example, are in English (US))
    try {

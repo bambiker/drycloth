@@ -227,6 +227,14 @@ test('default units by where the user is', () => {
   assert.equal(load({ languages: ['en'], timeZone: '' }).units, 'metric');
 });
 
+test('the Hebrew page is in Celsius, also from abroad, unless the user chose Fahrenheit', () => {
+  assert.equal(load({ he: true, languages: ['en-US'], timeZone: 'America/Los_Angeles' }).units, 'metric');
+  assert.equal(load({ he: true, languages: ['he-IL'], timeZone: 'America/New_York' }).units, 'metric');
+  assert.equal(load({ he: true, timeZone: 'America/New_York', saved: 'imperial' }).units, 'imperial');
+  // the English page still follows where the user is
+  assert.equal(load({ languages: ['en-US'], timeZone: 'America/Los_Angeles' }).units, 'imperial');
+});
+
 test('the units the user chose are remembered', () => {
   assert.equal(load({ languages: ['en-US'], timeZone: 'America/New_York', saved: 'metric' }).units, 'metric');
   assert.equal(load({ languages: ['he-IL'], timeZone: 'Asia/Jerusalem', saved: 'imperial' }).units, 'imperial');
