@@ -1,9 +1,12 @@
 # Clothesline drying time calculator
 
-> A free web calculator that estimates how long laundry takes to dry on a clothesline, from the temperature, relative humidity, wind speed and fabric thickness, or hour by hour from the weather forecast for the user's location (open-meteo.com). Available in English and Hebrew. Open source.
+> A free web calculator that estimates how long laundry takes to dry on a clothesline, from the temperature, relative humidity, wind speed and fabric thickness, or hour by hour from the weather forecast for the user's location (open-meteo.com). Available in English, Hebrew, German, Italian and Spanish. Open source.
 
 - English: https://bambiker.github.io/drycloth/
 - Hebrew (עברית): https://bambiker.github.io/drycloth/he/
+- German (Deutsch): https://bambiker.github.io/drycloth/de/
+- Italian (Italiano): https://bambiker.github.io/drycloth/it/
+- Spanish (Español): https://bambiker.github.io/drycloth/es/
 - Source code: https://github.com/bambiker/drycloth
 
 ## How it works

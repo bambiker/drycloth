@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Made from index.html and lang.js by scripts/build-he.js. Do not edit, run: npm run build -->
+<!-- Made from index.html and lang.js by scripts/build-lang.js. Do not edit, run: npm run build -->
 <html lang="he" dir="rtl">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,10 +16,13 @@
 
   <base target="_top">
   <title>כמה זמן לוקח לכביסה להתייבש? מחשבון זמן ייבוש כביסה על חבל</title>
-  <!-- the Hebrew version is he/index.html, made from this page by scripts/build-he.js -->
+  <!-- the other languages (he/, de/, it/, es/) are made from this page by scripts/build-lang.js -->
   <link rel="canonical" href="https://bambiker.github.io/drycloth/he/">
   <link rel="alternate" hreflang="en" href="https://bambiker.github.io/drycloth/">
   <link rel="alternate" hreflang="he" href="https://bambiker.github.io/drycloth/he/">
+  <link rel="alternate" hreflang="de" href="https://bambiker.github.io/drycloth/de/">
+  <link rel="alternate" hreflang="it" href="https://bambiker.github.io/drycloth/it/">
+  <link rel="alternate" hreflang="es" href="https://bambiker.github.io/drycloth/es/">
   <link rel="alternate" hreflang="x-default" href="https://bambiker.github.io/drycloth/">
 
   <!-- preview when the link is shared (WhatsApp, Facebook, X...) -->
@@ -49,7 +52,10 @@
     "operatingSystem": "Any (web browser)",
     "inLanguage": [
       "en",
-      "he"
+      "he",
+      "de",
+      "it",
+      "es"
     ],
     "isAccessibleForFree": true,
     "offers": {
@@ -247,11 +253,16 @@ a { color: var(--link); }
   margin-inline: auto;
   pointer-events: none;
 }
-.lang {
+.langs {
   position: absolute;
   top: 14px;
   inset-inline-end: 14px;
-  padding: 5px 14px;
+  display: flex;
+  gap: 4px;
+}
+.lang {
+  padding: 5px 10px;
+  font-size: 0.9rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.22);
   color: #fff;
@@ -260,6 +271,7 @@ a { color: var(--link); }
   backdrop-filter: blur(4px);
 }
 .lang:hover { background: rgba(255, 255, 255, 0.35); }
+.lang[aria-current="page"] { background: #fff; color: var(--navy); }
 
 .install {
   display: inline-flex;
@@ -595,11 +607,17 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
  
 <body>
     <script>
-    var isHe = true;  // the Hebrew page (he/index.html) is made from this page by scripts/build-he.js
+    var pageLang = "he"; // the language of the page; he/, de/, it/, es/ are made from this page by scripts/build-lang.js
     </script>
     <script type="text/javascript" src="../calc.js"></script>
     <header class="hero">
-      <a id="langswitch" class="lang" href="../">En</a>
+      <nav class="langs" aria-label="Language">
+        <a class="lang" data-lang="en" href="../" hreflang="en" lang="en">EN</a>
+        <a class="lang" data-lang="he" href="./" hreflang="he" lang="he" aria-current="page">עב</a>
+        <a class="lang" data-lang="de" href="../de/" hreflang="de" lang="de">DE</a>
+        <a class="lang" data-lang="it" href="../it/" hreflang="it" lang="it">IT</a>
+        <a class="lang" data-lang="es" href="../es/" hreflang="es" lang="es">ES</a>
+      </nav>
       <h1 data-i18n="heading">מחשבון לחישוב זמן ייבוש הכביסה</h1>
       <p class="subtitle" data-i18n="subtitle">גלו מתי הכביסה תתייבש, לפי תחזית מזג האוויר במקום שלכם.</p>
       <button type="button" class="install" id="install" hidden>
@@ -787,7 +805,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
 // Google Analytics events (see README); nothing personal is sent, no location and no weather values
 function track(name, params) {
   if (typeof gtag !== "function") {return;}
-  gtag("event", name, Object.assign({ language: isHe ? "he" : "en" }, params || {}));
+  gtag("event", name, Object.assign({ language: pageLang }, params || {}));
 }
 // for events that can come many times in a row (typing a number): only the last one after a short pause
 var trackTimers = {};

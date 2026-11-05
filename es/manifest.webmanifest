@@ -1,0 +1,31 @@
+{
+  "name": "Calculadora del tiempo de secado de la ropa",
+  "short_name": "¿Ropa seca?",
+  "description": "¿Se secará hoy tu ropa? Descubre cuándo, según el pronóstico del tiempo de tu zona.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "lang": "es",
+  "dir": "ltr",
+  "background_color": "#f3f6fb",
+  "theme_color": "#3d8fd9",
+  "icons": [
+    {
+      "src": "../icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "../icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "../icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
