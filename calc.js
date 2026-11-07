@@ -25,7 +25,10 @@ var messages = {
       pl: "Wygląda na to, że zacznie padać, zanim pranie wyschnie. Jeśli nie masz dachu ani osłony, lepiej poczekać z praniem.",
       el: "Φαίνεται ότι θα βρέξει πριν στεγνώσουν τα ρούχα. Αν δεν έχετε στέγαστρο ή κάλυμμα, ίσως είναι καλύτερα να περιμένετε με την μπουγάδα.",
       tr: "Çamaşır kurumadan yağmur yağacak gibi görünüyor. Çatınız veya örtünüz yoksa çamaşırı yıkamak için beklemek daha iyi olabilir.",
-      ar: "يبدو أن المطر سيهطل قبل أن يجف الغسيل. إذا لم يكن لديك سقف أو غطاء، فقد يكون من الأفضل الانتظار قبل الغسيل."
+      ar: "يبدو أن المطر سيهطل قبل أن يجف الغسيل. إذا لم يكن لديك سقف أو غطاء، فقد يكون من الأفضل الانتظار قبل الغسيل.",
+      tl: "Mukhang uulan bago matuyo ang labada. Kung wala kang bubong o silungan, baka mas mabuting maghintay muna bago maglaba.",
+      hi: "लगता है कपड़े सूखने से पहले बारिश होगी। अगर आपके पास छत या ढकने की जगह नहीं है, तो कपड़े धोने के लिए रुकना बेहतर हो सकता है।",
+      id: "Sepertinya akan hujan sebelum cucian kering. Jika Anda tidak punya atap atau penutup, mungkin lebih baik menunda mencuci."
    },
    rainstart: {
       en: "The rain is expected to start around {0}.",
@@ -39,7 +42,10 @@ var messages = {
       pl: "Przewidywany początek deszczu: {0}.",
       el: "Αναμενόμενη έναρξη βροχής: {0}.",
       tr: "Yağmurun beklenen başlangıcı: {0}.",
-      ar: "بدء المطر المتوقع: {0}."
+      ar: "بدء المطر المتوقع: {0}.",
+      tl: "Inaasahang magsisimula ang ulan: {0}.",
+      hi: "बारिश शुरू होने का अनुमानित समय: {0}।",
+      id: "Hujan diperkirakan mulai: {0}."
    },
    rainprob: {
       en: "Highest chance of rain while drying: {0}%.",
@@ -53,7 +59,10 @@ var messages = {
       pl: "Najwyższe prawdopodobieństwo deszczu w czasie schnięcia: {0}%.",
       el: "Μεγαλύτερη πιθανότητα βροχής κατά το στέγνωμα: {0}%.",
       tr: "Kuruma sırasındaki en yüksek yağış olasılığı: %{0}.",
-      ar: "أعلى احتمال للمطر خلال التجفيف: {0}%."
+      ar: "أعلى احتمال للمطر خلال التجفيف: {0}%.",
+      tl: "Pinakamataas na tsansa ng ulan habang nagpapatuyo: {0}%.",
+      hi: "सूखने के दौरान बारिश की सबसे ज़्यादा संभावना: {0}%।",
+      id: "Peluang hujan tertinggi selama pengeringan: {0}%."
    },
    dryby: {
       en: "The laundry should be dry around {0}.",
@@ -67,7 +76,10 @@ var messages = {
       pl: "Pranie powinno być suche: {0}.",
       el: "Τα ρούχα αναμένεται να στεγνώσουν: {0}.",
       tr: "Çamaşırın kuruması beklenen zaman: {0}.",
-      ar: "من المتوقع أن يجف الغسيل: {0}."
+      ar: "من المتوقع أن يجف الغسيل: {0}.",
+      tl: "Inaasahang tuyo na ang labada: {0}.",
+      hi: "कपड़े सूखने का अनुमानित समय: {0}।",
+      id: "Cucian diperkirakan kering: {0}."
    },
    windy: {
       en: "It looks like it will be windy. Please use extra clothespins (clothes pegs).",
@@ -81,7 +93,10 @@ var messages = {
       pl: "Zapowiada się silny wiatr. Użyj więcej klamerek.",
       el: "Φαίνεται ότι θα φυσάει δυνατά. Χρησιμοποιήστε περισσότερα μανταλάκια.",
       tr: "Rüzgarlı olacak gibi görünüyor. Daha fazla mandal kullanın.",
-      ar: "يبدو أن الرياح ستكون قوية. استخدم مشابك أكثر."
+      ar: "يبدو أن الرياح ستكون قوية. استخدم مشابك أكثر.",
+      tl: "Mukhang mahangin. Gumamit ng mas maraming sipit.",
+      hi: "लगता है तेज़ हवा चलेगी। ज़्यादा चिमटियाँ लगाएँ।",
+      id: "Sepertinya akan berangin kencang. Gunakan lebih banyak jepitan."
    },
    nodry: {
       en: "With these conditions the laundry will not dry (humidity too high).",
@@ -95,7 +110,10 @@ var messages = {
       pl: "W tych warunkach pranie nie wyschnie (zbyt wysoka wilgotność).",
       el: "Με αυτές τις συνθήκες τα ρούχα δεν στεγνώνουν (πολύ υψηλή υγρασία).",
       tr: "Bu koşullarda çamaşır kurumaz (nem çok yüksek).",
-      ar: "في هذه الظروف لن يجف الغسيل (الرطوبة مرتفعة جدًا)."
+      ar: "في هذه الظروف لن يجف الغسيل (الرطوبة مرتفعة جدًا).",
+      tl: "Hindi matutuyo ang labada sa ganitong kondisyon (masyadong mataas ang halumigmig).",
+      hi: "इन हालात में कपड़े नहीं सूखेंगे (नमी बहुत ज़्यादा है)।",
+      id: "Dalam kondisi ini cucian tidak akan kering (kelembapan terlalu tinggi)."
    },
    indoorforecast: {
       en: "Drying indoors: the average temperature and humidity of the 24 hours from hanging, from the forecast, without wind. Change the temperature to check heating, or the wind to check a fan.",
@@ -109,7 +127,10 @@ var messages = {
       pl: "Suszenie w domu: średnia temperatura i wilgotność z 24 godzin od powieszenia według prognozy, bez wiatru. Zmień temperaturę, aby sprawdzić ogrzewanie, albo wiatr, aby sprawdzić wentylator.",
       el: "Στέγνωμα μέσα στο σπίτι: μέση θερμοκρασία και υγρασία των 24 ωρών από το άπλωμα, σύμφωνα με την πρόγνωση, χωρίς αέρα. Αλλάξτε τη θερμοκρασία για να δοκιμάσετε τη θέρμανση, ή τον αέρα για έναν ανεμιστήρα.",
       tr: "Evde kurutma: tahmine göre asıldıktan sonraki 24 saatin ortalama sıcaklık ve nemi, rüzgarsız. Isıtmayı denemek için sıcaklığı, vantilatör için rüzgarı değiştirin.",
-      ar: "التجفيف داخل البيت: متوسط درجة الحرارة والرطوبة في الـ24 ساعة من وقت النشر حسب التوقعات، بدون رياح. غيّر درجة الحرارة لتجربة التدفئة، أو الرياح لتجربة مروحة."
+      ar: "التجفيف داخل البيت: متوسط درجة الحرارة والرطوبة في الـ24 ساعة من وقت النشر حسب التوقعات، بدون رياح. غيّر درجة الحرارة لتجربة التدفئة، أو الرياح لتجربة مروحة.",
+      tl: "Sampay sa loob ng bahay: karaniwang temperatura at halumigmig sa 24 na oras mula sa pagsasampay, ayon sa taya ng panahon, nang walang hangin. Baguhin ang temperatura para subukan ang heater, o ang hangin para sa electric fan.",
+      hi: "घर के अंदर सुखाना: पूर्वानुमान के अनुसार कपड़े टाँगने से अगले 24 घंटों का औसत तापमान और नमी, बिना हवा के। हीटर आज़माने के लिए तापमान बदलें, या पंखे के लिए हवा।",
+      id: "Menjemur di dalam rumah: suhu dan kelembapan rata-rata 24 jam sejak menjemur, menurut prakiraan cuaca, tanpa angin. Ubah suhu untuk mencoba pemanas, atau angin untuk kipas angin."
    },
    indoor: {
       en: "Drying indoors: change the temperature to check heating, or the wind to check a fan.",
@@ -123,7 +144,10 @@ var messages = {
       pl: "Suszenie w domu: zmień temperaturę, aby sprawdzić ogrzewanie, albo wiatr, aby sprawdzić wentylator.",
       el: "Στέγνωμα μέσα στο σπίτι: αλλάξτε τη θερμοκρασία για να δοκιμάσετε τη θέρμανση, ή τον αέρα για έναν ανεμιστήρα.",
       tr: "Evde kurutma: ısıtmayı denemek için sıcaklığı, vantilatör için rüzgarı değiştirin.",
-      ar: "التجفيف داخل البيت: غيّر درجة الحرارة لتجربة التدفئة، أو الرياح لتجربة مروحة."
+      ar: "التجفيف داخل البيت: غيّر درجة الحرارة لتجربة التدفئة، أو الرياح لتجربة مروحة.",
+      tl: "Sampay sa loob ng bahay: baguhin ang temperatura para subukan ang heater, o ang hangin para sa electric fan.",
+      hi: "घर के अंदर सुखाना: हीटर आज़माने के लिए तापमान बदलें, या पंखे के लिए हवा।",
+      id: "Menjemur di dalam rumah: ubah suhu untuk mencoba pemanas, atau angin untuk kipas angin."
    },
    outofrange: {
       en: "The forecast covers only the next 7 days, please choose an earlier hanging time.",
@@ -137,7 +161,10 @@ var messages = {
       pl: "Prognoza obejmuje tylko najbliższe 7 dni, wybierz wcześniejszą godzinę.",
       el: "Η πρόγνωση καλύπτει μόνο τις επόμενες 7 ημέρες, επιλέξτε νωρίτερη ώρα.",
       tr: "Tahmin yalnızca önümüzdeki 7 günü kapsıyor, daha erken bir saat seçin.",
-      ar: "تغطي التوقعات الأيام السبعة القادمة فقط، اختر وقتًا أقرب."
+      ar: "تغطي التوقعات الأيام السبعة القادمة فقط، اختر وقتًا أقرب.",
+      tl: "Ang taya ng panahon ay para lang sa susunod na 7 araw, pumili ng mas maagang oras.",
+      hi: "पूर्वानुमान सिर्फ़ अगले 7 दिनों का है, पहले का कोई समय चुनें।",
+      id: "Prakiraan cuaca hanya untuk 7 hari ke depan, pilih waktu yang lebih awal."
    },
    nodryforecast: {
       en: "The laundry will not dry within the 7 day forecast.",
@@ -151,7 +178,10 @@ var messages = {
       pl: "Pranie nie wyschnie w ciągu 7 dni prognozy.",
       el: "Τα ρούχα δεν θα στεγνώσουν μέσα στις 7 ημέρες της πρόγνωσης.",
       tr: "Çamaşır 7 günlük tahmin süresi içinde kurumayacak.",
-      ar: "لن يجف الغسيل خلال أيام التوقعات السبعة."
+      ar: "لن يجف الغسيل خلال أيام التوقعات السبعة.",
+      tl: "Hindi matutuyo ang labada sa loob ng 7 araw ng taya ng panahon.",
+      hi: "पूर्वानुमान के 7 दिनों में कपड़े नहीं सूखेंगे।",
+      id: "Cucian tidak akan kering dalam 7 hari prakiraan cuaca."
    },
    noforecast: {
       en: "Forecast data is not loaded yet, please press the forecast button first. Calculated with the values above.",
@@ -165,7 +195,10 @@ var messages = {
       pl: "Prognoza nie jest jeszcze wczytana, najpierw naciśnij przycisk prognozy. Obliczono na podstawie wpisanych wartości.",
       el: "Η πρόγνωση δεν έχει φορτωθεί ακόμα, πατήστε πρώτα το κουμπί της πρόγνωσης. Ο υπολογισμός έγινε με τις τιμές που δώσατε.",
       tr: "Hava tahmini henüz yüklenmedi, önce tahmin düğmesine basın. Girilen değerlerle hesaplandı.",
-      ar: "لم يتم تحميل التوقعات بعد، اضغط أولًا على زر التوقعات. تم الحساب بالقيم المدخلة."
+      ar: "لم يتم تحميل التوقعات بعد، اضغط أولًا على زر التوقعات. تم الحساب بالقيم المدخلة.",
+      tl: "Hindi pa nakukuha ang taya ng panahon, pindutin muna ang button ng taya ng panahon. Kinalkula gamit ang mga inilagay na halaga.",
+      hi: "पूर्वानुमान अभी लोड नहीं हुआ है, पहले पूर्वानुमान वाला बटन दबाएँ। भरी गई जानकारी से गणना की गई।",
+      id: "Prakiraan cuaca belum dimuat, tekan dulu tombol prakiraan cuaca. Dihitung dengan nilai yang diisi."
    },
    sunmanual: {
       en: "Direct sunlight is only taken into account when using the forecast.",
@@ -179,7 +212,10 @@ var messages = {
       pl: "Bezpośrednie słońce jest uwzględniane tylko z prognozą.",
       el: "Ο άμεσος ήλιος λαμβάνεται υπόψη μόνο με την πρόγνωση.",
       tr: "Doğrudan güneş yalnızca hava tahminiyle hesaba katılır.",
-      ar: "لا تُحسب الشمس المباشرة إلا مع التوقعات."
+      ar: "لا تُحسب الشمس المباشرة إلا مع التوقعات.",
+      tl: "Ang direktang araw ay kasama lang kapag ginamit ang taya ng panahon.",
+      hi: "सीधी धूप सिर्फ़ पूर्वानुमान के साथ गिनी जाती है।",
+      id: "Sinar matahari langsung hanya dihitung dengan prakiraan cuaca."
    },
    badinput: {
       en: "Please enter temperature, relative humidity (0-100), wind speed and fabric thickness.",
@@ -193,7 +229,10 @@ var messages = {
       pl: "Wpisz temperaturę, wilgotność względną (0-100), prędkość wiatru i grubość tkaniny.",
       el: "Συμπληρώστε θερμοκρασία, σχετική υγρασία (0-100), ταχύτητα ανέμου και πάχος υφάσματος.",
       tr: "Sıcaklık, bağıl nem (0-100), rüzgar hızı ve kumaş kalınlığını girin.",
-      ar: "أدخل درجة الحرارة والرطوبة النسبية (0-100) وسرعة الرياح وسُمك القماش."
+      ar: "أدخل درجة الحرارة والرطوبة النسبية (0-100) وسرعة الرياح وسُمك القماش.",
+      tl: "Ilagay ang temperatura, relatibong halumigmig (0-100), bilis ng hangin at kapal ng tela.",
+      hi: "तापमान, सापेक्ष नमी (0-100), हवा की गति और कपड़े की मोटाई भरें।",
+      id: "Isi suhu, kelembapan relatif (0-100), kecepatan angin, dan ketebalan kain."
    },
    locating: {
       en: "Locating…",
@@ -207,7 +246,10 @@ var messages = {
       pl: "Ustalanie lokalizacji…",
       el: "Εντοπισμός θέσης…",
       tr: "Konum bulunuyor…",
-      ar: "جارٍ تحديد الموقع…"
+      ar: "جارٍ تحديد الموقع…",
+      tl: "Hinahanap ang lokasyon…",
+      hi: "जगह का पता लगाया जा रहा है…",
+      id: "Mencari lokasi…"
    },
    nolocation: {
       en: "Unable to retrieve your location",
@@ -221,7 +263,10 @@ var messages = {
       pl: "Nie udało się ustalić Twojej lokalizacji",
       el: "Δεν ήταν δυνατός ο εντοπισμός της θέσης σας",
       tr: "Konumunuz alınamadı",
-      ar: "تعذّر تحديد موقعك"
+      ar: "تعذّر تحديد موقعك",
+      tl: "Hindi makuha ang iyong lokasyon",
+      hi: "आपकी जगह का पता नहीं चल सका",
+      id: "Lokasi Anda tidak dapat ditemukan"
    },
    nogeo: {
       en: "Geolocation is not supported by your browser",
@@ -235,7 +280,10 @@ var messages = {
       pl: "Twoja przeglądarka nie obsługuje geolokalizacji",
       el: "Ο περιηγητής σας δεν υποστηρίζει γεωεντοπισμό",
       tr: "Tarayıcınız konum belirlemeyi desteklemiyor",
-      ar: "متصفحك لا يدعم تحديد الموقع"
+      ar: "متصفحك لا يدعم تحديد الموقع",
+      tl: "Hindi sinusuportahan ng iyong browser ang geolocation",
+      hi: "आपका ब्राउज़र लोकेशन की सुविधा नहीं देता",
+      id: "Browser Anda tidak mendukung geolokasi"
    },
    noweather: {
       en: "Weather data not available",
@@ -249,7 +297,10 @@ var messages = {
       pl: "Dane pogodowe są niedostępne",
       el: "Τα δεδομένα καιρού δεν είναι διαθέσιμα",
       tr: "Hava durumu verileri kullanılamıyor",
-      ar: "بيانات الطقس غير متوفرة"
+      ar: "بيانات الطقس غير متوفرة",
+      tl: "Walang makuhang datos ng panahon",
+      hi: "मौसम की जानकारी उपलब्ध नहीं है",
+      id: "Data cuaca tidak tersedia"
    }
 };
 
@@ -372,7 +423,10 @@ function formatDuration(hours) {
       pt: ["hora", "horas", "minutos", " e "],
       fr: ["heure", "heures", "minutes", " et "],
       el: ["ώρα", "ώρες", "λεπτά", " και "],
-      tr: ["saat", "saat", "dakika", " "]
+      tr: ["saat", "saat", "dakika", " "],
+      tl: ["oras", "oras", "minuto", " at "],
+      hi: ["घंटा", "घंटे", "मिनट", " "],
+      id: ["jam", "jam", "menit", " "]
    }[lang] || ["hour", "hours", "minutes", " and "];
    if (h > 0) {parts.push(h + " " + (h === 1 ? words[0] : words[1]));}
    if (m > 0) {parts.push(m + " " + words[2]);}
@@ -386,7 +440,8 @@ function formatTime(date) {
       options.weekday = "long";
    }
    var locale = {he: "he-IL", de: "de-DE", it: "it-IT", es: "es-ES", pt: "pt-BR", fr: "fr-FR", ja: "ja-JP",
-                 pl: "pl-PL", el: "el-GR", tr: "tr-TR", ar: "ar-u-nu-latn"}[currentLang()] || [];
+                 pl: "pl-PL", el: "el-GR", tr: "tr-TR", ar: "ar-u-nu-latn",
+                 tl: "fil-PH", hi: "hi-IN-u-nu-latn", id: "id-ID"}[currentLang()] || [];
    return date.toLocaleString(locale, options);
 }
 

@@ -1,0 +1,31 @@
+{
+  "name": "Kalkulator waktu pengeringan jemuran",
+  "short_name": "Sudah kering?",
+  "description": "Apakah cucian Anda kering hari ini? Cari tahu kapan, berdasarkan prakiraan cuaca di daerah Anda.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "lang": "id",
+  "dir": "ltr",
+  "background_color": "#f3f6fb",
+  "theme_color": "#3d8fd9",
+  "icons": [
+    {
+      "src": "../icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "../icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "../icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -208,7 +208,7 @@ test('formatDuration in German, Italian and Spanish', () => {
   assert.equal(load({ lang: 'es' }).formatDuration(0.25), '15 minutos');
 });
 
-test('formatDuration in Portuguese, French, Japanese, Polish, Greek, Turkish and Arabic', () => {
+test('formatDuration in the other languages', () => {
   const cases = {
     pt: [[1, '1 hora'], [3.42, '3 horas e 25 minutos']],
     fr: [[1.5, '1 heure et 30 minutes'], [2, '2 heures']],
@@ -216,6 +216,9 @@ test('formatDuration in Portuguese, French, Japanese, Polish, Greek, Turkish and
     pl: [[1, '1 godzina'], [3.42, '3 godziny i 25 minut'], [5, '5 godzin'], [12, '12 godzin'], [22.5, '22 godziny i 30 minut']],
     el: [[1, '1 ώρα'], [3.42, '3 ώρες και 25 λεπτά']],
     tr: [[1, '1 saat'], [3.42, '3 saat 25 dakika']],
+    tl: [[1, '1 oras'], [3.42, '3 oras at 25 minuto']],
+    hi: [[1, '1 घंटा'], [3.42, '3 घंटे 25 मिनट']],
+    id: [[1, '1 jam'], [3.42, '3 jam 25 menit']],
     ar: [[1, 'ساعة واحدة'], [2.25, 'ساعتان و15 دقيقة'], [3.08, '3 ساعات و5 دقائق'], [11, '11 ساعة']],
   };
   for (const [lang, list] of Object.entries(cases)) {
@@ -228,7 +231,7 @@ test('formatDuration in Portuguese, French, Japanese, Polish, Greek, Turkish and
 test('every message is in every language', () => {
   const c = load();
   for (const [key, texts] of Object.entries(c.messages)) {
-    for (const lang of ['en', 'he', 'de', 'it', 'es', 'pt', 'fr', 'ja', 'pl', 'el', 'tr', 'ar']) {
+    for (const lang of ['en', 'he', 'de', 'it', 'es', 'pt', 'fr', 'ja', 'pl', 'el', 'tr', 'ar', 'tl', 'hi', 'id']) {
       assert.ok(texts[lang], `message "${key}" has no ${lang} text`);
       // the same parameters as the English text
       assert.deepEqual(texts[lang].match(/\{\d\}/g), texts.en.match(/\{\d\}/g), `message "${key}" in ${lang}`);
@@ -270,7 +273,7 @@ test('the Hebrew page is in Celsius, also from abroad, unless the user chose Fah
   assert.equal(load({ he: true, languages: ['he-IL'], timeZone: 'America/New_York' }).units, 'metric');
   assert.equal(load({ he: true, timeZone: 'America/New_York', saved: 'imperial' }).units, 'imperial');
   // the other languages too
-  for (const lang of ['de', 'it', 'es', 'pt', 'fr', 'ja', 'pl', 'el', 'tr', 'ar']) {
+  for (const lang of ['de', 'it', 'es', 'pt', 'fr', 'ja', 'pl', 'el', 'tr', 'ar', 'tl', 'hi', 'id']) {
     assert.equal(load({ lang, languages: ['en-US'], timeZone: 'America/New_York' }).units, 'metric');
   }
   // the English page still follows where the user is
