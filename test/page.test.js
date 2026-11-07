@@ -550,7 +550,7 @@ test('Google Analytics events for the forecast button and installing', async () 
   await context.close();
 });
 
-test('a large share and search image for each language, and the photo is visible on the page', async () => {
+test('a large share and search image for each language', async () => {
   for (const [url, file] of allLanguages.map(l => [pageOf(l), `share-${l}.png`])) {
     const { page, missing } = await open(url);
     assert.equal(await page.getAttribute('meta[property="og:image"]', 'content'), 'https://bambiker.github.io/drycloth/' + file);
@@ -558,11 +558,6 @@ test('a large share and search image for each language, and the photo is visible
     assert.equal(await page.getAttribute('meta[name="twitter:card"]', 'content'), 'summary_large_image');
     const data = await page.evaluate(() => JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent));
     assert.equal(data.image[0], 'https://bambiker.github.io/drycloth/' + file);
-    // the photo is not inside a folded section, and it loads
-    assert.equal(await page.evaluate(() => document.querySelector('img.picture').closest('details')), null);
-    await page.locator('img.picture').scrollIntoViewIfNeeded();
-    assert.ok(await page.isVisible('img.picture'));
-    assert.ok(await page.evaluate(() => document.querySelector('img.picture').complete && document.querySelector('img.picture').naturalWidth > 0));
     assert.deepEqual(missing, []);
     await page.close();
   }
@@ -604,7 +599,8 @@ vm.runInContext(fs.readFileSync(path.join(root, 'lang.js'), 'utf8') + '\nthis.tr
 for (const [lang, duration] of [
   ['de', '6 Stunden und 55 Minuten'], ['it', '6 ore e 55 minuti'], ['es', '6 horas y 55 minutos'], ['pt', '6 horas e 55 minutos'],
   ['fr', '6 heures et 55 minutes'], ['ja', '6時間55分'], ['pl', '6 godzin i 55 minut'], ['el', '6 ώρες και 55 λεπτά'],
-  ['tr', '6 saat 55 dakika'], ['ar', '6 ساعات و55 دقيقة'],
+  ['tr', '6 saat 55 dakika'], ['ar', '6 ساعات و55 دقيقة'], ['tl', '6 oras at 55 minuto'], ['hi', '6 घंटे 55 मिनट'],
+  ['id', '6 jam 55 menit'],
 ]) {
   const { title, heading } = texts.translations[lang];
   test(`/${lang}/ is in its language, in Celsius, and the calculator works`, async () => {

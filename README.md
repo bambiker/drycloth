@@ -18,7 +18,7 @@ and `test/page.test.js` that opens the page in a browser, in English and in Hebr
     npm test
 
 ## Translations ##
-`index.html` is written in English. The pages in the other languages (`he/`, `de/`, `it/`, `es/`, `pt/`, `fr/`, `ja/`, `pl/`, `el/`, `tr/`, `ar/`) are made from it
+`index.html` is written in English. The pages in the other languages (`he/`, `de/`, `it/`, `es/`, `pt/`, `fr/`, `ja/`, `pl/`, `el/`, `tr/`, `ar/`, `tl/`, `hi/`, `id/`) are made from it
 and the texts in `lang.js`: every element with `data-i18n="key"` gets the text of that key, and `faqs` has the
 questions and answers of each language. The calculation messages are in `calc.js`. After changing `index.html` or
 `lang.js`, run:

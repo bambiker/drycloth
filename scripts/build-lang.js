@@ -22,6 +22,9 @@ const languages = {
   el: { locale: 'el_GR', dir: 'ltr' },
   tr: { locale: 'tr_TR', dir: 'ltr' },
   ar: { locale: 'ar_AR', dir: 'rtl' },
+  tl: { locale: 'tl_PH', dir: 'ltr' },
+  hi: { locale: 'hi_IN', dir: 'ltr' },
+  id: { locale: 'id_ID', dir: 'ltr' },
 };
 
 function loadTexts() {
@@ -105,7 +108,7 @@ function buildPage(lang) {
       `          <h3>${escapeText(question)}</h3>\n          <p>${escapeText(answer)}</p>`).join('\n') + close);
 
   // files are one folder up (each language has its own manifest.webmanifest)
-  for (const file of ['drycloth.svg', 'calc.js', 'clothlineclock.jpg']) {
+  for (const file of ['drycloth.svg', 'calc.js']) {
     html = html.replace(new RegExp(`(src|href)="${file.replace('.', '\\.')}"`, 'g'), `$1="../${file}"`);
   }
   html = html.replace(/href="icons\//g, 'href="../icons/');

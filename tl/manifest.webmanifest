@@ -1,0 +1,31 @@
+{
+  "name": "Calculator ng oras ng pagpapatuyo ng sinampay",
+  "short_name": "Tuyo na ba?",
+  "description": "Matutuyo ba ang labada mo ngayon? Alamin kung kailan, ayon sa taya ng panahon sa inyong lugar.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "lang": "tl",
+  "dir": "ltr",
+  "background_color": "#f3f6fb",
+  "theme_color": "#3d8fd9",
+  "icons": [
+    {
+      "src": "../icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "../icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "../icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
