@@ -444,21 +444,23 @@ test('in the header drawing every clothespin is on the clothesline, and the clot
     await page.route(url => !url.href.startsWith(base), route => route.abort());
     await page.goto(base + '/');
     const pegs = await page.evaluate(() => {
-      const rope = document.querySelector('.scene path');
-      const matrix = rope.getScreenCTM();
+      // the points of all the ropes (the side ropes and the round one), on the screen
       const points = [];
-      for (let l = 0; l <= rope.getTotalLength(); l += 1) {
-        const p = rope.getPointAtLength(l);
-        points.push({ x: matrix.a * p.x + matrix.c * p.y + matrix.e, y: matrix.b * p.x + matrix.d * p.y + matrix.f });
+      for (const rope of document.querySelectorAll('.scene .rope')) {
+        const matrix = rope.getScreenCTM();
+        for (let l = 0; l <= rope.getTotalLength(); l += 0.5) {
+          const p = rope.getPointAtLength(l);
+          points.push({ x: matrix.a * p.x + matrix.c * p.y + matrix.e, y: matrix.b * p.x + matrix.d * p.y + matrix.f });
+        }
       }
+      // each clothespin must have a rope point inside it
       return [...document.querySelectorAll('.scene rect[fill="#8d6e63"]')].map(peg => {
         const box = peg.getBoundingClientRect();
-        const middle = box.left + box.width / 2;
-        const ropeY = points.reduce((a, b) => (Math.abs(b.x - middle) < Math.abs(a.x - middle) ? b : a)).y;
-        return { top: box.top, bottom: box.bottom, ropeY };
+        return { box: [box.left, box.top, box.right, box.bottom].map(v => Math.round(v)),
+                 onRope: points.some(p => p.x >= box.left - 0.5 && p.x <= box.right + 0.5 && p.y >= box.top - 0.5 && p.y <= box.bottom + 0.5) };
       });
     });
-    assert.ok(pegs.length >= 9);
+    assert.ok(pegs.length >= 20);
     // the clothes are not cut at the top or the bottom of the drawing
     const cut = await page.evaluate(() => {
       const scene = document.querySelector('.scene').getBoundingClientRect();
@@ -467,7 +469,7 @@ test('in the header drawing every clothespin is on the clothesline, and the clot
     });
     assert.equal(cut, 0, `clothes cut at width ${width}`);
     for (const peg of pegs) {
-      assert.ok(peg.top < peg.ropeY && peg.ropeY < peg.bottom, `a clothespin at ${peg.top}-${peg.bottom} is not on the rope at ${peg.ropeY} (width ${width})`);
+      assert.ok(peg.onRope, `the clothespin at ${peg.box} is not on a rope (width ${width})`);
     }
     await page.close();
   }
