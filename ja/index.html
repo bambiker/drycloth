@@ -139,7 +139,7 @@
         "name": "洗濯物が乾いたか確かめるには？",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "まず、いちばん乾きにくいもの（ふつうはいちばん厚いもの）の真ん中を触って、乾いているか確かめます。乾いていたら、ウエストのゴムなど厚い部分、干すときにしわや重なりができて乾きにくい袖と身ごろのつなぎ目、洗濯ばさみで挟んでいた部分も確かめます。"
+          "text": "まず、いちばん乾きにくいもの（ふつうはいちばん厚いもの）の真ん中を触って、乾いているか確かめます。乾いていたら、ウエストのゴムなど厚い部分、干すときにしわや重なりができて乾きにくい袖と身ごろのつなぎ目、洗濯ばさみで挟んでいた部分も確かめます。洗濯物は完全に乾いてから取り込みましょう。湿ったまましまうと、クローゼットの中で生乾きのにおいがし、カビが生えることがあります。"
         }
       },
       {
@@ -796,7 +796,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <h3>洗濯物が乾く前に雨が降る？</h3>
           <p>天気予報を使うと、洗濯物が乾く前に雨の予報があれば知らせ、雨が降り始める時刻と、乾くまでの間の最大降水確率も表示します。</p>
           <h3>洗濯物が乾いたか確かめるには？</h3>
-          <p>まず、いちばん乾きにくいもの（ふつうはいちばん厚いもの）の真ん中を触って、乾いているか確かめます。乾いていたら、ウエストのゴムなど厚い部分、干すときにしわや重なりができて乾きにくい袖と身ごろのつなぎ目、洗濯ばさみで挟んでいた部分も確かめます。</p>
+          <p>まず、いちばん乾きにくいもの（ふつうはいちばん厚いもの）の真ん中を触って、乾いているか確かめます。乾いていたら、ウエストのゴムなど厚い部分、干すときにしわや重なりができて乾きにくい袖と身ごろのつなぎ目、洗濯ばさみで挟んでいた部分も確かめます。洗濯物は完全に乾いてから取り込みましょう。湿ったまましまうと、クローゼットの中で生乾きのにおいがし、カビが生えることがあります。</p>
           <h3>今日、洗濯物は乾く？</h3>
           <p>天気予報を使いましょう。お住まいの地域の天気予報を1時間ごとに使って、乾くまでの時間と、何時ごろ乾くかを表示します。乾く前に雨の予報があれば、それも知らせます。</p>
           <h3>洗濯物は何時に取り込めばいい？</h3>
@@ -816,6 +816,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <li data-i18n="check3">乾いていたら、ウエストのゴムなど厚い部分も確かめます。</li>
           <li data-i18n="check4">袖と身ごろのつなぎ目なども確かめます。干すときにしわや重なりができやすく、いちばん乾きにくい部分です。</li>
           <li data-i18n="check5">洗濯ばさみで挟んでいた部分も確かめます。生地が押さえられていて乾きにくい部分です。</li>
+          <li data-i18n="check6">洗濯物は完全に乾いてから取り込みましょう。湿ったまましまうと、クローゼットの中で生乾きのにおいがし、カビが生えることがあります。</li>
           </ul>
         </div>
       </details>
@@ -1062,7 +1063,13 @@ function showHangingTime() {
              hours = forecast.hours;
              if (forecast.outOfRange) {notes.push(msg("outofrange"));}
              else if (hours === Infinity) {notes.push(msg("nodryforecast"));}
-             else {notes.push(msg("dryby", formatTime(new Date(hang.getTime() + hours*3600*1000))));}
+             else {
+                const dry = new Date(hang.getTime() + hours*3600*1000);
+                notes.push(msg("dryby", formatTime(dry)));
+                const after = afterDry(width, sun, dry);
+                if (after.takeDownBy) {notes.push(msg("takedown", formatTime(after.takeDownBy)));}
+                if (after.dryAgain) {notes.push(msg("dryagain", formatTime(after.dryAgain)));}
+             }
              if (forecast.rain) {notes.push(msg("rain") + " " + msg("rainstart", formatTime(forecast.rainStart)));}
              notes.push(msg("rainprob", forecast.maxProb));
              if (forecast.windy) {notes.push(msg("windy"));}

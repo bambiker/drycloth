@@ -139,7 +139,7 @@
         "name": "Bagaimana tahu cucian sudah kering?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Periksa dulu pakaian yang paling lama kering, biasanya yang paling tebal: sentuh bagian tengahnya dan pastikan sudah kering. Jika sudah, periksa juga bagian yang tebal, misalnya ban pinggang, bagian seperti sambungan lengan dengan badan kaus, tempat terbentuknya lipatan yang paling akhir kering, dan bekas tempat jepitan."
+          "text": "Periksa dulu pakaian yang paling lama kering, biasanya yang paling tebal: sentuh bagian tengahnya dan pastikan sudah kering. Jika sudah, periksa juga bagian yang tebal, misalnya ban pinggang, bagian seperti sambungan lengan dengan badan kaus, tempat terbentuknya lipatan yang paling akhir kering, dan bekas tempat jepitan. Angkat jemuran hanya jika sudah benar-benar kering: pakaian yang disimpan dalam keadaan lembap akan berbau apek di lemari dan bisa berjamur."
         }
       },
       {
@@ -796,7 +796,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <h3>Apakah akan hujan sebelum cucian kering?</h3>
           <p>Dengan prakiraan cuaca, kalkulator memberi peringatan jika hujan diperkirakan turun sebelum cucian kering, dan menunjukkan kapan hujan diperkirakan mulai serta peluang hujan tertinggi selama pengeringan.</p>
           <h3>Bagaimana tahu cucian sudah kering?</h3>
-          <p>Periksa dulu pakaian yang paling lama kering, biasanya yang paling tebal: sentuh bagian tengahnya dan pastikan sudah kering. Jika sudah, periksa juga bagian yang tebal, misalnya ban pinggang, bagian seperti sambungan lengan dengan badan kaus, tempat terbentuknya lipatan yang paling akhir kering, dan bekas tempat jepitan.</p>
+          <p>Periksa dulu pakaian yang paling lama kering, biasanya yang paling tebal: sentuh bagian tengahnya dan pastikan sudah kering. Jika sudah, periksa juga bagian yang tebal, misalnya ban pinggang, bagian seperti sambungan lengan dengan badan kaus, tempat terbentuknya lipatan yang paling akhir kering, dan bekas tempat jepitan. Angkat jemuran hanya jika sudah benar-benar kering: pakaian yang disimpan dalam keadaan lembap akan berbau apek di lemari dan bisa berjamur.</p>
           <h3>Apakah cucian saya kering hari ini?</h3>
           <p>Gunakan prakiraan cuaca: kalkulator memakai prakiraan cuaca di daerah Anda, jam demi jam, dan memberi tahu berapa lama cucian akan kering dan kira-kira pukul berapa sudah kering. Kalkulator juga memberi peringatan jika hujan diperkirakan turun sebelumnya.</p>
           <h3>Jam berapa jemuran diangkat?</h3>
@@ -816,6 +816,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <li data-i18n="check3">Jika sudah, periksa juga bagian yang tebal, misalnya ban pinggang.</li>
           <li data-i18n="check4">Periksa bagian seperti sambungan lengan dengan badan kaus: saat dijemur, di situ bisa terbentuk lipatan yang paling akhir kering.</li>
           <li data-i18n="check5">Periksa juga bekas tempat jepitan: di situ kain tertekan dan keringnya lambat.</li>
+          <li data-i18n="check6">Angkat jemuran hanya jika sudah benar-benar kering: pakaian yang disimpan dalam keadaan lembap akan berbau apek di lemari dan bisa berjamur.</li>
           </ul>
         </div>
       </details>
@@ -1062,7 +1063,13 @@ function showHangingTime() {
              hours = forecast.hours;
              if (forecast.outOfRange) {notes.push(msg("outofrange"));}
              else if (hours === Infinity) {notes.push(msg("nodryforecast"));}
-             else {notes.push(msg("dryby", formatTime(new Date(hang.getTime() + hours*3600*1000))));}
+             else {
+                const dry = new Date(hang.getTime() + hours*3600*1000);
+                notes.push(msg("dryby", formatTime(dry)));
+                const after = afterDry(width, sun, dry);
+                if (after.takeDownBy) {notes.push(msg("takedown", formatTime(after.takeDownBy)));}
+                if (after.dryAgain) {notes.push(msg("dryagain", formatTime(after.dryAgain)));}
+             }
              if (forecast.rain) {notes.push(msg("rain") + " " + msg("rainstart", formatTime(forecast.rainStart)));}
              notes.push(msg("rainprob", forecast.maxProb));
              if (forecast.windy) {notes.push(msg("windy"));}

@@ -139,7 +139,7 @@
         "name": "Çamaşırın kuruduğunu nasıl anlarım?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Önce en yavaş kuruyan parçayı, genellikle en kalın olanı kontrol edin: ortasına dokunun ve kuru olup olmadığına bakın. Kuruysa kalın yerleri de kontrol edin, örneğin bir bel lastiğini, kolun tişörte birleştiği yer gibi asarken katlanmaların oluştuğu ve en yavaş kuruyan bölgeleri ve mandalların olduğu yerleri."
+          "text": "Önce en yavaş kuruyan parçayı, genellikle en kalın olanı kontrol edin: ortasına dokunun ve kuru olup olmadığına bakın. Kuruysa kalın yerleri de kontrol edin, örneğin bir bel lastiğini, kolun tişörte birleştiği yer gibi asarken katlanmaların oluştuğu ve en yavaş kuruyan bölgeleri ve mandalların olduğu yerleri. Çamaşırı ancak tamamen kuruduğunda toplayın: nemliyken kaldırılan çamaşır dolapta rutubet kokar ve küflenebilir."
         }
       },
       {
@@ -796,7 +796,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <h3>Çamaşır kurumadan yağmur yağacak mı?</h3>
           <p>Hava tahminiyle hesaplayıcı, çamaşır kurumadan yağmur bekleniyorsa sizi uyarır; yağmurun ne zaman başlamasının beklendiğini ve kuruma sırasındaki en yüksek yağış olasılığını gösterir.</p>
           <h3>Çamaşırın kuruduğunu nasıl anlarım?</h3>
-          <p>Önce en yavaş kuruyan parçayı, genellikle en kalın olanı kontrol edin: ortasına dokunun ve kuru olup olmadığına bakın. Kuruysa kalın yerleri de kontrol edin, örneğin bir bel lastiğini, kolun tişörte birleştiği yer gibi asarken katlanmaların oluştuğu ve en yavaş kuruyan bölgeleri ve mandalların olduğu yerleri.</p>
+          <p>Önce en yavaş kuruyan parçayı, genellikle en kalın olanı kontrol edin: ortasına dokunun ve kuru olup olmadığına bakın. Kuruysa kalın yerleri de kontrol edin, örneğin bir bel lastiğini, kolun tişörte birleştiği yer gibi asarken katlanmaların oluştuğu ve en yavaş kuruyan bölgeleri ve mandalların olduğu yerleri. Çamaşırı ancak tamamen kuruduğunda toplayın: nemliyken kaldırılan çamaşır dolapta rutubet kokar ve küflenebilir.</p>
           <h3>Çamaşırım bugün kurur mu?</h3>
           <p>Hava tahminini kullanın: hesaplayıcı bölgenizin tahminini saat saat kullanır ve çamaşırınızın ne kadar sürede kuruyacağını ve yaklaşık saat kaçta kuru olacağını gösterir. Öncesinde yağmur bekleniyorsa sizi de uyarır.</p>
           <h3>Çamaşırı saat kaçta toplamalıyım?</h3>
@@ -816,6 +816,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <li data-i18n="check3">Kuruysa kalın yerleri de kontrol edin, örneğin bir bel lastiğini.</li>
           <li data-i18n="check4">Kolun tişörte birleştiği yer gibi bölgeleri kontrol edin: asarken orada katlanmalar oluşabilir ve en yavaş onlar kurur.</li>
           <li data-i18n="check5">Mandalların olduğu yerleri de kontrol edin: orada kumaş sıkışır ve yavaş kurur.</li>
+          <li data-i18n="check6">Çamaşırı ancak tamamen kuruduğunda toplayın: nemliyken kaldırılan çamaşır dolapta rutubet kokar ve küflenebilir.</li>
           </ul>
         </div>
       </details>
@@ -1062,7 +1063,13 @@ function showHangingTime() {
              hours = forecast.hours;
              if (forecast.outOfRange) {notes.push(msg("outofrange"));}
              else if (hours === Infinity) {notes.push(msg("nodryforecast"));}
-             else {notes.push(msg("dryby", formatTime(new Date(hang.getTime() + hours*3600*1000))));}
+             else {
+                const dry = new Date(hang.getTime() + hours*3600*1000);
+                notes.push(msg("dryby", formatTime(dry)));
+                const after = afterDry(width, sun, dry);
+                if (after.takeDownBy) {notes.push(msg("takedown", formatTime(after.takeDownBy)));}
+                if (after.dryAgain) {notes.push(msg("dryagain", formatTime(after.dryAgain)));}
+             }
              if (forecast.rain) {notes.push(msg("rain") + " " + msg("rainstart", formatTime(forecast.rainStart)));}
              notes.push(msg("rainprob", forecast.maxProb));
              if (forecast.windy) {notes.push(msg("windy"));}

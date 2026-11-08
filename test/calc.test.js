@@ -103,6 +103,36 @@ test('forecastcalc warns about rain only while drying, with its start time', () 
   assert.equal(c.forecastcalc(1, false).rain, false);
 });
 
+test('afterDry: take the laundry down before the humid hours, and when it is dry again', () => {
+  const c = load();
+  forecast(c);
+  for (let i = 10; i < 20; i++) {c.weekrh2[i] = 92;}
+  const dry = c.forecastTime(4);
+  const after = c.afterDry(1, false, dry);
+  assert.equal(after.takeDownBy.getTime(), c.forecastTime(10).getTime());
+  // from hour 20 it dries again the moisture it took back (REGAIN of the water)
+  const expected = c.forecastTime(20).getTime() + c.calc(25, 50, 0, c.REGAIN) * 3600 * 1000;
+  assert.ok(Math.abs(after.dryAgain.getTime() - expected) < 1000);
+});
+
+test('afterDry: rain after the laundry is dry, humid already when it dries, and dry weather', () => {
+  const c = load();
+  forecast(c);
+  c.weekprecipitation[8] = 2; // the rain of hour 7 to 8
+  assert.equal(c.afterDry(1, false, c.forecastTime(4)).takeDownBy.getTime(), c.forecastTime(7).getTime());
+
+  forecast(c, { humid: 90 });
+  const dry = new Date(c.forecastTime(4).getTime() + 30 * 60 * 1000);
+  const after = c.afterDry(1, false, dry);
+  assert.equal(after.takeDownBy.getTime(), dry.getTime()); // take it down right away
+  assert.equal(after.dryAgain, null); // it is humid all week, it does not dry again
+
+  forecast(c);
+  const fine = c.afterDry(1, false, c.forecastTime(4));
+  assert.equal(fine.takeDownBy, null);
+  assert.equal(fine.dryAgain, null);
+});
+
 test('forecastcalc reports the highest chance of rain while drying', () => {
   const c = load();
   forecast(c, { prob: 10 });
