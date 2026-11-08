@@ -1063,7 +1063,13 @@ function showHangingTime() {
              hours = forecast.hours;
              if (forecast.outOfRange) {notes.push(msg("outofrange"));}
              else if (hours === Infinity) {notes.push(msg("nodryforecast"));}
-             else {notes.push(msg("dryby", formatTime(new Date(hang.getTime() + hours*3600*1000))));}
+             else {
+                const dry = new Date(hang.getTime() + hours*3600*1000);
+                notes.push(msg("dryby", formatTime(dry)));
+                const after = afterDry(width, sun, dry);
+                if (after.takeDownBy) {notes.push(msg("takedown", formatTime(after.takeDownBy)));}
+                if (after.dryAgain) {notes.push(msg("dryagain", formatTime(after.dryAgain)));}
+             }
              if (forecast.rain) {notes.push(msg("rain") + " " + msg("rainstart", formatTime(forecast.rainStart)));}
              notes.push(msg("rainprob", forecast.maxProb));
              if (forecast.windy) {notes.push(msg("windy"));}

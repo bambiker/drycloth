@@ -81,6 +81,40 @@ var messages = {
       hi: "कपड़े सूखने का अनुमानित समय: {0}।",
       id: "Cucian diperkirakan kering: {0}."
    },
+   takedown: {
+      en: "Take the laundry down by {0}, before it gets damp again.",
+      he: "כדאי להוריד את הכביסה עד {0}, לפני שהיא תספוג שוב לחות.",
+      de: "Nehmen Sie die Wäsche ab, bevor sie wieder feucht wird: spätestens {0}.",
+      it: "Ritira il bucato prima che torni umido: entro {0}.",
+      es: "Recoge la ropa antes de que vuelva a humedecerse: a más tardar {0}.",
+      pt: "Recolha a roupa antes que ela fique úmida de novo: até {0}.",
+      fr: "Rentrez le linge avant qu’il ne redevienne humide : au plus tard {0}.",
+      ja: "再び湿気を吸う前に、{0}までに取り込みましょう。",
+      pl: "Zdejmij pranie, zanim znowu zrobi się wilgotne: najpóźniej {0}.",
+      el: "Μαζέψτε τα ρούχα πριν ξαναπάρουν υγρασία: το αργότερο {0}.",
+      tr: "Çamaşırı yeniden nemlenmeden toplayın: en geç {0}.",
+      ar: "أنزل الغسيل قبل أن يعود رطبًا: في موعد أقصاه {0}.",
+      tl: "Hanguin ang labada bago ito mamasa ulit: hanggang {0}.",
+      hi: "कपड़े दोबारा नम होने से पहले उतार लें: {0} तक।",
+      id: "Angkat jemuran sebelum lembap lagi: paling lambat {0}."
+   },
+   dryagain: {
+      en: "If it stays out, it will be dry again around {0}.",
+      he: "אם היא נשארת בחוץ, היא תתייבש שוב בסביבות {0}.",
+      de: "Wenn sie hängen bleibt, ist sie wieder trocken: {0}.",
+      it: "Se lo lasci fuori, sarà di nuovo asciutto: {0}.",
+      es: "Si la dejas fuera, volverá a estar seca: {0}.",
+      pt: "Se ficar no varal, vai estar seca de novo: {0}.",
+      fr: "Si vous le laissez dehors, il sera de nouveau sec : {0}.",
+      ja: "そのまま干しておくと、再び乾くのは{0}ごろです。",
+      pl: "Jeśli zostanie na zewnątrz, znowu będzie suche: {0}.",
+      el: "Αν μείνουν έξω, θα στεγνώσουν ξανά: {0}.",
+      tr: "Dışarıda kalırsa yeniden kuruyacağı zaman: {0}.",
+      ar: "إذا بقي في الخارج، فسيجف من جديد: {0}.",
+      tl: "Kung maiiwan ito sa labas, tuyo na ulit ito sa: {0}.",
+      hi: "अगर कपड़े बाहर ही रहें, तो वे फिर से सूख जाएँगे: {0}।",
+      id: "Jika dibiarkan di luar, cucian akan kering lagi: {0}."
+   },
    windy: {
       en: "It looks like it will be windy. Please use extra clothespins (clothes pegs).",
       he: "נראה שתהיה רוח חזקה. כדאי להשתמש ביותר אטבי כביסה.",
@@ -560,6 +594,34 @@ var from = start || new Date();
 if (rainStart !== null && rainStart < from)
    {rainStart = from;}
 return {hours: totalhours, rain: totalrain > 0.1, rainStart: rainStart, maxProb: maxProb, windy: maxwind > 12};
+}
+
+// After the laundry is dry it takes moisture back from humid air (and dew), or gets wet in the rain.
+// Returns until when to take it down, and, if it stays out, when it is dry again: from the first hour
+// that is not damp, it has to dry the moisture it took back, about REGAIN of the water after the spin.
+var DAMP_HUMIDITY = 85; // %
+var REGAIN = 0.3;
+function afterDry(width, sun, dryTime) {
+   var none = {takeDownBy: null, dryAgain: null};
+   if (!weekt2 || !weekrh2) {return none;}
+   var fromBase = (dryTime.getTime() - forecastTime(0).getTime()) / 3600000;
+   var first = Math.max(0, Math.floor(fromBase));
+   var takeDownBy = null;
+   for (var j = first; j < weekt2.length && weekt2[j] != null; j++) {
+      // precipitation is the sum of the preceding hour; rain before the laundry was dry is the rain warning
+      if (j > first && weekprecipitation && weekprecipitation[j] > 0.1) {takeDownBy = forecastTime(j - 1); break;}
+      if (weekrh2[j] >= DAMP_HUMIDITY) {takeDownBy = forecastTime(j); break;}
+   }
+   if (takeDownBy === null) {return none;}
+   if (takeDownBy < dryTime) {takeDownBy = dryTime;}
+   for (var k = j + 1; k < weekt2.length && weekt2[k] != null; k++) {
+      if (weekrh2[k] < DAMP_HUMIDITY && !(weekprecipitation && weekprecipitation[k] > 0.1)) {
+         var again = forecastcalc(width * REGAIN, sun, forecastTime(k));
+         if (again.hours === Infinity) {break;}
+         return {takeDownBy: takeDownBy, dryAgain: new Date(forecastTime(k).getTime() + again.hours * 3600 * 1000)};
+      }
+   }
+   return {takeDownBy: takeDownBy, dryAgain: null};
 }
 
 // evaporation rate in kg/(m*m*hour), which is also mm per hour
