@@ -829,7 +829,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <li data-i18n="rule3">מגבת, חולצת חורף או ג'ינס עוביים 2 מ"מ</li>
           <li data-i18n="rule4">חולצות קצרות עוביים 1 מ"מ</li>
           <li data-i18n="rule5">חולצה מנדפת עובייה האפקטיבי הוא 0.5 מ"מ</li>
-          <li data-i18n="rule6">המחשבון עובד רק בטמפרטורות גבוהות מאפס מעלות</li>
+          <li data-i18n="rule6">מתחת לאפס הכביסה קופאת ומתייבשת לאט בסובלימציה (הקרח הופך ישר לאדים); באוויר לח מאוד היא לא מתייבשת בכלל.</li>
           </ul>
         </div>
       </details>
@@ -1073,6 +1073,7 @@ function showHangingTime() {
              if (forecast.rain) {notes.push(msg("rain") + " " + msg("rainstart", formatTime(forecast.rainStart)));}
              notes.push(msg("rainprob", forecast.maxProb));
              if (forecast.windy) {notes.push(msg("windy"));}
+             if (forecast.frost) {notes.push(msg("frost"));}
             } else
             {
              if (temp === "" || humid === "" || wind === "" || !(width > 0) || humid < 0 || humid > 100)
@@ -1084,6 +1085,7 @@ function showHangingTime() {
              if (indoor) {notes.push(msg(indoorAverage ? "indoorforecast" : "indoor"));}
              if (sun) {notes.push(msg("sunmanual"));}
              hours = calc(toCelsius(temp),humid,toKmh(wind),width);
+             if (toCelsius(temp) < 0) {notes.push(msg("frost"));}
              if (hours === Infinity) {notes.push(msg("nodry"));}
              else {notes.push(msg("dryby", formatTime(new Date(hang.getTime() + hours*3600*1000))));}
             }

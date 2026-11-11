@@ -24,6 +24,7 @@
 - Evaporation rate (kg per m² per hour, which is also mm of water per hour): (25 + 19 × wind in m/s) × saturation humidity × (1 − relative humidity), the standard formula for evaporation from a water surface.
 - The whole thickness of the item is used: most clothes have a front and a back, so each side of the item dries its own layer.
 - With the forecast, the rate of every hour is subtracted until the laundry is dry; the wind is taken at 1.5 m (half of the 10 m forecast wind).
+- Below 0°C the laundry freezes and dries by sublimation: the same formula, with the saturation above ice instead of above water (Buck 1981), while the forecast humidity stays relative to water. So it dries more slowly, and not at all when the humidity is above their ratio (about 91% at −10°C). The sun uses the heat of sublimation (2.83 MJ/kg).
 - Optional direct sunlight adds evaporation from the solar radiation (only with the forecast; inner clotheslines are usually shaded).
 - It warns about rain before the laundry dries, the chance of rain, and strong wind (above 12 km/h at 10 m).
 - If rain is expected within 24 hours after the laundry is dry, it says until when to take it down, and, if it stays out, when it is dry again after the rain (like freshly hung laundry). Humidity alone does not make dry laundry wet again in this model: by the formula, laundry keeps drying at any humidity below 100%.

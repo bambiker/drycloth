@@ -829,7 +829,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <li data-i18n="rule3">Handtücher, Winterpullover oder Jeans sind 2 mm dick.</li>
           <li data-i18n="rule4">T-Shirts sind 1 mm dick.</li>
           <li data-i18n="rule5">Funktionsshirts haben eine effektive Dicke von 0,5 mm.</li>
-          <li data-i18n="rule6">Der Rechner funktioniert nur bei Temperaturen über 0 °C.</li>
+          <li data-i18n="rule6">Unter 0 °C gefriert die Wäsche und trocknet langsam durch Sublimation (das Eis wird direkt zu Dampf); bei sehr feuchter Luft trocknet sie gar nicht.</li>
           </ul>
         </div>
       </details>
@@ -1073,6 +1073,7 @@ function showHangingTime() {
              if (forecast.rain) {notes.push(msg("rain") + " " + msg("rainstart", formatTime(forecast.rainStart)));}
              notes.push(msg("rainprob", forecast.maxProb));
              if (forecast.windy) {notes.push(msg("windy"));}
+             if (forecast.frost) {notes.push(msg("frost"));}
             } else
             {
              if (temp === "" || humid === "" || wind === "" || !(width > 0) || humid < 0 || humid > 100)
@@ -1084,6 +1085,7 @@ function showHangingTime() {
              if (indoor) {notes.push(msg(indoorAverage ? "indoorforecast" : "indoor"));}
              if (sun) {notes.push(msg("sunmanual"));}
              hours = calc(toCelsius(temp),humid,toKmh(wind),width);
+             if (toCelsius(temp) < 0) {notes.push(msg("frost"));}
              if (hours === Infinity) {notes.push(msg("nodry"));}
              else {notes.push(msg("dryby", formatTime(new Date(hang.getTime() + hours*3600*1000))));}
             }

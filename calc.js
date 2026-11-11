@@ -11,6 +11,7 @@ var units = defaultUnits(); // "metric" (°C, km/h) or "imperial" (°F, mph), wh
 
 var SUN_FACTOR = 0.25; // part of the sun radiation that is used for evaporation (clothes hang vertically and reflect part of it)
 var LATENT_HEAT = 2.45e6; // J/kg, energy to evaporate 1 kg of water
+var SUBLIMATION_HEAT = 2.83e6; // J/kg, energy to turn 1 kg of ice into vapor
 
 var messages = {
    rain: {
@@ -114,6 +115,23 @@ var messages = {
       tl: "Kung maiiwan ito sa labas, tuyo na ulit ito sa: {0}.",
       hi: "अगर कपड़े बाहर ही रहें, तो वे फिर से सूख जाएँगे: {0}।",
       id: "Jika dibiarkan di luar, cucian akan kering lagi: {0}."
+   },
+   frost: {
+      en: "Below freezing the laundry freezes and dries slowly. Frozen laundry feels stiff and wet: check that it is dry after it thaws indoors.",
+      he: "מתחת לאפס הכביסה קופאת ומתייבשת לאט. כביסה קפואה מרגישה נוקשה ורטובה: בודקים שהיא יבשה אחרי שהיא מפשירה בבית.",
+      de: "Unter 0 °C gefriert die Wäsche und trocknet langsam. Gefrorene Wäsche fühlt sich steif und nass an: Prüfen Sie erst nach dem Auftauen in der Wohnung, ob sie trocken ist.",
+      it: "Sotto 0 °C il bucato gela e si asciuga lentamente. Il bucato gelato sembra rigido e bagnato: controlla che sia asciutto dopo che si è scongelato in casa.",
+      es: "Bajo 0 °C la ropa se congela y se seca despacio. La ropa congelada se siente rígida y mojada: comprueba si está seca cuando se descongele dentro de casa.",
+      pt: "Abaixo de 0 °C a roupa congela e seca devagar. Roupa congelada parece dura e molhada: veja se está seca depois que descongelar dentro de casa.",
+      fr: "En dessous de 0 °C, le linge gèle et sèche lentement. Le linge gelé paraît raide et mouillé : vérifiez qu’il est sec une fois dégelé à l’intérieur.",
+      ja: "0 °C未満では洗濯物が凍り、ゆっくり乾きます。凍った洗濯物は硬く湿って感じるので、室内で解けてから乾いたか確かめましょう。",
+      pl: "Poniżej 0 °C pranie zamarza i schnie powoli. Zamarznięte pranie jest sztywne i wydaje się mokre: sprawdź, czy jest suche, gdy rozmarznie w domu.",
+      el: "Κάτω από 0 °C τα ρούχα παγώνουν και στεγνώνουν αργά. Τα παγωμένα ρούχα φαίνονται σκληρά και βρεγμένα: ελέγξτε αν στέγνωσαν αφού ξεπαγώσουν μέσα στο σπίτι.",
+      tr: "0 °C'nin altında çamaşır donar ve yavaş kurur. Donmuş çamaşır sert ve ıslak hissettirir: içeride çözüldükten sonra kuru olup olmadığını kontrol edin.",
+      ar: "تحت الصفر يتجمد الغسيل ويجف ببطء. الغسيل المتجمد يبدو قاسيًا ومبللًا: تأكد من جفافه بعد أن يذوب داخل البيت.",
+      tl: "Kapag mababa sa 0 °C, nagyeyelo ang labada at mabagal matuyo. Matigas at parang basa ang nagyeyelong labada: tingnan kung tuyo na ito pagkatapos matunaw sa loob ng bahay.",
+      hi: "0 °C से नीचे कपड़े जम जाते हैं और धीरे सूखते हैं। जमे हुए कपड़े सख़्त और गीले लगते हैं: घर के अंदर पिघलने के बाद देखें कि वे सूखे हैं या नहीं।",
+      id: "Di bawah 0 °C cucian membeku dan kering perlahan. Cucian beku terasa kaku dan basah: periksa apakah sudah kering setelah mencair di dalam rumah."
    },
    windy: {
       en: "It looks like it will be windy. Please use extra clothespins (clothes pegs).",
@@ -553,6 +571,7 @@ var totalrain = 0;
 var rainStart = null;
 var maxProb = 0;
 var maxwind = 0;
+var frost = false;
 var i = forecastStartHour;
 var hourPart = 1; // the part of the first hour that is left after hanging
 if (start)
@@ -569,7 +588,7 @@ while (width > 0)
       {totalhours = Infinity; break;}
    var rate = dryingRate(weekt2[i], weekrh2[i], weekwind10[i]/2); // I devide the wind by 2, because it's 1.5 meters height and not 10 meters
    if (sun && weekradiation)
-      {rate = rate + sunRate(weekradiation[i]);}
+      {rate = rate + sunRate(weekradiation[i], weekt2[i]);}
    totalrain = totalrain + weekprecipitation[i];
    if (weekprecipitation[i] > 0 && rainStart === null)
       {rainStart = forecastTime(i - 1);} // precipitation is the sum of the preceding hour
@@ -577,6 +596,8 @@ while (width > 0)
       {maxProb = weekprob[i];}
    if (weekwind10[i] > maxwind)
       {maxwind = weekwind10[i];}
+   if (weekt2[i] < 0)
+      {frost = true;}
    if (rate * hourPart >= width)
    {
       totalhours = totalhours + width/rate;
@@ -593,7 +614,7 @@ while (width > 0)
 var from = start || new Date();
 if (rainStart !== null && rainStart < from)
    {rainStart = from;}
-return {hours: totalhours, rain: totalrain > 0.1, rainStart: rainStart, maxProb: maxProb, windy: maxwind > 12};
+return {hours: totalhours, rain: totalrain > 0.1, rainStart: rainStart, maxProb: maxProb, windy: maxwind > 12, frost: frost};
 }
 
 // After the laundry is dry, rain makes it wet again. If it rains within RAIN_WATCH_HOURS after the laundry is dry,
@@ -631,12 +652,23 @@ function dryingRate(temp,humid,wind){
  var area = 1; // m*m
 
  var BH = ((0.000002*temp**4)+(0.0002*temp**3)+(0.0095*temp**2)+(0.337*temp)+4.9034)/1000.0; // saturation absolute humidity, kg/kg
- return (25 + 19 * wind) * area * BH * (1. - humid/100.0); //% kg/hour can add / 3600 for kg/s
+ // Below zero the water in the laundry freezes and the ice turns straight into vapor (sublimation). The air above ice
+ // is saturated at a lower vapor pressure than above water, while the forecast humidity is relative to water, so the
+ // laundry dries more slowly, and not at all when the humidity is above the ratio of the two (about 91% at -10°C).
+ var surface = temp < 0 ? iceToWater(temp) : 1;
+ return (25 + 19 * wind) * area * BH * Math.max(surface - humid/100.0, 0); //% kg/hour can add / 3600 for kg/s
+}
+
+// the saturation vapor pressure above ice divided by the one above water, at a temperature below zero (Buck 1981)
+function iceToWater(temp){
+ var water = 6.1121 * Math.exp((18.678 - temp/234.5) * temp / (257.14 + temp));
+ var ice = 6.1115 * Math.exp((23.036 - temp/333.7) * temp / (279.82 + temp));
+ return ice / water;
 }
 
 // extra evaporation from direct sun, radiation in W/(m*m), result in mm per hour
-function sunRate(radiation){
- return SUN_FACTOR * Math.max(Number(radiation) || 0, 0) / LATENT_HEAT * 3600;
+function sunRate(radiation, temp){
+ return SUN_FACTOR * Math.max(Number(radiation) || 0, 0) / (Number(temp) < 0 ? SUBLIMATION_HEAT : LATENT_HEAT) * 3600;
 }
 
 // hours (not rounded) to dry, Infinity if it will not dry
