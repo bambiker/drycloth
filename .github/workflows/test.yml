@@ -16,5 +16,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      # the system packages come from Ubuntu's mirror; when it cannot be reached, the runner already has what Chromium needs
+      - run: npx playwright install --with-deps chromium || npx playwright install chromium
       - run: npm test

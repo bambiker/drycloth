@@ -841,7 +841,7 @@ footer .button { display: inline-flex; width: auto; padding: 10px 26px; font-siz
           <li data-i18n="rule3">Towels, winter shirts, or jeans are 2 mm thick.</li>
           <li data-i18n="rule4">T-shirts are 1 mm thick.</li>
           <li data-i18n="rule5">Moisture-wicking shirts have an effective thickness of 0.5 mm.</li>
-          <li data-i18n="rule6">The calculator works only above zero degrees Celsius.</li>
+          <li data-i18n="rule6">Below freezing the laundry freezes and dries slowly by sublimation (the ice turns straight into vapor); in very humid air it does not dry at all.</li>
           </ul>
         </div>
       </details>
@@ -1085,6 +1085,7 @@ function showHangingTime() {
              if (forecast.rain) {notes.push(msg("rain") + " " + msg("rainstart", formatTime(forecast.rainStart)));}
              notes.push(msg("rainprob", forecast.maxProb));
              if (forecast.windy) {notes.push(msg("windy"));}
+             if (forecast.frost) {notes.push(msg("frost"));}
             } else
             {
              if (temp === "" || humid === "" || wind === "" || !(width > 0) || humid < 0 || humid > 100)
@@ -1096,6 +1097,7 @@ function showHangingTime() {
              if (indoor) {notes.push(msg(indoorAverage ? "indoorforecast" : "indoor"));}
              if (sun) {notes.push(msg("sunmanual"));}
              hours = calc(toCelsius(temp),humid,toKmh(wind),width);
+             if (toCelsius(temp) < 0) {notes.push(msg("frost"));}
              if (hours === Infinity) {notes.push(msg("nodry"));}
              else {notes.push(msg("dryby", formatTime(new Date(hang.getTime() + hours*3600*1000))));}
             }
