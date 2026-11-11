@@ -82,21 +82,21 @@ var messages = {
       id: "Cucian diperkirakan kering: {0}."
    },
    takedown: {
-      en: "Take the laundry down by {0}, before it gets damp again.",
-      he: "כדאי להוריד את הכביסה עד {0}, לפני שהיא תספוג שוב לחות.",
-      de: "Nehmen Sie die Wäsche ab, bevor sie wieder feucht wird: spätestens {0}.",
-      it: "Ritira il bucato prima che torni umido: entro {0}.",
-      es: "Recoge la ropa antes de que vuelva a humedecerse: a más tardar {0}.",
-      pt: "Recolha a roupa antes que ela fique úmida de novo: até {0}.",
-      fr: "Rentrez le linge avant qu’il ne redevienne humide : au plus tard {0}.",
-      ja: "再び湿気を吸う前に、{0}までに取り込みましょう。",
-      pl: "Zdejmij pranie, zanim znowu zrobi się wilgotne: najpóźniej {0}.",
-      el: "Μαζέψτε τα ρούχα πριν ξαναπάρουν υγρασία: το αργότερο {0}.",
-      tr: "Çamaşırı yeniden nemlenmeden toplayın: en geç {0}.",
-      ar: "أنزل الغسيل قبل أن يعود رطبًا: في موعد أقصاه {0}.",
-      tl: "Hanguin ang labada bago ito mamasa ulit: hanggang {0}.",
-      hi: "कपड़े दोबारा नम होने से पहले उतार लें: {0} तक।",
-      id: "Angkat jemuran sebelum lembap lagi: paling lambat {0}."
+      en: "Take the laundry down by {0}, before the rain.",
+      he: "כדאי להוריד את הכביסה עד {0}, לפני הגשם.",
+      de: "Nehmen Sie die Wäsche vor dem Regen ab: spätestens {0}.",
+      it: "Ritira il bucato prima della pioggia: entro {0}.",
+      es: "Recoge la ropa antes de la lluvia: a más tardar {0}.",
+      pt: "Recolha a roupa antes da chuva: até {0}.",
+      fr: "Rentrez le linge avant la pluie : au plus tard {0}.",
+      ja: "雨が降る前に、{0}までに取り込みましょう。",
+      pl: "Zdejmij pranie przed deszczem: najpóźniej {0}.",
+      el: "Μαζέψτε τα ρούχα πριν από τη βροχή: το αργότερο {0}.",
+      tr: "Çamaşırı yağmurdan önce toplayın: en geç {0}.",
+      ar: "أنزل الغسيل قبل المطر: في موعد أقصاه {0}.",
+      tl: "Hanguin ang labada bago umulan: hanggang {0}.",
+      hi: "बारिश से पहले कपड़े उतार लें: {0} तक।",
+      id: "Angkat jemuran sebelum hujan: paling lambat {0}."
    },
    dryagain: {
       en: "If it stays out, it will be dry again around {0}.",
@@ -596,29 +596,28 @@ if (rainStart !== null && rainStart < from)
 return {hours: totalhours, rain: totalrain > 0.1, rainStart: rainStart, maxProb: maxProb, windy: maxwind > 12};
 }
 
-// After the laundry is dry it takes moisture back from humid air (and dew), or gets wet in the rain.
-// Returns until when to take it down, and, if it stays out, when it is dry again: from the first hour
-// that is not damp, it has to dry the moisture it took back, about REGAIN of the water after the spin.
-var DAMP_HUMIDITY = 85; // %
-var REGAIN = 0.3;
+// After the laundry is dry, rain makes it wet again. If it rains within RAIN_WATCH_HOURS after the laundry is dry,
+// returns until when to take it down, and, if it stays out, when it is dry again: from the first hour without rain
+// it dries again like freshly hung laundry. (By the drying formula, laundry keeps drying at any humidity below 100%,
+// so humidity alone does not make it damp again.)
+var RAIN_WATCH_HOURS = 24;
 function afterDry(width, sun, dryTime) {
    var none = {takeDownBy: null, dryAgain: null};
-   if (!weekt2 || !weekrh2) {return none;}
+   if (!weekt2 || !weekprecipitation) {return none;}
    var fromBase = (dryTime.getTime() - forecastTime(0).getTime()) / 3600000;
    var first = Math.max(0, Math.floor(fromBase));
    var takeDownBy = null;
-   for (var j = first; j < weekt2.length && weekt2[j] != null; j++) {
-      // precipitation is the sum of the preceding hour; rain before the laundry was dry is the rain warning
-      if (j > first && weekprecipitation && weekprecipitation[j] > 0.1) {takeDownBy = forecastTime(j - 1); break;}
-      if (weekrh2[j] >= DAMP_HUMIDITY) {takeDownBy = forecastTime(j); break;}
+   // precipitation is the sum of the preceding hour; rain before the laundry was dry is the rain warning
+   for (var j = first + 1; j < weekt2.length && weekt2[j] != null && j - 1 < fromBase + RAIN_WATCH_HOURS; j++) {
+      if (weekprecipitation[j] > 0.1) {takeDownBy = forecastTime(j - 1); break;}
    }
    if (takeDownBy === null) {return none;}
    if (takeDownBy < dryTime) {takeDownBy = dryTime;}
    for (var k = j + 1; k < weekt2.length && weekt2[k] != null; k++) {
-      if (weekrh2[k] < DAMP_HUMIDITY && !(weekprecipitation && weekprecipitation[k] > 0.1)) {
-         var again = forecastcalc(width * REGAIN, sun, forecastTime(k));
+      if (!(weekprecipitation[k] > 0.1)) {
+         var again = forecastcalc(width, sun, forecastTime(k - 1)); // the rain ended at the start of hour k - 1
          if (again.hours === Infinity) {break;}
-         return {takeDownBy: takeDownBy, dryAgain: new Date(forecastTime(k).getTime() + again.hours * 3600 * 1000)};
+         return {takeDownBy: takeDownBy, dryAgain: new Date(forecastTime(k - 1).getTime() + again.hours * 3600 * 1000)};
       }
    }
    return {takeDownBy: takeDownBy, dryAgain: null};

@@ -26,7 +26,7 @@
 - With the forecast, the rate of every hour is subtracted until the laundry is dry; the wind is taken at 1.5 m (half of the 10 m forecast wind).
 - Optional direct sunlight adds evaporation from the solar radiation (only with the forecast; inner clotheslines are usually shaded).
 - It warns about rain before the laundry dries, the chance of rain, and strong wind (above 12 km/h at 10 m).
-- After the laundry is dry, it says until when to take it down: before the first hour with 85% humidity or more (dry laundry takes moisture back from humid air and dew) or rain. If it stays out, it is dry again after it dries 30% of the water it had, from the first hour that is not damp.
+- If rain is expected within 24 hours after the laundry is dry, it says until when to take it down, and, if it stays out, when it is dry again after the rain (like freshly hung laundry). Humidity alone does not make dry laundry wet again in this model: by the formula, laundry keeps drying at any humidity below 100%.
 
 ## Example
 

@@ -368,7 +368,7 @@ test('after the forecast the page goes to the hanging time, and a different item
   await context.close();
 });
 
-test('the result says until when to take the laundry down, and when it is dry again if it stays out', async () => {
+test('the result says until when to take the laundry down before the rain, and when it is dry again', async () => {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: 'he-IL',
     timezoneId: 'Asia/Jerusalem', geolocation: { latitude: 32, longitude: 35 }, permissions: ['geolocation'] });
   const page = await context.newPage();
@@ -377,18 +377,19 @@ test('the result says until when to take the laundry down, and when it is dry ag
   page.on('pageerror', e => errors.push(e.message));
   await page.route(url => !url.href.startsWith(base) && !url.href.includes('open-meteo'), route => route.abort());
   const n = 168;
-  // humid from 17:00 to 06:00 UTC (19:00 to 08:00 in Israel)
+  // humid at night (it still dries), and rain from 17:00 to 19:00 UTC (19:00 to 21:00 in Israel)
   const humid = Array.from({ length: n }, (_, i) => (i >= 17 && i < 30 ? 92 : 50));
+  const rain = Array.from({ length: n }, (_, i) => (i === 18 || i === 19 ? 2 : 0));
   await page.route(/open-meteo/, route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ hourly: {
-    temperature_2m: Array(n).fill(25), relative_humidity_2m: humid, precipitation: Array(n).fill(0),
+    temperature_2m: Array(n).fill(25), relative_humidity_2m: humid, precipitation: rain,
     precipitation_probability: Array(n).fill(0), wind_speed_10m: Array(n).fill(0), shortwave_radiation: Array(n).fill(0) } }) }));
   await page.goto(base + '/he/');
   await page.click('#find-me');
   await page.waitForFunction(() => document.getElementById('result').textContent === '6 שעות ו-55 דקות');
   const notes = await page.textContent('#statusmsg');
   assert.match(notes, /14:5\d/); // dry
-  assert.match(notes, /כדאי להוריד את הכביסה עד 19:00/);
-  assert.match(notes, /היא תתייבש שוב בסביבות .*10:0\d/); // from 08:00 it dries the moisture it took back
+  assert.match(notes, /כדאי להוריד את הכביסה עד 19:00, לפני הגשם/);
+  assert.match(notes, /היא תתייבש שוב בסביבות/);
   assert.deepEqual(errors, []);
   await context.close();
 });
